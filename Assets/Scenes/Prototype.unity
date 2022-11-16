@@ -200,8 +200,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 79899772}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -912, y: -513, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalPosition: {x: -912, y: -515, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1491599083}
@@ -1463,9 +1463,9 @@ MonoBehaviour:
   spriteRendererProp: {fileID: 79899773}
   typeSpeed: 0.02
   DBox: {fileID: 1985338152}
-  dialogueTypingSoundClip: {fileID: 8300000, guid: 9749d645e2879f9488d1a8d57763b859, type: 3}
   stopAudioSource: 1
   charInterval: 4
+  dialogueTypingSoundClip: {fileID: 8300000, guid: 9749d645e2879f9488d1a8d57763b859, type: 3}
 --- !u!1 &1079926676
 GameObject:
   m_ObjectHideFlags: 0
@@ -2036,7 +2036,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491599082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
