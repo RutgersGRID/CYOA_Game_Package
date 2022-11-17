@@ -1,0 +1,6 @@
+.ui-button:hover {
+    rotate: -10deg;
+    width: 53px;
+    height: 53px;
+    transition-duration: 0.3s;
+}
