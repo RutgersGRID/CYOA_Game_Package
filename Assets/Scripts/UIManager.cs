@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
+
     private UIDocument _doc;
     private Button _rewindButton;
     private Button _journalButton;
@@ -23,11 +24,11 @@ public class UIManager : MonoBehaviour
         _rewindButton = _doc.rootVisualElement.Q<Button>("RewindButton");
         _journalButton = _doc.rootVisualElement.Q<Button>("JournalButton");
         _dialogueButton = _doc.rootVisualElement.Q<Button>("DialogueButton");
-        _dialogueVE = _doc.rootVisualElement.Q<Button>("DialogueBox");
-        _characterVE = _doc.rootVisualElement.Q<Button>("Characters");
-        _propVE = _doc.rootVisualElement.Q<Button>("Props");
-        _nameLabel = _doc.rootVisualElement.Q<Button>("Name");
-        _dialogueLabel = _doc.rootVisualElement.Q<Button>("Dialogue");
+        _dialogueVE = _doc.rootVisualElement.Q<VisualElement>("DialogueBox");
+        _characterVE = _doc.rootVisualElement.Q<VisualElement>("Characters");
+        _propVE = _doc.rootVisualElement.Q<VisualElement>("Props");
+        _nameLabel = _doc.rootVisualElement.Q<Label>("Name");
+        _dialogueLabel = _doc.rootVisualElement.Q<Label>("Dialogue");
 
 
         _rewindButton.clicked += Rewind;
