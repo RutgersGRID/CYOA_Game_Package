@@ -4,3 +4,11 @@
     height: 53px;
     transition-duration: 0.3s;
 }
+
+.d-button:hover {
+    background-color: rgba(94, 250, 46, 255);
+    transition-property: all, ignored;
+    transition-duration: 0s, 0s;
+    transition-timing-function: ease, ease;
+    transition-delay: 0s, 0s;
+}

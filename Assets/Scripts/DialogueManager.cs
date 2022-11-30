@@ -24,8 +24,6 @@ public class DialogueManager : MonoBehaviour
     private Queue<Sprite> props;
     private AudioSource audioSource;
 
-    
-
     void Start()
     {
         // Loads up arrays
@@ -49,13 +47,11 @@ public class DialogueManager : MonoBehaviour
         foreach (string sentence in dialogue.sentences)
         {
             sentences.Enqueue(sentence);
-            
         }
         foreach (string name in dialogue.names)
         {
             names.Enqueue(name);
         }
-
         foreach (Sprite character in dialogue.characters)
         {
             characters.Enqueue(character);
@@ -64,7 +60,6 @@ public class DialogueManager : MonoBehaviour
         {
             props.Enqueue(prop);
         }
-
 
         DisplayNextSentence();
     }

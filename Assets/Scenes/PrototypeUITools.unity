@@ -349,6 +349,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1218c0cc75aeb548b31959ce31c4ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogue:
+    names:
+    - Tim
+    - Toomy
+    - joe1
+    sentences:
+    - 1
+    - 2
+    - 3
+    characters:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    props:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
 --- !u!1 &1949236297
 GameObject:
   m_ObjectHideFlags: 0
