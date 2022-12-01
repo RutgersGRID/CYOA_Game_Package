@@ -6,17 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class DialogueUI : MonoBehaviour
 {
+/// Dialogue section    
     public string[] names;
-    //[TextArea(1, 10)]
     public string[] sentences;
+    public Sprite[] characters;
+    public Sprite[] props;
 
     private Button _dialogueButton;
     private Label _nameLabel;
     private Label _dialogueLabel;
+///
 
+/// Character expression and props
     private VisualElement _characterVE;
     private VisualElement _propVE;
+///
 
+                               
     private int count;
     // Start is called before the first frame update
     private void OnEnable()
@@ -36,12 +42,11 @@ public class DialogueUI : MonoBehaviour
     {
         _nameLabel.text = names[count];
         _dialogueLabel.text = sentences[count];
+        _characterVE.style.backgroundImage = new StyleBackground(characters[count]);
+        _propVE.style.backgroundImage = new StyleBackground(props[count]);
         count++;
 
     }
-
-
-    
 
     void start()
     {
