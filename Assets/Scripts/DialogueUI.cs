@@ -6,6 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class DialogueUI : MonoBehaviour
 {
+/// Scenes
+    public GameObject backgroundBase;
+
+    public GameObject SceneBase;
+    public GameObject SceneA;
+    public GameObject SceneB;
+    public GameObject SceneC;
+///
+
 /// Dialogue section   
     
     private VisualElement _dBox;
@@ -29,8 +38,13 @@ public class DialogueUI : MonoBehaviour
     private Button _exitJournalButton;
 ///
 
-/// Rewind Button
+/// Rewind 
+    private Label _checkpoint;
     private Button _rewindButton;
+    private VisualElement _rewind;
+    private Button _rewindYes;
+    private Button _rewindNo;
+    
 ///
 
 /// Two answers
@@ -74,21 +88,26 @@ public class DialogueUI : MonoBehaviour
 
         /// Rewind
         _rewindButton = rootVisualElement.Q<Button>("rewind-button");
+        _rewind = rootVisualElement.Q<VisualElement>("Rewind");
+        _rewindYes = rootVisualElement.Q<Button>("rewind-yes");
+        _rewindNo = rootVisualElement.Q<Button>("rewind-no");
+        _checkpoint = rootVisualElement.Q<Label>("checkpoint");
+        _rewind.style.display = DisplayStyle.None;
         ///
 
         /// Two answers
         _twoAnswers = rootVisualElement.Q<VisualElement>("answer-two-options");
+        _taanswerA = rootVisualElement.Q<Button>("button-a-two");
+        _taanswerB = rootVisualElement.Q<Button>("button-b-two");
         _twoAnswers.style.display = DisplayStyle.None;
-        _taanswerA = rootVisualElement.Q<Button>("answer-a");
-        _taanswerB = rootVisualElement.Q<Button>("answer-b");
         ///
 
         /// Three answers
         _threeAnswers = rootVisualElement.Q<VisualElement>("answer-three-options");
+        _answerA = rootVisualElement.Q<Button>("button-a-three");
+        _answerB = rootVisualElement.Q<Button>("button-b-three");
+        _answerC = rootVisualElement.Q<Button>("button-c-three");
         _threeAnswers.style.display = DisplayStyle.None;
-        _answerA = rootVisualElement.Q<Button>("answer-a-t");
-        _answerB = rootVisualElement.Q<Button>("answer-b-t");
-        _answerC = rootVisualElement.Q<Button>("answer-c-t");
         ///
 
         /// Button click events
@@ -97,29 +116,32 @@ public class DialogueUI : MonoBehaviour
         _journalButton.RegisterCallback<ClickEvent>(ev => OpenJournal());
         _exitJournalButton.RegisterCallback<ClickEvent>(ev => CloseJournal());
 
-        _rewindButton.RegisterCallback<ClickEvent>(ev => Rewind());
+        
+        _rewindButton.RegisterCallback<ClickEvent>(ev => RewindOpen());
+        _rewindYes.RegisterCallback<ClickEvent>(ev => Rewind());
+        _rewindNo.RegisterCallback<ClickEvent>(ev => RewindClose());
 
-        //_taanswerA.RegisterCallback<ClickEvent>(ev => GoToA());
-        //_taanswerB.RegisterCallback<ClickEvent>(ev => GoToB());
+        _taanswerA.RegisterCallback<ClickEvent>(ev => GoToA());
+        _taanswerB.RegisterCallback<ClickEvent>(ev => GoToB());
 
         _answerA.RegisterCallback<ClickEvent>(ev => GoToA());
         _answerB.RegisterCallback<ClickEvent>(ev => GoToB());
         _answerC.RegisterCallback<ClickEvent>(ev => GoToC());
-        // _answerA.RegisterCallback<ClickEvent>(ev => OpenJournal());
-        // _answerB.RegisterCallback<ClickEvent>(ev => OpenJournal());
-        // _answerC.RegisterCallback<ClickEvent>(ev => OpenJournal());
+
         ///
     }
 
     /// Dialogue system method
     private void dialogueLabel()
     {
+        _checkpoint.style.display = DisplayStyle.None;
         if(count >= names.Length)
         {
             _dBox.style.display = DisplayStyle.None;
 
-            //_twoAnswers.style.display = DisplayStyle.None;
-            _threeAnswers.style.display = DisplayStyle.Flex;
+            _twoAnswers.style.display = DisplayStyle.Flex;
+
+            //_threeAnswers.style.display = DisplayStyle.Flex;
 
         }
         if(count < names.Length)
@@ -139,6 +161,14 @@ public class DialogueUI : MonoBehaviour
     {
         SceneManager.LoadScene("PrototypeUITools");
     }
+    private void RewindOpen()
+    {
+       _rewind.style.display = DisplayStyle.Flex;
+    }
+    private void RewindClose()
+    {
+       _rewind.style.display = DisplayStyle.None;
+    }
     ///
 
     /// Journal Methods
@@ -153,21 +183,38 @@ public class DialogueUI : MonoBehaviour
     ///
 
     /// Answers method
+
     private void GoToA()
     {
         SceneManager.LoadScene("PickA");
+        bgkiller();
     }
     private void GoToB()
     {
         SceneManager.LoadScene("PickB");
+        bgkiller();
     }
     private void GoToC()
     {
         SceneManager.LoadScene("PickC");
+        bgkiller();
+    }
+ 
+    
+    ///
+
+    /// Destroy bg
+    private void bgkiller()
+    {
+        Destroy(backgroundBase);
     }
     ///
 
     void start()
+    {
+
+    }
+    void update()
     {
 
     }

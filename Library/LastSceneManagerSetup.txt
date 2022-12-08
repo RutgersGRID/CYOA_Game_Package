@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/PrototypeUITools.unity
+- path: Assets/Scenes/PickA.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
