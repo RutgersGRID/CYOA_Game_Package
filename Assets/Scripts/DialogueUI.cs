@@ -9,10 +9,10 @@ public class DialogueUI : MonoBehaviour
 /// Scenes
     public GameObject backgroundBase;
 
-    public GameObject SceneBase;
-    public GameObject SceneA;
-    public GameObject SceneB;
-    public GameObject SceneC;
+    public string SceneBase;
+    public string SceneA;
+    public string SceneB;
+    public string SceneC;
 ///
 
 /// Dialogue section   
@@ -159,7 +159,8 @@ public class DialogueUI : MonoBehaviour
     /// Rewind Method
     private void Rewind()
     {
-        SceneManager.LoadScene("PrototypeUITools");
+        //SceneManager.LoadScene("PrototypeUITools");
+        SceneManager.LoadScene(SceneBase);
     }
     private void RewindOpen()
     {
@@ -186,17 +187,17 @@ public class DialogueUI : MonoBehaviour
 
     private void GoToA()
     {
-        SceneManager.LoadScene("PickA");
+        SceneManager.LoadScene(SceneA);
         bgkiller();
     }
     private void GoToB()
     {
-        SceneManager.LoadScene("PickB");
+        SceneManager.LoadScene(SceneB);
         bgkiller();
     }
     private void GoToC()
     {
-        SceneManager.LoadScene("PickC");
+        SceneManager.LoadScene(SceneC);
         bgkiller();
     }
  
