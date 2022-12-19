@@ -543,6 +543,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892dabfac22f49143813c523a66f5d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundBase: {fileID: 257717891}
+  SceneBase: PrototypeUITools
+  SceneA: PickA
+  SceneB: PickB
+  SceneC: 
+  SceneQuestions: 2
   names:
   - Bob
   - Cat
@@ -559,3 +565,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 21300000, guid: f2b2b9d6af971774192164a88cf95729, type: 3}
   - {fileID: 21300000, guid: 9b5544d296a552c4e89a36c74c7cc524, type: 3}
+  journalLogs:
+  - Hi page 1
+  - this is page twooo
+  - 
+  - the page before is blank

@@ -13,6 +13,8 @@ public class DialogueUI : MonoBehaviour
     public string SceneA;
     public string SceneB;
     public string SceneC;
+
+    public int SceneQuestions;
 ///
 
 /// Dialogue section   
@@ -36,6 +38,12 @@ public class DialogueUI : MonoBehaviour
     private Button _journalButton;
     private VisualElement _journalUIVE;
     private Button _exitJournalButton;
+
+    public string[] journalLogs;
+    private Button _nextPage;
+    private Button _previousPage;
+    private Label _eventText;
+
 ///
 
 /// Rewind 
@@ -62,6 +70,7 @@ public class DialogueUI : MonoBehaviour
 
 /// Array Counter                       
     private int count = 0;
+    private int countJournal = 0;
 ///
 
 
@@ -83,6 +92,10 @@ public class DialogueUI : MonoBehaviour
         _journalButton = rootVisualElement.Q<Button>("journal-button");
         _journalUIVE = rootVisualElement.Q<VisualElement>("JournalUIContainer");
         _exitJournalButton = rootVisualElement.Q<Button>("exit-ui-button");
+        _nextPage = rootVisualElement.Q<Button>("next-page");
+        _previousPage = rootVisualElement.Q<Button>("back-page");
+        _eventText = rootVisualElement.Q<Label>("event-text");
+
         _journalUIVE.style.display = DisplayStyle.None;
         ///
 
@@ -116,6 +129,9 @@ public class DialogueUI : MonoBehaviour
         _journalButton.RegisterCallback<ClickEvent>(ev => OpenJournal());
         _exitJournalButton.RegisterCallback<ClickEvent>(ev => CloseJournal());
 
+        _nextPage.RegisterCallback<ClickEvent>(ev => nextPage());
+        _previousPage.RegisterCallback<ClickEvent>(ev => preivousPage());
+
         
         _rewindButton.RegisterCallback<ClickEvent>(ev => RewindOpen());
         _rewindYes.RegisterCallback<ClickEvent>(ev => Rewind());
@@ -139,10 +155,14 @@ public class DialogueUI : MonoBehaviour
         {
             _dBox.style.display = DisplayStyle.None;
 
-            _twoAnswers.style.display = DisplayStyle.Flex;
-
-            //_threeAnswers.style.display = DisplayStyle.Flex;
-
+            if(SceneQuestions == 2)
+            {
+                _twoAnswers.style.display = DisplayStyle.Flex;
+            }
+            if(SceneQuestions == 3)
+            {
+                _threeAnswers.style.display = DisplayStyle.Flex;
+            }
         }
         if(count < names.Length)
         {
@@ -181,6 +201,39 @@ public class DialogueUI : MonoBehaviour
     {
         _journalUIVE.style.display = DisplayStyle.None;
     }
+
+
+    private void nextPage()
+    {
+        //_nextPage.style.display = DisplayStyle.Flex;
+        if(countJournal == 0)
+        {
+            _previousPage.style.display = DisplayStyle.None;
+        }
+
+        if(countJournal < journalLogs.Length)
+        {
+            _eventText.text = journalLogs[countJournal];
+        }
+        countJournal++;
+    }
+
+
+    private void preivousPage()
+    {
+        //_previousPage.style.display = DisplayStyle.Flex;
+        if(countJournal == journalLogs.Length)
+        {
+            _nextPage.style.display = DisplayStyle.None;
+        }
+
+        if(countJournal > 0)
+        {
+            _eventText.text = journalLogs[countJournal];
+        }
+        countJournal--;
+    }
+
     ///
 
     /// Answers method
@@ -200,8 +253,6 @@ public class DialogueUI : MonoBehaviour
         SceneManager.LoadScene(SceneC);
         bgkiller();
     }
- 
-    
     ///
 
     /// Destroy bg
