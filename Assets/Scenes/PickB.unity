@@ -123,6 +123,98 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &786504990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 786504992}
+  - component: {fileID: 786504991}
+  - component: {fileID: 786504993}
+  m_Layer: 0
+  m_Name: UserInterface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &786504991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786504990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: b02445e60e43a3c48afb586e95c97de5, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a97b8e2fc8f5e9543b90a22a405fcd30, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &786504992
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786504990}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &786504993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786504990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892dabfac22f49143813c523a66f5d3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundBase: {fileID: 1822961186}
+  SceneBase: PickB
+  SceneA: 
+  SceneB: 
+  SceneC: 
+  SceneQuestions: 0
+  names:
+  - Cat
+  - Bob
+  - Steve
+  sentences:
+  - It was so nice out.
+  - We should have gone for a walk.
+  - We'll walk when we drive to the park.
+  characters:
+  - {fileID: 21300000, guid: 81b372eeec146db4eb01afb97d219ee8, type: 3}
+  - {fileID: 21300000, guid: 298e700c77f74a64e88b631c555380a3, type: 3}
+  - {fileID: 21300000, guid: 5ff37f5874908474889a3245775731fb, type: 3}
+  props:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  journalLogs:
+  - This is an intro page
+  - You choose to go for a drive.
+  - 
+  - 
+  questions:
+  - 
+  - 
+  - 
 --- !u!1 &1443897270
 GameObject:
   m_ObjectHideFlags: 0

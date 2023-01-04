@@ -347,8 +347,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1372322661}
-  - component: {fileID: 1372322660}
   - component: {fileID: 1372322659}
+  - component: {fileID: 1372322662}
   m_Layer: 0
   m_Name: UserInterface
   m_TagString: Untagged
@@ -372,7 +372,22 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: a97b8e2fc8f5e9543b90a22a405fcd30, type: 3}
   m_SortingOrder: 0
---- !u!114 &1372322660
+--- !u!4 &1372322661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372322658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1372322662
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -384,27 +399,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892dabfac22f49143813c523a66f5d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundBase: {fileID: 0}
-  SceneBase: {fileID: 0}
-  SceneA: {fileID: 0}
-  SceneB: {fileID: 0}
-  SceneC: {fileID: 0}
-  names: []
-  sentences: []
-  characters: []
-  props: []
---- !u!4 &1372322661
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1372322658}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0016965661, y: 0.9959839, z: -0.023862654}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  backgroundBase: {fileID: 510845741}
+  SceneBase: PickA
+  SceneA: 
+  SceneB: 
+  SceneC: 
+  SceneQuestions: 0
+  names:
+  - Cat
+  - Bob
+  - Steve
+  sentences:
+  - I'm glab we choose to walk instead of drive around.
+  - Ya, it's nicer to go for a stroll.
+  - I would have rather liked to drove to the park
+  characters:
+  - {fileID: 21300000, guid: 81b372eeec146db4eb01afb97d219ee8, type: 3}
+  - {fileID: 21300000, guid: 179a952db1df55440a5cf66026f58b64, type: 3}
+  - {fileID: 21300000, guid: 07db781fceb0aa44c91fc0ff56533e42, type: 3}
+  props:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  journalLogs:
+  - This is the intro page
+  - You choose to take a walk.
+  - You have not made a choice yet!
+  - You have not made a choice yet!
+  questions:
+  - 
+  - 
+  - 

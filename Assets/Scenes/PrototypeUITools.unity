@@ -554,9 +554,9 @@ MonoBehaviour:
   - Cat
   - Steve
   sentences:
-  - ewqeqwewqeq
-  - eeedddddddgggg
-  - jjjjtttttjfrjjjr
+  - It is so nice outside today.
+  - I agree we should go somewhere.
+  - Hey where do you think we should go?
   characters:
   - {fileID: 21300000, guid: 179a952db1df55440a5cf66026f58b64, type: 3}
   - {fileID: 21300000, guid: 81b372eeec146db4eb01afb97d219ee8, type: 3}
@@ -566,7 +566,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f2b2b9d6af971774192164a88cf95729, type: 3}
   - {fileID: 21300000, guid: 9b5544d296a552c4e89a36c74c7cc524, type: 3}
   journalLogs:
-  - Hi page 1
-  - this is page twooo
-  - 
-  - the page before is blank
+  - This is the intro page
+  - You have not made a choice yet!
+  - You have not made a choice yet!
+  - You have not made a choice yet!
+  questions:
+  - Where do you want to go?
+  - Walk in the streets.
+  - Drive to the park.

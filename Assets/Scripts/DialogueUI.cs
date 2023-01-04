@@ -44,6 +44,10 @@ public class DialogueUI : MonoBehaviour
     private Button _previousPage;
     private Label _eventText;
 
+    private Button _eventButtonOne;
+    private Button _eventButtonTwo;
+    private Button _eventButtonThree;
+
 ///
 
 /// Rewind 
@@ -53,6 +57,16 @@ public class DialogueUI : MonoBehaviour
     private Button _rewindYes;
     private Button _rewindNo;
     
+///
+
+/// Questions
+    public string[] questions;
+    private Label _questionText;
+    private Label _askquestionOne;
+    private Label _askquestionTwo;
+    private Label _askquestionThree;
+
+// question-text
 ///
 
 /// Two answers
@@ -95,8 +109,14 @@ public class DialogueUI : MonoBehaviour
         _nextPage = rootVisualElement.Q<Button>("next-page");
         _previousPage = rootVisualElement.Q<Button>("back-page");
         _eventText = rootVisualElement.Q<Label>("event-text");
+        _eventButtonOne = rootVisualElement.Q<Button>("event-button-one");
+        _eventButtonTwo = rootVisualElement.Q<Button>("event-button-two");
+        _eventButtonThree = rootVisualElement.Q<Button>("event-button-three");
+
 
         _journalUIVE.style.display = DisplayStyle.None;
+        _eventText.text = journalLogs[0];
+        _previousPage.style.display = DisplayStyle.None;
         ///
 
         /// Rewind
@@ -106,6 +126,19 @@ public class DialogueUI : MonoBehaviour
         _rewindNo = rootVisualElement.Q<Button>("rewind-no");
         _checkpoint = rootVisualElement.Q<Label>("checkpoint");
         _rewind.style.display = DisplayStyle.None;
+        ///
+
+        /// Questions
+        _questionText = rootVisualElement.Q<Label>("question-text");
+        _askquestionOne = rootVisualElement.Q<Label>("text-a");
+        _askquestionTwo = rootVisualElement.Q<Label>("text-b");
+        _questionText.text = questions[0];
+        _askquestionOne.text = questions[1];
+        _askquestionTwo.text =questions[2];
+        //_askquestionThree = rootVisualElement.Q<Label>("checkpoint");
+
+
+
         ///
 
         /// Two answers
@@ -129,6 +162,10 @@ public class DialogueUI : MonoBehaviour
         _journalButton.RegisterCallback<ClickEvent>(ev => OpenJournal());
         _exitJournalButton.RegisterCallback<ClickEvent>(ev => CloseJournal());
 
+        _eventButtonOne.RegisterCallback<ClickEvent>(ev => GoToOne());
+        _eventButtonTwo.RegisterCallback<ClickEvent>(ev => GoToTwo());
+        _eventButtonThree.RegisterCallback<ClickEvent>(ev => GoToThree());
+
         _nextPage.RegisterCallback<ClickEvent>(ev => nextPage());
         _previousPage.RegisterCallback<ClickEvent>(ev => preivousPage());
 
@@ -150,6 +187,7 @@ public class DialogueUI : MonoBehaviour
     /// Dialogue system method
     private void dialogueLabel()
     {
+
         _checkpoint.style.display = DisplayStyle.None;
         if(count >= names.Length)
         {
@@ -175,6 +213,25 @@ public class DialogueUI : MonoBehaviour
         count++;
     }
     ///
+
+    private void GoToOne(){
+        countJournal = 1;
+        _eventText.text = journalLogs[1];
+        _previousPage.style.display = DisplayStyle.Flex;
+        _nextPage.style.display = DisplayStyle.Flex;
+    }
+    private void GoToTwo(){
+        countJournal = 2;
+        _eventText.text = journalLogs[2];
+        _previousPage.style.display = DisplayStyle.Flex;
+        _nextPage.style.display = DisplayStyle.Flex;
+    }
+    private void GoToThree(){
+        countJournal = 3;
+        _eventText.text = journalLogs[3];
+        _previousPage.style.display = DisplayStyle.Flex;
+        _nextPage.style.display = DisplayStyle.None;
+    }
 
     /// Rewind Method
     private void Rewind()
@@ -205,33 +262,48 @@ public class DialogueUI : MonoBehaviour
 
     private void nextPage()
     {
+        countJournal++;
         //_nextPage.style.display = DisplayStyle.Flex;
         if(countJournal == 0)
         {
             _previousPage.style.display = DisplayStyle.None;
+        }
+        _previousPage.style.display = DisplayStyle.Flex;
+
+        if(countJournal == journalLogs.Length-1)
+        {
+            _nextPage.style.display = DisplayStyle.None;
         }
 
         if(countJournal < journalLogs.Length)
         {
             _eventText.text = journalLogs[countJournal];
         }
-        countJournal++;
+        
     }
 
 
     private void preivousPage()
     {
+        countJournal--;
         //_previousPage.style.display = DisplayStyle.Flex;
-        if(countJournal == journalLogs.Length)
+        if(countJournal == journalLogs.Length-1)
         {
             _nextPage.style.display = DisplayStyle.None;
         }
 
-        if(countJournal > 0)
+        if(countJournal < journalLogs.Length -1)
         {
+            _nextPage.style.display = DisplayStyle.Flex;
             _eventText.text = journalLogs[countJournal];
         }
-        countJournal--;
+
+        if(countJournal == 0)
+        {
+            _eventText.text = journalLogs[countJournal];
+            _previousPage.style.display = DisplayStyle.None;
+        }
+    
     }
 
     ///
