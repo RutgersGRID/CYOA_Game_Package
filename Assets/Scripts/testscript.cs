@@ -11,6 +11,8 @@ public class testscript : MonoBehaviour
 
         Load(textAssetData);
 
+        Debug.Log(Find_Name("1").Name);
+
     }
 
 	public class Row

@@ -26,13 +26,14 @@ public class DialogueUI : MonoBehaviour
 
 /// Dialogue section   
     
-    private VisualElement _dBox;
+    
 
     public string[] names;
     public string[] sentences;
     public Sprite[] characters;
     public Sprite[] props;
 
+    private VisualElement _dBox;
     private Button _dialogueButton;
     private Label _nameLabel;
     private Label _dialogueLabel;
