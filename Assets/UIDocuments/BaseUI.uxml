@@ -5,7 +5,7 @@
         <ui:VisualElement name="Buttons" style="width: 100%; height: 100%;">
             <ui:VisualElement name="TopButtons" style="flex-direction: row; justify-content: space-between; padding-left: 35px; padding-right: 35px; padding-top: 20px;">
                 <ui:Button display-tooltip-when-elided="true" name="rewind-button" class="ui-button" style="width: 50px; height: 50px; background-image: resource(&apos;Props/hourglass&apos;); -unity-background-scale-mode: scale-to-fit; background-color: rgb(76, 204, 200);" />
-                <ui:Label text="Label" display-tooltip-when-elided="true" style="position: absolute; width: 150px; height: 20px;" />
+                <ui:Label text="New checkpoint!" display-tooltip-when-elided="true" name="checkpoint" style="position: absolute; width: 150px; height: 20px; color: rgb(0, 0, 0); top: -4px; left: 0;" />
                 <ui:Button display-tooltip-when-elided="true" name="journal-button" class="ui-button" style="width: 50px; height: 50px; background-image: resource(&apos;Props/earthbook&apos;); -unity-background-scale-mode: scale-to-fit; background-color: rgb(77, 205, 200);" />
             </ui:VisualElement>
         </ui:VisualElement>

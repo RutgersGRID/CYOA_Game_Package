@@ -9,10 +9,17 @@ public class DialogueUI : MonoBehaviour
 /// Scenes
     public GameObject backgroundBase;
 
-    public string SceneBase;
-    public string SceneA;
-    public string SceneB;
-    public string SceneC;
+    
+    // public string SceneBase;
+    // public string SceneA;
+    // public string SceneB;
+    // public string SceneC;
+
+    public GameObject SceneBase;
+    public GameObject SceneA;
+    public GameObject SceneB;
+    public GameObject SceneC;
+
 
     public int SceneQuestions;
 ///
@@ -87,6 +94,14 @@ public class DialogueUI : MonoBehaviour
     private int countJournal = 0;
 ///
 
+/// Audio and text 
+    public AudioClip dialogueTypingSoundClip;
+    private AudioSource audioSource;
+
+    public bool stopAudioSource;
+    public int charInterval;
+    public string sentence;
+///
 
     // Start is called before the first frame update
     private void OnEnable()
@@ -136,9 +151,6 @@ public class DialogueUI : MonoBehaviour
         _askquestionOne.text = questions[1];
         _askquestionTwo.text =questions[2];
         //_askquestionThree = rootVisualElement.Q<Label>("checkpoint");
-
-
-
         ///
 
         /// Two answers
@@ -205,13 +217,43 @@ public class DialogueUI : MonoBehaviour
         if(count < names.Length)
         {
             _nameLabel.text = names[count];
-            _dialogueLabel.text = sentences[count];
+            // _dialogueLabel.text = sentences[count];
+            sentence = sentences[count];
             _characterVE.style.backgroundImage = new StyleBackground(characters[count]);
             _propVE.style.backgroundImage = new StyleBackground(props[count]);
+            DisplayNextSentence();
         }
         
         count++;
     }
+
+    public void DisplayNextSentence ()
+    {
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(sentence));
+
+    }
+
+    IEnumerator TypeSentence (string sentence) 
+    {   //char space = " ";
+        _dialogueLabel.text = "";
+        int counter = 0;
+        foreach (char letter in sentence.ToCharArray())
+        {
+            _dialogueLabel.text += letter;
+            // if (stopAudioSource)
+            // {
+            //     audioSource.Stop();
+            // }
+            // if ((letter.Equals(" ") == false) && (counter % charInterval == 0))
+            // {
+            //     audioSource.PlayOneShot(dialogueTypingSoundClip);
+            // }
+            yield return new WaitForSeconds(.02f);
+            counter++;
+        }
+    }
+
     ///
 
     private void GoToOne(){
@@ -237,7 +279,7 @@ public class DialogueUI : MonoBehaviour
     private void Rewind()
     {
         //SceneManager.LoadScene("PrototypeUITools");
-        SceneManager.LoadScene(SceneBase);
+        //SceneManager.LoadScene(SceneBase);
     }
     private void RewindOpen()
     {
@@ -279,9 +321,7 @@ public class DialogueUI : MonoBehaviour
         {
             _eventText.text = journalLogs[countJournal];
         }
-        
     }
-
 
     private void preivousPage()
     {
@@ -303,26 +343,24 @@ public class DialogueUI : MonoBehaviour
             _eventText.text = journalLogs[countJournal];
             _previousPage.style.display = DisplayStyle.None;
         }
-    
     }
-
     ///
 
     /// Answers method
 
     private void GoToA()
     {
-        SceneManager.LoadScene(SceneA);
+        SceneA.SetActive(true);
         bgkiller();
     }
     private void GoToB()
     {
-        SceneManager.LoadScene(SceneB);
+        SceneB.SetActive(true);
         bgkiller();
     }
     private void GoToC()
     {
-        SceneManager.LoadScene(SceneC);
+        SceneC.SetActive(true);
         bgkiller();
     }
     ///
@@ -336,7 +374,11 @@ public class DialogueUI : MonoBehaviour
 
     void start()
     {
-
+        audioSource = this.gameObject.AddComponent<AudioSource>();
+       // sentence = sentences[count];
+        SceneA.SetActive(false);
+        SceneB.SetActive(false);
+        SceneC.SetActive(false);
     }
     void update()
     {

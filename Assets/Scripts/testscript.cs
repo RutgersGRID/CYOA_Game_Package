@@ -1,95 +1,100 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
 
 public class testscript : MonoBehaviour
 {
-
-    private Button _journalB;
-    private VisualElement _journalUI;
-    private Button _exitJournalB;
-
-    public string[] journalL;
-    private Button _nextPg;
-    private Button _previousPg;
-    private Label _eventTextLog;
-
-    private int countJournalNum = 0;
-    // Start is called before the first frame update
-    
-
-    private void OnEnable()
-    {
-        var rootVisualElement = GetComponent<UIDocument>().rootVisualElement;
-        _journalB = rootVisualElement.Q<Button>("journal-button");
-        _journalUI = rootVisualElement.Q<VisualElement>("JournalUIContainer");
-        _exitJournalB = rootVisualElement.Q<Button>("exit-ui-button");
-        _nextPg = rootVisualElement.Q<Button>("next-page");
-        _previousPg = rootVisualElement.Q<Button>("back-page");
-        _eventTextLog = rootVisualElement.Q<Label>("event-text");
-        
-        _journalUI.style.display = DisplayStyle.None;
-
-        _journalB.RegisterCallback<ClickEvent>(ev => OpenJ());
-        _exitJournalB.RegisterCallback<ClickEvent>(ev => CloseJ());
-
-        _nextPg.RegisterCallback<ClickEvent>(ev => nextPg());
-        _previousPg.RegisterCallback<ClickEvent>(ev => preivousPg());
-
-        _eventTextLog.text = journalL[0];
-    }
-
-     private void OpenJ()
-    {
-        _journalUI.style.display = DisplayStyle.Flex;
-    }
-    private void CloseJ()
-    {
-        _journalUI.style.display = DisplayStyle.None;
-    }
-
-
-    private void nextPg()
-    {
-        //_nextPage.style.display = DisplayStyle.Flex;
-        if(countJournalNum == 0)
-        {
-            _previousPg.style.display = DisplayStyle.None;
-        }
-
-        if(countJournalNum < journalL.Length)
-        {
-            _eventTextLog.text = journalL[countJournalNum];
-        }
-        countJournalNum++;
-    }
-
-
-    private void preivousPg()
-    {
-        //_previousPage.style.display = DisplayStyle.Flex;
-        if(countJournalNum == journalL.Length)
-        {
-            _nextPg.style.display = DisplayStyle.None;
-        }
-
-        if(countJournalNum == 0)
-        {
-            _eventTextLog.text = journalL[countJournalNum];
-        }
-        countJournalNum--;
-    }
+    public TextAsset textAssetData;
 
     void Start()
     {
-        
+
+        Load(textAssetData);
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public class Row
+	{
+		public string Name;
+		public string Dialogue;
+		public string PropSprite;
+		public string CharacterSprite;
+
+	}
+
+	List<Row> rowList = new List<Row>();
+	bool isLoaded = false;
+
+	public bool IsLoaded()
+	{
+		return isLoaded;
+	}
+
+	public List<Row> GetRowList()
+	{
+		return rowList;
+	}
+
+	public void Load(TextAsset csv)
+	{
+		rowList.Clear();
+		string[][] grid = CsvParser2.Parse(csv.text);
+		for(int i = 1 ; i < grid.Length ; i++)
+		{
+			Row row = new Row();
+			row.Name = grid[i][0];
+			row.Dialogue = grid[i][1];
+			row.PropSprite = grid[i][2];
+			row.CharacterSprite = grid[i][3];
+
+			rowList.Add(row);
+		}
+		isLoaded = true;
+	}
+
+	public int NumRows()
+	{
+		return rowList.Count;
+	}
+
+	public Row GetAt(int i)
+	{
+		if(rowList.Count <= i)
+			return null;
+		return rowList[i];
+	}
+
+	public Row Find_Name(string find)
+	{
+		return rowList.Find(x => x.Name == find);
+	}
+	public List<Row> FindAll_Name(string find)
+	{
+		return rowList.FindAll(x => x.Name == find);
+	}
+	public Row Find_Dialogue(string find)
+	{
+		return rowList.Find(x => x.Dialogue == find);
+	}
+	public List<Row> FindAll_Dialogue(string find)
+	{
+		return rowList.FindAll(x => x.Dialogue == find);
+	}
+	public Row Find_PropSprite(string find)
+	{
+		return rowList.Find(x => x.PropSprite == find);
+	}
+	public List<Row> FindAll_PropSprite(string find)
+	{
+		return rowList.FindAll(x => x.PropSprite == find);
+	}
+	public Row Find_CharacterSprite(string find)
+	{
+		return rowList.Find(x => x.CharacterSprite == find);
+	}
+	public List<Row> FindAll_CharacterSprite(string find)
+	{
+		return rowList.FindAll(x => x.CharacterSprite == find);
+	}
+
 }
