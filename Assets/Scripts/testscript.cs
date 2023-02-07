@@ -1,102 +1,75 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class testscript : MonoBehaviour
 {
     public TextAsset textAssetData;
 
-    void Start()
+    [System.Serializable]
+    public class Character
     {
-
-        Load(textAssetData);
-
-        Debug.Log(Find_Name("1").Name);
-
+        public string Character_Name;
+        public string Character_Dialogue;
+        public string Prop_Sprite;
+        public string Character_Sprite;
     }
 
-	public class Row
-	{
-		public string Name;
-		public string Dialogue;
-		public string PropSprite;
-		public string CharacterSprite;
+    [System.Serializable]
+    public class CharacterList
+    {
+        public Character[] character;
+    }
 
-	}
+    public CharacterList myCharacterList = new CharacterList();
 
-	List<Row> rowList = new List<Row>();
-	bool isLoaded = false;
+    void Start()
+    {
+        ReadCSVFile();
+    }
 
-	public bool IsLoaded()
-	{
-		return isLoaded;
-	}
+    void ReadCSVFile()
+    {
+        string[] lines = textAssetData.text.Split(new string[] { "\n" }, StringSplitOptions.None);
 
-	public List<Row> GetRowList()
-	{
-		return rowList;
-	}
+        int tableSize = lines.Length - 1;
+        myCharacterList.character = new Character[tableSize - 1];
 
-	public void Load(TextAsset csv)
-	{
-		rowList.Clear();
-		string[][] grid = CsvParser2.Parse(csv.text);
-		for(int i = 1 ; i < grid.Length ; i++)
-		{
-			Row row = new Row();
-			row.Name = grid[i][0];
-			row.Dialogue = grid[i][1];
-			row.PropSprite = grid[i][2];
-			row.CharacterSprite = grid[i][3];
+        int currentIndex = 0;
+        for (int i = 1; i < tableSize; i++)
+        {
+            string line = lines[i];
 
-			rowList.Add(row);
-		}
-		isLoaded = true;
-	}
+            List<string> values = new List<string>();
+            int currentLineIndex = 0;
 
-	public int NumRows()
-	{
-		return rowList.Count;
-	}
+            for (int j = 0; j < line.Length; j++)
+            {
+                if (line[j] == '"')
+                {
+                    int nextQuoteIndex = line.IndexOf('"', j + 1);
+                    values.Add(line.Substring(j + 1, nextQuoteIndex - j - 1));
+                    j = nextQuoteIndex + 1;
 
-	public Row GetAt(int i)
-	{
-		if(rowList.Count <= i)
-			return null;
-		return rowList[i];
-	}
+                    currentLineIndex = j + 1;
+                }
+                else if (line[j] == ',')
+                {
+                    values.Add(line.Substring(currentLineIndex, j - currentLineIndex));
+                    currentLineIndex = j + 1;
+                }
+            }
 
-	public Row Find_Name(string find)
-	{
-		return rowList.Find(x => x.Name == find);
-	}
-	public List<Row> FindAll_Name(string find)
-	{
-		return rowList.FindAll(x => x.Name == find);
-	}
-	public Row Find_Dialogue(string find)
-	{
-		return rowList.Find(x => x.Dialogue == find);
-	}
-	public List<Row> FindAll_Dialogue(string find)
-	{
-		return rowList.FindAll(x => x.Dialogue == find);
-	}
-	public Row Find_PropSprite(string find)
-	{
-		return rowList.Find(x => x.PropSprite == find);
-	}
-	public List<Row> FindAll_PropSprite(string find)
-	{
-		return rowList.FindAll(x => x.PropSprite == find);
-	}
-	public Row Find_CharacterSprite(string find)
-	{
-		return rowList.Find(x => x.CharacterSprite == find);
-	}
-	public List<Row> FindAll_CharacterSprite(string find)
-	{
-		return rowList.FindAll(x => x.CharacterSprite == find);
-	}
+            values.Add(line.Substring(currentLineIndex));
 
+            myCharacterList.character[currentIndex] = new Character();
+            myCharacterList.character[currentIndex].Character_Name = values[0];
+            myCharacterList.character[currentIndex].Character_Dialogue = values[1];
+            myCharacterList.character[currentIndex].Prop_Sprite = values[2];
+            myCharacterList.character[currentIndex].Character_Sprite = values[3];
+
+            currentIndex++;
+        }
+    }
 }

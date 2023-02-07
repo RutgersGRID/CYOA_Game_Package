@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
 public class ReadCSV : MonoBehaviour
 {
     public TextAsset textAssetData;
@@ -35,7 +34,7 @@ public class ReadCSV : MonoBehaviour
 
     void ReadCSVFile()
     {
-        string[] data = textAssetData.text.Split(new string[] { ",", "\n"}, StringSplitOptions.None );
+        string[] data = textAssetData.text.Split(new string[] { ",", "\n"}, StringSplitOptions.None);
 
         int tableSize = data.Length / 4 - 1;
         myCharacterList.character = new Character[tableSize];
