@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-
+using LINQtoCSV;
 public class testscript : MonoBehaviour
 {
     public TextAsset textAssetData;
