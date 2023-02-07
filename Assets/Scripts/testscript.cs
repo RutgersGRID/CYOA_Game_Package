@@ -37,6 +37,8 @@ public class testscript : MonoBehaviour
         myCharacterList.character = new Character[tableSize - 1];
 
         int currentIndex = 0;
+
+        // Ignores the first row which are the headers
         for (int i = 1; i < tableSize; i++)
         {
             string line = lines[i];
@@ -46,6 +48,7 @@ public class testscript : MonoBehaviour
 
             for (int j = 0; j < line.Length; j++)
             {
+                // This section here ignores commas in between quotation marks
                 if (line[j] == '"')
                 {
                     int nextQuoteIndex = line.IndexOf('"', j + 1);
