@@ -25,9 +25,6 @@ public class DialogueUI : MonoBehaviour
 ///
 
 /// Dialogue section   
-    
-    
-
     public string[] names;
     public string[] sentences;
     public Sprite[] characters;
