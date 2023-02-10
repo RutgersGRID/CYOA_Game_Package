@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89410a8fb0b7934469a771b3406dda25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characters: []
+  csvToSO: {fileID: 708983099}
 --- !u!1 &1897269520
 GameObject:
   m_ObjectHideFlags: 0
