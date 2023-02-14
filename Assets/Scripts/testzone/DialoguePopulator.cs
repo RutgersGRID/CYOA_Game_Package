@@ -6,30 +6,25 @@ using UnityEngine.UIElements;
 public class DialoguePopulator : MonoBehaviour
 {
     public CSVtoSO csvToSO;
-
     private int currentIndex = 0;
-
     private TextElement nameText;
     private TextElement dialogueText;
     private VisualElement propImage;
     private VisualElement characterImage;
     private Button nextButton;
 
-    private string ResourcesLoadC = "Characters/";
-    private string ResourcesLoadP = "Props/";
-
     private void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        nameText = root.Q<TextElement>("dlog-name");
+        nameText = root.Q<TextElement>("DialogueName");
         if (nameText == null)
         {
             Debug.LogError("Could not find nameText element");
             return;
         }
 
-        dialogueText = root.Q<TextElement>("dlog-text");
+        dialogueText = root.Q<TextElement>("DialogueText");
         if (dialogueText == null)
         {
             Debug.LogError("Could not find dialogueText element");
@@ -69,8 +64,10 @@ public class DialoguePopulator : MonoBehaviour
         dialogueText.text = character.Character_Dialogue;
         //propImage.style.backgroundImage = LoadSprite(character.Prop_Sprite);
         //characterImage.style.backgroundImage = LoadSprite(character.Character_Sprite);
-        propImage.style.backgroundImage = new StyleBackground(Resources.Load<Sprite>(ResourcesLoadP+character.Prop_Sprite));
-        characterImage.style.backgroundImage = new StyleBackground(Resources.Load<Sprite>(ResourcesLoadC+character.Character_Sprite));       
+        Debug.Log("Loading prop sprite: " + character.Prop_Sprite);
+        Debug.Log("Loading character sprite: " + character.Character_Sprite);
+        propImage.style.backgroundImage = new StyleBackground(character.Prop_Sprite);
+        characterImage.style.backgroundImage = new StyleBackground(character.Character_Sprite);       
     }
 
     private void NextCharacter(ClickEvent evt)
@@ -79,8 +76,8 @@ public class DialoguePopulator : MonoBehaviour
         PopulateUI();
     }
 
-    private Sprite LoadSprite(string spriteName)
-    {
-        return Resources.Load<Sprite>(spriteName);
-    }
+    // private Sprite LoadSprite(string spriteName)
+    // {
+    //     return Resources.Load<Sprite>(spriteName);
+    // }
 }
