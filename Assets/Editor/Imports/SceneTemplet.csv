@@ -1,6 +1,6 @@
 Name,Dialogue,PropSprite,CharacterSprite
-Howard,"Hey, whats up!",None,None
-Don,Nothing much. How have you guys been?,None,None
-Kim,I've been chilling.,None,None
-Alex,I opened an ice cream shop.,None,None
+Howard,"Hey, whats up!",None,Amir_Concerned.png
+Don,Nothing much. How have you guys been?,XIMENA- PROPS- BANDEJA DISH.png,Facu_Happy.png
+Kim,I've been chilling.,None,Amir_smile.png
+Alex,I opened an ice cream shop.,PROPS-XIMENA- _50 BILL.png,None
 Thomas, ",,,,,,,,,,,,,,,,,,,,,,,,,,",None,None

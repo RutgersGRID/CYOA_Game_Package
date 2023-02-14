@@ -8,6 +8,10 @@ public class CSVtoSO : MonoBehaviour
     public TextAsset csvFile;
     public List<CharacterSO> characters = new List<CharacterSO>();
 
+    private string ResourcesLoadC = "Characters/";
+
+    private string ResourcesLoadP = "Props/";
+
     private void Start()
     {
         ParseCSVData();
@@ -22,9 +26,12 @@ public class CSVtoSO : MonoBehaviour
                       {
                           Character_Name = values[0],
                           Character_Dialogue = values[1],
+                          //Prop_Sprite = Resources.Load<Sprite>(ResourcesLoadP+values[2]),
+                          //Character_Sprite = Resources.Load<Sprite>(ResourcesLoadC+values[3])
                           Prop_Sprite = values[2],
                           Character_Sprite = values[3]
                       }).ToList();
+  
     }
 
     private string[] ParseCSVRow(string row)

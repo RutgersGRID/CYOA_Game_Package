@@ -29,8 +29,8 @@ public class oldCSVtoSO : MonoBehaviour
             CharacterSO character = ScriptableObject.CreateInstance<CharacterSO>();
             character.Character_Name = values[0];
             character.Character_Dialogue = values[1];
-            character.Prop_Sprite = values[2];
-            character.Character_Sprite = values[3];
+            //character.Prop_Sprite = values[2];
+            //character.Character_Sprite = values[3];
 
             characters.Add(character);
         }
