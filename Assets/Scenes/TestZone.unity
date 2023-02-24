@@ -135,7 +135,8 @@ GameObject:
   - component: {fileID: 708983101}
   - component: {fileID: 708983100}
   - component: {fileID: 708983102}
-  - component: {fileID: 708983103}
+  - component: {fileID: 708983104}
+  - component: {fileID: 708983105}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -181,27 +182,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708983096}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89410a8fb0b7934469a771b3406dda25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  csvToSO: {fileID: 708983102}
+  csvToSOTwo: {fileID: 708983104}
 --- !u!114 &708983102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708983096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f281f066f5072d040bade76c168a2a6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  csvFile: {fileID: 4900000, guid: 0c95f4669ffd571479b6ac20c7e20046, type: 3}
-  dialogues: []
---- !u!114 &708983103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,9 +197,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 708983096}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e124e8ff58eee0a4391cd3568d5f7cb4, type: 3}
+  m_Script: {fileID: 11500000, guid: f281f066f5072d040bade76c168a2a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  csvFile: {fileID: 4900000, guid: 1a0a30641e3fbe14fa8446e11b3d4fc9, type: 3}
+  dialogues: []
+--- !u!114 &708983104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708983096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e27245dec99b3b94ea8816f7db1f0f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  csvFile: {fileID: 4900000, guid: 1a0a30641e3fbe14fa8446e11b3d4fc9, type: 3}
+  dialogues: []
+--- !u!114 &708983105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708983096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7318d3cca8b60ab4db40bd9a0bfde630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  csvToSOTwo: {fileID: 708983104}
 --- !u!1 &1897269520
 GameObject:
   m_ObjectHideFlags: 0

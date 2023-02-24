@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 
 public class DialoguePopulator : MonoBehaviour
 {
-    public CSVtoSO csvToSO;
+    //public CSVtoSO csvToSO;
+    public CSVtoSOTwo csvToSOTwo;
     private int currentIndex = 0;
     //private int destinationID = 0;
     private VisualElement dlogElements;
@@ -14,6 +15,7 @@ public class DialoguePopulator : MonoBehaviour
     private VisualElement propImage;
     private VisualElement characterImageLeft;
     private VisualElement characterImageRight;
+    private VisualElement rewindUI;
     private Button rewind;
     private Button rewindYes;
     private Button rewindNo;
@@ -42,6 +44,54 @@ public class DialoguePopulator : MonoBehaviour
     private TextElement textCThree;
     private Button cThree;
 
+    private void OnEnable() 
+    {
+        // var root = GetComponent<UIDocument>().rootVisualElement;
+        // //var root = baseUI.rootVisualElement;
+        // dlogElements = root.Q<VisualElement>("dlog-elements");
+        // dlogBG = root.Q<VisualElement>("dlog-bg");
+        // characterImageLeft = root.Q<VisualElement>("CharacterLeft");
+        // characterImageRight = root.Q<VisualElement>("CharacterRight");
+        // propImage = root.Q<VisualElement>("Props");
+        // rewindUI = root.Q<VisualElement>("Rewind");
+        // rewindUI.style.display = DisplayStyle.None;
+
+        // rewindYes = root.Q<Button>("rewind-yes");
+        // rewindNo = root.Q<Button>("rewind-no");
+        // Debug.Log("dlogElements - rewindNo made");
+        // ///
+        // DBox = root.Q<VisualElement>("DBox");
+        // nameText = root.Q<TextElement>("DialogueText");
+        // dialogueText = root.Q<TextElement>("DialogueText");
+        // nextButton = root.Q<Button>("dlog-button");
+        // Debug.Log("DBox - nextButton made");
+        // ///
+        // twoOptionAnswers = root.Q<VisualElement>("answers-two-options-bg");
+        // questionTwoAnswers = root.Q<TextElement>("question-text-two");
+        // textATwo = root.Q<TextElement>("text-a-two");
+        // aTwo = root.Q<Button>("button-a-two");
+        // textBTwo = root.Q<TextElement>("text-b-two");
+        // bTwo = root.Q<Button>("button-b-two");
+        // Debug.Log("twoOptionAnswers - bTwo made");
+        // ///
+        // threeOptionAnswers =root.Q<VisualElement>("answers-three-options-bg");
+        // questionThreeAnswers = root.Q<TextElement>("question-text-three");
+        // textAThree = root.Q<TextElement>("text-a-three");
+        // aThree = root.Q<Button>("button-a-three");
+        // textBThree = root.Q<TextElement>("text-b-three");
+        // bThree = root.Q<Button>("button-c-three");
+        // textCThree = root.Q<TextElement>("text-c-three");
+        // cThree = root.Q<Button>("button-c-three");
+        // Debug.Log("threeOptionAnswers - cThree made");
+        // ///
+        // nextButton.RegisterCallback<ClickEvent>(NextDialogue);
+        // aTwo.RegisterCallback<ClickEvent>(NextDialogueA);
+        // bTwo.RegisterCallback<ClickEvent>(NextDialogueB);
+        // aThree.RegisterCallback<ClickEvent>(NextDialogueA);
+        // bThree.RegisterCallback<ClickEvent>(NextDialogueB);
+        // cThree.RegisterCallback<ClickEvent>(NextDialogueC);
+        // Debug.Log("nextButton - cThree clickevent made");
+    }
     private void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
@@ -51,9 +101,12 @@ public class DialoguePopulator : MonoBehaviour
         characterImageLeft = root.Q<VisualElement>("CharacterLeft");
         characterImageRight = root.Q<VisualElement>("CharacterRight");
         propImage = root.Q<VisualElement>("Props");
+        rewindUI = root.Q<VisualElement>("Rewind");
+
+        rewindUI.style.display = DisplayStyle.None;
         rewindYes = root.Q<Button>("rewind-yes");
         rewindNo = root.Q<Button>("rewind-no");
-        Debug.Log("dlogElements - rewindNo made");
+        Debug.Log(root);
         ///
         DBox = root.Q<VisualElement>("DBox");
         nameText = root.Q<TextElement>("DialogueText");
@@ -61,15 +114,17 @@ public class DialoguePopulator : MonoBehaviour
         nextButton = root.Q<Button>("dlog-button");
         Debug.Log("DBox - nextButton made");
         ///
-        twoOptionAnswers = root.Q<VisualElement>("answers-two-options-bg");
+        twoOptionAnswers = root.Q<VisualElement>("answer-two-options-bg");
         questionTwoAnswers = root.Q<TextElement>("question-text-two");
         textATwo = root.Q<TextElement>("text-a-two");
         aTwo = root.Q<Button>("button-a-two");
         textBTwo = root.Q<TextElement>("text-b-two");
         bTwo = root.Q<Button>("button-b-two");
+
+        twoOptionAnswers.style.display = DisplayStyle.None;
         Debug.Log("twoOptionAnswers - bTwo made");
         ///
-        threeOptionAnswers =root.Q<VisualElement>("answers-three-options-bg");
+        threeOptionAnswers = root.Q<VisualElement>("answer-three-options-bg");
         questionThreeAnswers = root.Q<TextElement>("question-text-three");
         textAThree = root.Q<TextElement>("text-a-three");
         aThree = root.Q<Button>("button-a-three");
@@ -77,6 +132,8 @@ public class DialoguePopulator : MonoBehaviour
         bThree = root.Q<Button>("button-c-three");
         textCThree = root.Q<TextElement>("text-c-three");
         cThree = root.Q<Button>("button-c-three");
+
+        threeOptionAnswers.style.display = DisplayStyle.None;
         Debug.Log("threeOptionAnswers - cThree made");
         ///
         nextButton.RegisterCallback<ClickEvent>(NextDialogue);
@@ -85,51 +142,13 @@ public class DialoguePopulator : MonoBehaviour
         aThree.RegisterCallback<ClickEvent>(NextDialogueA);
         bThree.RegisterCallback<ClickEvent>(NextDialogueB);
         cThree.RegisterCallback<ClickEvent>(NextDialogueC);
-        Debug.Log("nextButton - cThree clickevent made");
-        //var root2 = rewindDocument.rootVisualElement;
-        ///
-        // nameText = root.Q<TextElement>("DialogueName");
-        // if (nameText == null)
-        // {
-        //     Debug.LogError("Could not find nameText element");
-        //     return;
-        // }
-
-        // dialogueText = root.Q<TextElement>("DialogueText");
-        // if (dialogueText == null)
-        // {
-        //     Debug.LogError("Could not find dialogueText element");
-        //     return;
-        // }
-
-        // propImage = root.Q<VisualElement>("Props");
-        // if (propImage == null)
-        // {
-        //     Debug.LogError("Could not find propImage element");
-        //     return;
-        // }
-
-        // characterImage = root.Q<VisualElement>("CharacterRight");
-        // if (characterImage == null)
-        // {
-        //     Debug.LogError("Could not find characterImage element");
-        //     return;
-        // }
-
-        // nextButton = root.Q<Button>("dlog-button");
-        // if (nextButton == null)
-        // {
-        //     Debug.LogError("Could not find nextButton element");
-        //     return;
-        // }
-
-        // nextButton.RegisterCallback<ClickEvent>(NextCharacter);
         PopulateUI();
     }
 
     private void PopulateUI()
     {
-        var dialogueSO = csvToSO.dialogues[currentIndex];
+        //var dialogueSO = csvToSO.dialogues[currentIndex];
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
         if (dialogueSO.Type.Equals("a", StringComparison.CurrentCultureIgnoreCase) == true)
         {
             dlogBG.style.display = DisplayStyle.Flex;
@@ -144,7 +163,6 @@ public class DialoguePopulator : MonoBehaviour
 
             nameText.text = dialogueSO.Speaker;
             dialogueText.text = dialogueSO.Line;
-
         }
         else if (dialogueSO.Type.Equals("b", StringComparison.CurrentCultureIgnoreCase) == true)
         {
@@ -178,51 +196,33 @@ public class DialoguePopulator : MonoBehaviour
             textAThree.text = dialogueSO.A1Answer;
             textBThree.text = dialogueSO.A2Answer;
             textCThree.text = dialogueSO.A3Answer;
-        }
-        // var character = csvToSO.characters[currentIndex];
-        // nameText.text = character.Character_Name;
-        // dialogueText.text = character.Character_Dialogue;
-        // Debug.Log("Loading prop sprite: " + character.Prop_Sprite);
-        // Debug.Log("Loading character sprite: " + character.Character_Sprite);
-        // propImage.style.backgroundImage = new StyleBackground(character.Prop_Sprite);
-        // characterImage.style.backgroundImage = new StyleBackground(character.Character_Sprite);       
+        }     
     }
 
     private void NextDialogue(ClickEvent evt)
     {
-        var dialogueSO = csvToSO.dialogues[currentIndex];
-        // currentIndex = (currentIndex + 1) % csvToSO.characters.Count;
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
         currentIndex = dialogueSO.GoToID;
-        // change currentIndex to be the currentIndex GoToID
         PopulateUI();
     }
     private void NextDialogueA(ClickEvent evt)
     {
-        var dialogueSO = csvToSO.dialogues[currentIndex];
-        // currentIndex = (currentIndex + 1) % csvToSO.characters.Count;
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
         currentIndex = dialogueSO.GoToIDA1;
-        // change currentIndex to be the currentIndex GoToID
         PopulateUI();
     }
     private void NextDialogueB(ClickEvent evt)
     {
-        var dialogueSO = csvToSO.dialogues[currentIndex];
-        // currentIndex = (currentIndex + 1) % csvToSO.characters.Count;
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
         currentIndex = dialogueSO.GoToIDA2;
-        // change currentIndex to be the currentIndex GoToID
         PopulateUI();
     }
     private void NextDialogueC(ClickEvent evt)
     {
-        var dialogueSO = csvToSO.dialogues[currentIndex];
-        // currentIndex = (currentIndex + 1) % csvToSO.characters.Count;
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
         currentIndex = dialogueSO.GoToIDA3;
-        // change currentIndex to be the currentIndex GoToID
         PopulateUI();
     }
-
-    // private Sprite LoadSprite(string spriteName)
-    // {
-    //     return Resources.Load<Sprite>(spriteName);
-    // }
 }
+
+

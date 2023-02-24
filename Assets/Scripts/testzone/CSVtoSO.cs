@@ -40,6 +40,7 @@ public class CSVtoSO : MonoBehaviour
                         Background = Resources.Load<Sprite>(ResourcesLoadBG + values[6]),
                         Checkpoint = int.Parse(values[7]),
                         Type = values[8],
+                        
                         GoToID = int.Parse(values[9]),
                         A1Answer = values[10],
                         GoToIDA1 = int.Parse(values[11]),
@@ -61,7 +62,7 @@ public class CSVtoSO : MonoBehaviour
 
         foreach (var dialogue in dialogues)
         {
-            Debug.Log("ID:" + dialogue.ID + ", Speaker:" + dialogue.Speaker + ", Left and Right Speaker:" + dialogue.LeftSideSpeaker + dialogue.RightSideSpeaker + ", Prop:" + dialogue.Prop + ", Checkpoint:" + dialogue.Checkpoint + ", Type:" + dialogue.Type + ", GoToID:" + dialogue.GoToID + ", A1Answer:" + dialogue.A1Answer);
+            Debug.Log("ID:" + dialogue.ID + ", Speaker:" + dialogue.Speaker + ", Left and Right Speaker:" + dialogue.LeftSideSpeaker + dialogue.RightSideSpeaker + ", Prop:" + dialogue.Prop +", Checkpoint:" + dialogue.Checkpoint + ", Type:" + dialogue.Type + ", GoToID:" + dialogue.GoToID + ", A1Answer:" + dialogue.A1Answer);
         }
     }
 

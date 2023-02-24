@@ -1,78 +1,228 @@
-using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
-using System.Linq;
+using UnityEngine;
+using UnityEngine.UIElements;
 public class testscript : MonoBehaviour
 {
-    public TextAsset textAssetData;
+    public CSVtoSOTwo csvToSOTwo;
+    private int currentIndex = 0;
+    //private int destinationID = 0;
+    private VisualElement dlogElements;
+    private VisualElement dlogBG;
+    private VisualElement propImage;
+    private VisualElement characterImageLeft;
+    private VisualElement characterImageRight;
+    private VisualElement rewindUI;
+    private Button rewind;
+    private Button rewindYes;
+    private Button rewindNo;
+    private Button journal;
+    ///
 
-    [System.Serializable]
-    public class Character
+    ///
+    private VisualElement DBox;
+    private TextElement nameText;
+    private TextElement dialogueText;
+    private Button nextButton;
+    ///
+    private VisualElement twoOptionAnswers;
+    private TextElement questionTwoAnswers;
+    private TextElement textATwo;
+    private Button aTwo;
+    private TextElement textBTwo;
+    private Button bTwo;
+    ///
+    private VisualElement threeOptionAnswers;
+    private TextElement questionThreeAnswers;
+    private TextElement textAThree;
+    private Button aThree;
+    private TextElement textBThree;
+    private Button bThree;
+    private TextElement textCThree;
+    private Button cThree;
+
+ private void Start()
     {
-        public string Character_Name;
-        public string Character_Dialogue;
-        public string Prop_Sprite;
-        public string Character_Sprite;
+        var root = GetComponent<UIDocument>().rootVisualElement;
+        dlogElements = root.Q<VisualElement>("dlog-elements");
+        dlogBG = root.Q<VisualElement>("dlog-bg");
+        characterImageLeft = root.Q<VisualElement>("CharacterLeft");
+        characterImageRight = root.Q<VisualElement>("CharacterRight");
+        propImage = root.Q<VisualElement>("Props");
+        rewindUI = root.Q<VisualElement>("Rewind");
+
+        DBox = root.Q<VisualElement>("DBox");
+        nameText = root.Q<TextElement>("DialogueName");
+        dialogueText = root.Q<TextElement>("DialogueText");
+
+        rewind = root.Q<Button>("rewind-button");
+        rewindYes = root.Q<Button>("rewind-yes");
+        rewindNo = root.Q<Button>("rewind-no");
+        nextButton = root.Q<Button>("dlog-button");
+
+        twoOptionAnswers = root.Q<VisualElement>("answer-two-options-bg");
+        questionTwoAnswers = root.Q<TextElement>("question-text-two");
+        textATwo = root.Q<TextElement>("text-a-two");
+        aTwo = root.Q<Button>("button-a-two");
+        textBTwo = root.Q<TextElement>("text-b-two");
+        bTwo = root.Q<Button>("button-b-two");
+
+        threeOptionAnswers = root.Q<VisualElement>("answer-three-options-bg");
+        questionThreeAnswers = root.Q<TextElement>("question-text-three");
+        textAThree = root.Q<TextElement>("text-a-three");
+        aThree = root.Q<Button>("button-a-three");
+        textBThree = root.Q<TextElement>("text-b-three");
+        bThree = root.Q<Button>("button-b-three");
+        textCThree = root.Q<TextElement>("text-c-three");
+        cThree = root.Q<Button>("button-c-three");
+
+        nextButton.RegisterCallback<ClickEvent>(NextDialogue);
+        aTwo.RegisterCallback<ClickEvent>(NextDialogueA);
+        bTwo.RegisterCallback<ClickEvent>(NextDialogueB);
+        aThree.RegisterCallback<ClickEvent>(NextDialogueA);
+        bThree.RegisterCallback<ClickEvent>(NextDialogueB);
+        cThree.RegisterCallback<ClickEvent>(NextDialogueC);
+
+        rewind.RegisterCallback<ClickEvent>(ShowRewind);
+        rewindYes.RegisterCallback<ClickEvent>(RewindYes);
+        rewindNo.RegisterCallback<ClickEvent>(RewindNo);
+
+        rewindUI.style.display = DisplayStyle.None;
+        twoOptionAnswers.style.display = DisplayStyle.None;
+        threeOptionAnswers.style.display = DisplayStyle.None;
+        PopulateUI();
     }
-
-    [System.Serializable]
-    public class CharacterList
+    private void PopulateUI()
     {
-        public Character[] character;
-    }
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
 
-    public CharacterList myCharacterList = new CharacterList();
+        // if (dialogueSO.Type.Equals("a", StringComparison.CurrentCultureIgnoreCase) == true)
+        // {
+        //     dlogBG.style.display = DisplayStyle.Flex;
+        //     DBox.style.display = DisplayStyle.Flex;
+        //     twoOptionAnswers.style.display = DisplayStyle.None;
+        //     threeOptionAnswers.style.display = DisplayStyle.None;
 
-    void Start()
-    {
-        ReadCSVFile();
-    }
+        //     dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
+        //     characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
+        //     characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
+        //     propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
 
-    void ReadCSVFile()
-    {
-        string[] lines = textAssetData.text.Split(new string[] { "\n" }, StringSplitOptions.None);
+        //     nameText.text = dialogueSO.Speaker;
+        //     dialogueText.text = dialogueSO.Line;
+        // }    
+        // else if (dialogueSO.Type.Equals("b", StringComparison.CurrentCultureIgnoreCase) == true)
+        // {
+        //     dlogBG.style.display = DisplayStyle.Flex;
+        //     DBox.style.display = DisplayStyle.None;
+        //     twoOptionAnswers.style.display = DisplayStyle.Flex;
+        //     threeOptionAnswers.style.display = DisplayStyle.None;
 
-        int tableSize = lines.Length - 1;
-        myCharacterList.character = new Character[tableSize - 1];
+        //     dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
+        //     characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
+        //     characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
+        //     propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
 
-        int currentIndex = 0;
+        //     questionTwoAnswers.text = dialogueSO.Line;
+        //     textATwo.text = dialogueSO.A1Answer;
+        //     textBTwo.text = dialogueSO.A2Answer;
+        // }
+        // else if (dialogueSO.Type.Equals("c", StringComparison.CurrentCultureIgnoreCase) == true)
+        // {
+        //     dlogBG.style.display = DisplayStyle.Flex;
+        //     DBox.style.display = DisplayStyle.None;
+        //     twoOptionAnswers.style.display = DisplayStyle.None;
+        //     threeOptionAnswers.style.display = DisplayStyle.Flex;
 
-        // Ignores the first row which are the headers
-        for (int i = 1; i < tableSize; i++)
+        //     dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
+        //     characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
+        //     characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
+        //     propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
+
+        //     questionThreeAnswers.text = dialogueSO.Line;
+        //     textAThree.text = dialogueSO.A1Answer;
+        //     textBThree.text = dialogueSO.A2Answer;
+        //     textCThree.text = dialogueSO.A3Answer;
+        // }
+
+        dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
+        characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
+        characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
+        propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
+
+        if (dialogueSO.Type.Equals("a", StringComparison.CurrentCultureIgnoreCase))
         {
-            string line = lines[i];
+            dlogBG.style.display = DisplayStyle.Flex;
+            DBox.style.display = DisplayStyle.Flex;
+            twoOptionAnswers.style.display = DisplayStyle.None;
+            threeOptionAnswers.style.display = DisplayStyle.None;
 
-            List<string> values = new List<string>();
-            int currentLineIndex = 0;
-
-            for (int j = 0; j < line.Length; j++)
-            {
-                // This section here ignores commas in between quotation marks
-                if (line[j] == '"')
-                {
-                    int nextQuoteIndex = line.IndexOf('"', j + 1);
-                    values.Add(line.Substring(j + 1, nextQuoteIndex - j - 1));
-                    j = nextQuoteIndex + 1;
-
-                    currentLineIndex = j + 1;
-                }
-                else if (line[j] == ',')
-                {
-                    values.Add(line.Substring(currentLineIndex, j - currentLineIndex));
-                    currentLineIndex = j + 1;
-                }
-            }
-
-            values.Add(line.Substring(currentLineIndex));
-
-            myCharacterList.character[currentIndex] = new Character();
-            myCharacterList.character[currentIndex].Character_Name = values[0];
-            myCharacterList.character[currentIndex].Character_Dialogue = values[1];
-            myCharacterList.character[currentIndex].Prop_Sprite = values[2];
-            myCharacterList.character[currentIndex].Character_Sprite = values[3];
-
-            currentIndex++;
+            nameText.text = dialogueSO.Speaker;
+            dialogueText.text = dialogueSO.Line;
         }
+        else if (dialogueSO.Type.Equals("b", StringComparison.CurrentCultureIgnoreCase))
+        {
+            dlogBG.style.display = DisplayStyle.Flex;
+            DBox.style.display = DisplayStyle.None;
+            twoOptionAnswers.style.display = DisplayStyle.Flex;
+            threeOptionAnswers.style.display = DisplayStyle.None;
+
+            questionTwoAnswers.text = dialogueSO.Line;
+            textATwo.text = dialogueSO.A1Answer;
+            textBTwo.text = dialogueSO.A2Answer;
+        }
+        else if (dialogueSO.Type.Equals("c", StringComparison.CurrentCultureIgnoreCase))
+        {
+            dlogBG.style.display = DisplayStyle.Flex;
+            DBox.style.display = DisplayStyle.None;
+            twoOptionAnswers.style.display = DisplayStyle.None;
+            threeOptionAnswers.style.display = DisplayStyle.Flex;
+
+            questionThreeAnswers.text = dialogueSO.Line;
+            textAThree.text = dialogueSO.A1Answer;
+            textBThree.text = dialogueSO.A2Answer;
+            textCThree.text = dialogueSO.A3Answer;
+        }
+    }
+
+    private void NextDialogue(ClickEvent evt)
+    {
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        currentIndex = dialogueSO.GoToID;
+        PopulateUI();
+    }
+    private void NextDialogueA(ClickEvent evt)
+    {
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        currentIndex = dialogueSO.GoToIDA1;
+        PopulateUI();
+    }
+    private void NextDialogueB(ClickEvent evt)
+    {
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        currentIndex = dialogueSO.GoToIDA2;
+        PopulateUI();
+    }
+    private void NextDialogueC(ClickEvent evt)
+    {
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        currentIndex = dialogueSO.GoToIDA3;
+        PopulateUI();
+    }
+    private void ShowRewind(ClickEvent evt)
+    {
+        rewindUI.style.display = DisplayStyle.Flex;
+    }
+    private void RewindYes(ClickEvent evt)
+    {
+        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        currentIndex = dialogueSO.Checkpoint;
+        PopulateUI();
+        rewindUI.style.display = DisplayStyle.None;
+    }
+    private void RewindNo(ClickEvent evt)
+    {
+        rewindUI.style.display = DisplayStyle.None;
     }
 }
