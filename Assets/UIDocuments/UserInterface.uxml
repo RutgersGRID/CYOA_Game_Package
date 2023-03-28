@@ -17,7 +17,7 @@
             <ui:Button display-tooltip-when-elided="true" name="rewind-button" class="ui-button" style="background-image: resource(&apos;Props/hourglass&apos;); width: 5%; height: 75%; -unity-background-scale-mode: stretch-to-fill; -unity-background-image-tint-color: rgb(255, 255, 255); display: flex; visibility: visible; overflow: hidden; color: rgb(255, 255, 255); background-color: rgb(255, 255, 255);" />
             <ui:Button display-tooltip-when-elided="true" name="journal" class="ui-button" style="background-image: resource(&apos;Props/earthbook&apos;); width: 5%; height: 75%; -unity-background-scale-mode: stretch-to-fill; background-color: rgb(255, 255, 255);" />
         </ui:VisualElement>
-        <ui:VisualElement name="answer-two-options-bg" style="justify-content: center; width: 100%; height: 50%; align-items: auto; flex-direction: column; top: 50%; position: absolute;">
+        <ui:VisualElement name="answer-two-options-bg" style="justify-content: center; width: 100%; height: 50%; align-items: auto; flex-direction: column; top: 50%; position: absolute; display: flex;">
             <ui:VisualElement name="question-box-two" style="align-items: center; width: 100%; height: 50%; justify-content: flex-start; bottom: 0; padding-left: 5%; padding-right: 5%;">
                 <ui:VisualElement name="box-two" style="width: 100%; height: 100%; padding-left: 0; padding-right: 0; background-color: rgb(85, 173, 53); margin-left: 0; margin-right: 0; border-left-color: rgb(48, 115, 42); border-right-color: rgb(48, 115, 42); border-top-color: rgb(48, 115, 42); border-bottom-color: rgb(48, 115, 42); border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; opacity: 0.88; align-items: center; justify-content: center;">
                     <ui:Label text="Pick A or B" display-tooltip-when-elided="true" name="question-text-two" style="position: relative; height: 100%; width: 100%; top: 0; left: 0; font-size: 30px; color: rgb(0, 0, 0);" />
@@ -34,7 +34,7 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="answer-three-options-bg" style="justify-content: center; width: 100%; height: 50%; align-items: auto; flex-direction: column; top: 50%; position: absolute;">
+        <ui:VisualElement name="answer-three-options-bg" style="justify-content: center; width: 100%; height: 50%; align-items: auto; flex-direction: column; top: 50%; position: absolute; display: flex;">
             <ui:VisualElement name="question-box-three" style="align-items: center; width: 100%; height: 50%; justify-content: flex-start; bottom: 0; padding-left: 5%; padding-right: 5%;">
                 <ui:VisualElement name="box-three" style="width: 100%; height: 100%; padding-left: 0; padding-right: 0; background-color: rgb(85, 173, 53); margin-left: 0; margin-right: 0; border-left-color: rgb(48, 115, 42); border-right-color: rgb(48, 115, 42); border-top-color: rgb(48, 115, 42); border-bottom-color: rgb(48, 115, 42); border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; opacity: 0.88;">
                     <ui:Label text="Pick A or B or C" display-tooltip-when-elided="true" name="question-text-three" style="position: relative; height: 95%; width: 95%; top: 5%; left: 1%; font-size: 30px; color: rgb(0, 0, 0);" />
@@ -65,6 +65,30 @@
             <ui:VisualElement name="bot" style="width: 100%; height: 40%; flex-direction: row; justify-content: space-around; align-items: center;">
                 <ui:Button text="Yes" display-tooltip-when-elided="true" name="rewind-yes" style="width: 40%; height: 40%; background-color: rgb(31, 161, 21);" />
                 <ui:Button text="No" display-tooltip-when-elided="true" name="rewind-no" style="width: 40%; height: 40%; background-color: rgb(164, 7, 7);" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="JournalUIContainer" style="position: absolute; width: 100%; height: 100%; display: flex;">
+        <ui:VisualElement name="Journelbg" style="width: 100%; height: 100%; position: absolute; background-color: rgb(171, 170, 170); opacity: 0.86; flex-direction: row; justify-content: space-around; align-items: center;" />
+        <ui:VisualElement name="JContainter" style="width: 100%; height: 100%; flex-direction: row; align-items: center; justify-content: space-around;">
+            <ui:VisualElement name="journal-menu" style="position: relative; width: 45%; height: 95%; top: auto; left: auto; background-color: rgb(99, 27, 97); align-items: center; justify-content: space-around;">
+                <ui:VisualElement name="event-one" style="width: 80%; height: 20%; background-color: rgb(176, 176, 176);">
+                    <ui:Label text="Event one" display-tooltip-when-elided="true" name="event-one-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="event-two" style="width: 80%; height: 20%; background-color: rgb(176, 176, 176);">
+                    <ui:Label text="Event two" display-tooltip-when-elided="true" name="event-two-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Help" style="width: 80%; height: 40%; background-color: rgb(176, 176, 176);">
+                    <ui:Label text="Controls: left mouse click&#10;Info: rewind button to go &#10;back to a checkpoint." display-tooltip-when-elided="true" name="help-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="book" style="position: relative; height: 95%; top: auto; width: 45%; left: auto; background-color: rgb(255, 255, 255); border-left-color: rgb(171, 83, 27); border-right-color: rgb(171, 83, 27); border-top-color: rgb(171, 83, 27); border-bottom-color: rgb(171, 83, 27); border-left-width: 10px; border-top-width: 5px; border-right-width: 10px; border-bottom-width: 5px;">
+                <ui:Button text="X" display-tooltip-when-elided="true" name="exit-ui-button" class="ui-button" style="position: absolute; top: -3%; left: auto; width: 30px; height: 30px; background-color: rgb(248, 36, 36); border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); right: -4%;" />
+                <ui:VisualElement name="buttonContainer" style="position: absolute; height: 100%; width: 100%; justify-content: center;">
+                    <ui:Button text="&lt;" display-tooltip-when-elided="true" name="back-page" style="width: 5%; height: 10%; left: -6%; right: 10%; position: absolute;" />
+                    <ui:Button text="&gt;" display-tooltip-when-elided="true" name="next-page" style="flex-direction: row; justify-content: space-between; height: 10%; width: 5%; right: -6%; position: absolute;" />
+                </ui:VisualElement>
+                <ui:Label display-tooltip-when-elided="true" name="journalEntry" text="ewewew" style="position: relative; top: 3%; left: 3%; color: rgb(0, 0, 0); height: 94%; width: 94%;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+
 public class testscript : MonoBehaviour
 {
-    public CSVtoSOTwo csvToSOTwo;
+    //public CSVtoSOTwo csvToSOTwo;
+    public DCSVtoSO dcsvToSO;
+    public JCSVtoSO jcsvToSO;
     private int currentIndex = 0;
     //private int destinationID = 0;
     private VisualElement dlogElements;
@@ -41,9 +44,35 @@ public class testscript : MonoBehaviour
     private Button bThree;
     private TextElement textCThree;
     private Button cThree;
+    ///
+    private VisualElement journalUIContainer;
+    private TextElement eventText;
+    private Button journalExit;
+    private Button nextPage;
+    private Button previousPage;
 
+    // private AudioSource newLogSource;
+    // private AudioSource checkpointSource;
+    // private AudioSource pageflipSource;
+    public AudioClip newLogClip;
+    public AudioClip checkpointClip;
+    public AudioClip pageflipClip;
+    public AudioClip dialogueBeepClip;
+    AudioSource Audio;
+
+    private int previousCheckPoint;
+
+
+    string testText;
+    int pageNumber = 0;
+    List<string> pagesList = new List<string>();
+    List<int> eventCheck = new List<int>();
+
+    int[] pages;
+    string[] pageLog;
  private void Start()
     {
+        Audio = GetComponent<AudioSource>();
         var root = GetComponent<UIDocument>().rootVisualElement;
         dlogElements = root.Q<VisualElement>("dlog-elements");
         dlogBG = root.Q<VisualElement>("dlog-bg");
@@ -77,6 +106,13 @@ public class testscript : MonoBehaviour
         textCThree = root.Q<TextElement>("text-c-three");
         cThree = root.Q<Button>("button-c-three");
 
+        journal = root.Q<Button>("journal");
+        journalUIContainer = root.Q<VisualElement>("JournalUIContainer");
+        eventText = root.Q<TextElement>("journalEntry");
+        journalExit = root.Q<Button>("exit-ui-button");
+        nextPage = root.Q<Button>("next-page");
+        previousPage = root.Q<Button>("back-page");
+
         nextButton.RegisterCallback<ClickEvent>(NextDialogue);
         aTwo.RegisterCallback<ClickEvent>(NextDialogueA);
         bTwo.RegisterCallback<ClickEvent>(NextDialogueB);
@@ -88,63 +124,27 @@ public class testscript : MonoBehaviour
         rewindYes.RegisterCallback<ClickEvent>(RewindYes);
         rewindNo.RegisterCallback<ClickEvent>(RewindNo);
 
+        journal.RegisterCallback<ClickEvent>(ShowJournal);
+        journalExit.RegisterCallback<ClickEvent>(ExitJournal);
+        nextPage.RegisterCallback<ClickEvent>(nextPageB);
+        previousPage.RegisterCallback<ClickEvent>(preivousPageB);
+
         rewindUI.style.display = DisplayStyle.None;
         twoOptionAnswers.style.display = DisplayStyle.None;
         threeOptionAnswers.style.display = DisplayStyle.None;
+        journalUIContainer.style.display = DisplayStyle.None;
+        previousPage.style.display = DisplayStyle.None;
         PopulateUI();
     }
     private void PopulateUI()
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
-
-        // if (dialogueSO.Type.Equals("a", StringComparison.CurrentCultureIgnoreCase) == true)
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
+        // if(currentIndex>0)
         // {
-        //     dlogBG.style.display = DisplayStyle.Flex;
-        //     DBox.style.display = DisplayStyle.Flex;
-        //     twoOptionAnswers.style.display = DisplayStyle.None;
-        //     threeOptionAnswers.style.display = DisplayStyle.None;
-
-        //     dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
-        //     characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
-        //     characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
-        //     propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
-
-        //     nameText.text = dialogueSO.Speaker;
-        //     dialogueText.text = dialogueSO.Line;
-        // }    
-        // else if (dialogueSO.Type.Equals("b", StringComparison.CurrentCultureIgnoreCase) == true)
-        // {
-        //     dlogBG.style.display = DisplayStyle.Flex;
-        //     DBox.style.display = DisplayStyle.None;
-        //     twoOptionAnswers.style.display = DisplayStyle.Flex;
-        //     threeOptionAnswers.style.display = DisplayStyle.None;
-
-        //     dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
-        //     characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
-        //     characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
-        //     propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
-
-        //     questionTwoAnswers.text = dialogueSO.Line;
-        //     textATwo.text = dialogueSO.A1Answer;
-        //     textBTwo.text = dialogueSO.A2Answer;
+        //     var dialogueSOPrev = dcsvToSO.dialogues[currentIndex-1];
         // }
-        // else if (dialogueSO.Type.Equals("c", StringComparison.CurrentCultureIgnoreCase) == true)
-        // {
-        //     dlogBG.style.display = DisplayStyle.Flex;
-        //     DBox.style.display = DisplayStyle.None;
-        //     twoOptionAnswers.style.display = DisplayStyle.None;
-        //     threeOptionAnswers.style.display = DisplayStyle.Flex;
-
-        //     dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
-        //     characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
-        //     characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
-        //     propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
-
-        //     questionThreeAnswers.text = dialogueSO.Line;
-        //     textAThree.text = dialogueSO.A1Answer;
-        //     textBThree.text = dialogueSO.A2Answer;
-        //     textCThree.text = dialogueSO.A3Answer;
-        // }
+        
 
         dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
         characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
@@ -159,7 +159,9 @@ public class testscript : MonoBehaviour
             threeOptionAnswers.style.display = DisplayStyle.None;
 
             nameText.text = dialogueSO.Speaker;
-            dialogueText.text = dialogueSO.Line;
+            //dialogueText.text = dialogueSO.Line;
+            testText = dialogueSO.Line;
+            ScrollText();
         }
         else if (dialogueSO.Type.Equals("b", StringComparison.CurrentCultureIgnoreCase))
         {
@@ -184,30 +186,191 @@ public class testscript : MonoBehaviour
             textBThree.text = dialogueSO.A2Answer;
             textCThree.text = dialogueSO.A3Answer;
         }
+
+        if (dialogueSO.Effect != -1)
+        {
+            var journalSO = jcsvToSO.journals[dialogueSO.Effect];
+            foreach (int check in eventCheck)
+            {
+                if(check == dialogueSO.Effect)
+                {
+                    break;
+                }
+            
+            }
+            pagesList.Add(journalSO.journalEntry);
+            Debug.Log(journalSO.journalEntry);
+            pageLog = pagesList.ToArray();
+            Debug.Log(string.Join(", ", pagesList));
+            //newLog.Play();
+            Audio.PlayOneShot(newLogClip, 0.7F);
+            eventCheck.Add(dialogueSO.Effect);
+            pages = eventCheck.ToArray();
+            Debug.Log(string.Join(", ", eventCheck));
+            //Debug.Log(eventCheck.Count);
+            //Debug.Log(pageNumber);
+            pageNumber = eventCheck[eventCheck.Count - 1];
+
+        }
+        
+        // if ( dialogueSO.Checkpoint != dialogueSOPrev.Checkpoint)
+        // {
+        //     Audio.PlayOneShot(checkpointClip, 0.7F);
+        // }
+        journalUpdate();
+        
+        
+    }
+    public void journalUpdate()
+    {
+        
+        if (pageNumber == eventCheck.Count - 1)
+        {
+            nextPage.style.display = DisplayStyle.None;
+            if (eventCheck.Count > 1)
+            {
+                previousPage.style.display = DisplayStyle.Flex;
+            }
+        }
+        
+        if (pageNumber == 0)
+        {
+            previousPage.style.display = DisplayStyle.None;
+            if (eventCheck.Count > 1)
+            {
+                nextPage.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        if (pageNumber > 0 && pageNumber < eventCheck.Count - 1)
+        {
+            nextPage.style.display = DisplayStyle.Flex;
+            previousPage.style.display = DisplayStyle.Flex;
+        }
+
+        // else
+        // {
+        //     nextPage.style.display = DisplayStyle.Flex;
+        //     previousPage.style.display = DisplayStyle.Flex;
+        // }
+        Debug.Log("event count" + eventCheck.Count);
+        Debug.Log("page"+ pageNumber);
+        eventText.text = pagesList[pageNumber];
     }
 
+    public void ScrollText()
+    {
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(testText));
+
+    }
+    IEnumerator TypeSentence (string sentence) 
+    {   //char space = " ";
+        dialogueText.text = "";
+        int counter = 0;
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogueText.text += letter;
+            // if (stopAudioSource)
+            // {
+            //     audioSource.Stop();
+            // }
+            // if ((letter.Equals(" ") == false) && (counter % charInterval == 0))
+            // {
+            //     audioSource.PlayOneShot(dialogueTypingSoundClip);
+            // }
+            if (counter%2 == 0)
+            {
+                Audio.PlayOneShot(dialogueBeepClip, 0.7F);
+            }
+            
+            yield return new WaitForSeconds(.02f);
+            counter++;
+        }
+    }
     private void NextDialogue(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
         currentIndex = dialogueSO.GoToID;
         PopulateUI();
     }
     private void NextDialogueA(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
+        var journalSO = jcsvToSO.journals[dialogueSO.EffectA1];
+        foreach (int check in eventCheck)
+            {
+                if(check == dialogueSO.EffectA1)
+                {
+                    break;
+                }
+
+            }
+        pagesList.Add(journalSO.journalEntry);
+        Debug.Log(journalSO.journalEntry);
+        Debug.Log(pagesList);
+        eventCheck.Add(dialogueSO.EffectA1);
+        Debug.Log(eventCheck);
+
         currentIndex = dialogueSO.GoToIDA1;
+
+        dialogueSO = dcsvToSO.dialogues[currentIndex];
+
+        
         PopulateUI();
     }
     private void NextDialogueB(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
+
+        var journalSO = jcsvToSO.journals[dialogueSO.EffectA2];
+        foreach (int check in eventCheck)
+            {
+                if(check == dialogueSO.EffectA2)
+                {
+                    break;
+                }
+
+            }
+        pagesList.Add(journalSO.journalEntry);
+        Debug.Log(journalSO.journalEntry);
+        Debug.Log(pagesList);
+        eventCheck.Add(dialogueSO.EffectA2);
+        Debug.Log(eventCheck);
+
         currentIndex = dialogueSO.GoToIDA2;
+
+        dialogueSO = dcsvToSO.dialogues[currentIndex];
+
         PopulateUI();
     }
     private void NextDialogueC(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
+
+        var journalSO = jcsvToSO.journals[dialogueSO.EffectA3];
+        foreach (int check in eventCheck)
+            {
+                if(check == dialogueSO.EffectA3)
+                {
+                    break;
+                }
+
+            }
+        pagesList.Add(journalSO.journalEntry);
+        Debug.Log(journalSO.journalEntry);
+        Debug.Log(pagesList);
+        eventCheck.Add(dialogueSO.EffectA3);
+        Debug.Log(eventCheck);
+
         currentIndex = dialogueSO.GoToIDA3;
+
+        dialogueSO = dcsvToSO.dialogues[currentIndex];
+
         PopulateUI();
     }
     private void ShowRewind(ClickEvent evt)
@@ -216,7 +379,7 @@ public class testscript : MonoBehaviour
     }
     private void RewindYes(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
         currentIndex = dialogueSO.Checkpoint;
         PopulateUI();
         rewindUI.style.display = DisplayStyle.None;
@@ -224,5 +387,32 @@ public class testscript : MonoBehaviour
     private void RewindNo(ClickEvent evt)
     {
         rewindUI.style.display = DisplayStyle.None;
+    }
+    private void ShowJournal(ClickEvent evt)
+    {
+        journalUIContainer.style.display = DisplayStyle.Flex;
+    }
+    private void ExitJournal(ClickEvent evt)
+    {
+        journalUIContainer.style.display = DisplayStyle.None;
+    }
+    private void nextPageB(ClickEvent evt)
+    {
+        pageNumber++;
+        //pageflip.Play();
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+
+        journalUpdate();
+
+
+    }
+    private void preivousPageB(ClickEvent evt)
+    {
+        pageNumber--;
+        //pageflip.Play();
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+
+        journalUpdate();
+
     }
 }
