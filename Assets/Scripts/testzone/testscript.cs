@@ -279,7 +279,7 @@ public class testscript : MonoBehaviour
             // {
             //     audioSource.PlayOneShot(dialogueTypingSoundClip);
             // }
-            if (counter%2 == 0)
+            if (counter%3 == 0)
             {
                 Audio.PlayOneShot(dialogueBeepClip, 0.7F);
             }
