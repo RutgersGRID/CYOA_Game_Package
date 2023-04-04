@@ -190,7 +190,7 @@ public class testscript : MonoBehaviour
         if (dialogueSO.Effect != -1)
         {
             var journalSO = jcsvToSO.journals[dialogueSO.Effect];
-            foreach (int check in eventCheck)
+            foreach (int check in pages)
             {
                 if(check == dialogueSO.Effect)
                 {
