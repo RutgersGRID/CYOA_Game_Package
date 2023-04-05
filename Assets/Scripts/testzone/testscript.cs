@@ -9,7 +9,7 @@ public class testscript : MonoBehaviour
     //public CSVtoSOTwo csvToSOTwo;
     public DCSVtoSO dcsvToSO;
     public JCSVtoSO jcsvToSO;
-    private int currentIndex = 0;
+    int currentIndex = 0;
     //private int destinationID = 0;
     private VisualElement dlogElements;
     private VisualElement dlogBG;
@@ -189,29 +189,43 @@ public class testscript : MonoBehaviour
 
         if (dialogueSO.Effect != -1)
         {
-            var journalSO = jcsvToSO.journals[dialogueSO.Effect];
-            foreach (int check in pages)
-            {
-                if(check == dialogueSO.Effect)
-                {
-                    break;
-                }
+            // var journalSO = jcsvToSO.journals[dialogueSO.Effect];
+            // //foreach (int check in pages)
+            // foreach (int check in eventCheck)
+            // {
+            //     if(check == dialogueSO.Effect)
+            //     {
+            //         break;
+            //     }
             
-            }
-            pagesList.Add(journalSO.journalEntry);
-            Debug.Log(journalSO.journalEntry);
-            pageLog = pagesList.ToArray();
-            Debug.Log(string.Join(", ", pagesList));
-            //newLog.Play();
-            Audio.PlayOneShot(newLogClip, 0.7F);
-            eventCheck.Add(dialogueSO.Effect);
-            pages = eventCheck.ToArray();
-            Debug.Log(string.Join(", ", eventCheck));
-            //Debug.Log(eventCheck.Count);
-            //Debug.Log(pageNumber);
-            pageNumber = eventCheck[eventCheck.Count - 1];
+            // }
+            // pagesList.Add(journalSO.journalEntry);
+            // Debug.Log(journalSO.journalEntry);
 
+            // Debug.Log(string.Join(", ", pagesList));
+
+            // Audio.PlayOneShot(newLogClip, 0.7F);
+            
+            // eventCheck.Add(dialogueSO.Effect);
+
+            // Debug.Log(string.Join(", ", eventCheck));
+
+            // pageNumber = eventCheck[eventCheck.Count - 1];
+
+
+            if (!eventCheck.Contains(dialogueSO.Effect))
+            {
+                var journalSO = jcsvToSO.journals[dialogueSO.Effect];
+                pagesList.Add(journalSO.journalEntry);
+                Debug.Log(journalSO.journalEntry);
+                Debug.Log(string.Join(", ", pagesList));
+                Audio.PlayOneShot(newLogClip, 0.7F);
+                eventCheck.Add(dialogueSO.Effect);
+                Debug.Log(string.Join(", ", eventCheck));
+                pageNumber = eventCheck[eventCheck.Count - 1];
+            }
         }
+        
         
         // if ( dialogueSO.Checkpoint != dialogueSOPrev.Checkpoint)
         // {
@@ -223,7 +237,12 @@ public class testscript : MonoBehaviour
     }
     public void journalUpdate()
     {
-        
+        if (eventCheck.Count == 0)
+        {
+            nextPage.style.display = DisplayStyle.None;
+            previousPage.style.display = DisplayStyle.None;
+        }
+
         if (pageNumber == eventCheck.Count - 1)
         {
             nextPage.style.display = DisplayStyle.None;
@@ -279,7 +298,7 @@ public class testscript : MonoBehaviour
             // {
             //     audioSource.PlayOneShot(dialogueTypingSoundClip);
             // }
-            if (counter%3 == 0)
+            if (counter%4 == 0)
             {
                 Audio.PlayOneShot(dialogueBeepClip, 0.7F);
             }
@@ -381,8 +400,9 @@ public class testscript : MonoBehaviour
     {
         var dialogueSO = dcsvToSO.dialogues[currentIndex];
         currentIndex = dialogueSO.Checkpoint;
-        PopulateUI();
         rewindUI.style.display = DisplayStyle.None;
+        PopulateUI();
+        
     }
     private void RewindNo(ClickEvent evt)
     {

@@ -88,7 +88,7 @@
                     <ui:Button text="&lt;" display-tooltip-when-elided="true" name="back-page" style="width: 5%; height: 10%; left: -6%; right: 10%; position: absolute;" />
                     <ui:Button text="&gt;" display-tooltip-when-elided="true" name="next-page" style="flex-direction: row; justify-content: space-between; height: 10%; width: 5%; right: -6%; position: absolute;" />
                 </ui:VisualElement>
-                <ui:Label display-tooltip-when-elided="true" name="journalEntry" text="&#10;" style="position: relative; top: 3%; left: 3%; color: rgb(0, 0, 0); height: 94%; width: 94%; flex-wrap: wrap;" />
+                <ui:Label display-tooltip-when-elided="true" name="journalEntry" text="&#10;" style="position: relative; top: 3%; left: 3%; color: rgb(0, 0, 0); height: 94%; width: 94%; flex-wrap: wrap; white-space: normal;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
