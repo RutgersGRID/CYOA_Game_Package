@@ -1,0 +1,8 @@
+ID,Speaker,Line,LeftSideSpeaker,RightSideSpeaker,Prop,Background,Checkpoint,Type,GoToID,Effect,A1Answer,GoToIDA1,EffectA1,A2Answer,GoToIDA2,EffectA2,A3Answer,GotToIDA3,EffectA3
+0,Howard,"Hey,whats up",,Nurse,XIMENA- PROPS- BANDEJA DISH,Faculivingroom 2,0,a,1,,,,,,,,,,
+1,Don,Nothing <b>much</b>. How have <color=blue>you guys</color> been?,,Facu_Happy,XIMENA- PROPS- BANDEJA DISH,Faculivingroom 2,0,a,2,0,,,,,,,,,
+2,Kim,I've been chilling. new checkpoint,,Amir_smile,None,Faculivingroom 2,2,A,3,,,,,,,,,,
+3,Alex,I opened an ice cream shop.,Nurse,,PROPS-XIMENA- _50 BILL,Facuoffice,2,A,4,1,,,,,,,,,
+4,Thomas,",,,,,,,,,,,,,,,,,,,,,,,,,,",Amir_Neutral,,,Outside_street,2,A,5,,,,,,,,,,
+5,None,"Do you like cats, dogs, or birds?",,,,Outside_Street_City,2,C,,,Cats,0,2,Dogs,1,3,Birds,3,
+6,None,Do you want some <b>icecream</b>?,,,,Tvscene,2,b,,,Yes,4,4,No,5,5,,6,
