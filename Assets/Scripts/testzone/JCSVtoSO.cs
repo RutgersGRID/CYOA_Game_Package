@@ -17,24 +17,36 @@ public class JCSVtoSO : MonoBehaviour
 
         private void ParseCSVData()
         {
-            string[] rows = csvFile.text.Split('\n');
-            // characters = (from row in rows.Skip(1)
-            journals = (from row in rows.Skip(1)
-                        let values = ParseCSVRow(row)
-                        //select new CharacterSO
-                        select new JournalSO
-                        {
-                            ID = int.Parse(values[0]),
-                            eventTitle = values[1],
-                            eventText = values[2],
-                            journalEntry = values[3],
+            // string[] rows = csvFile.text.Split('\n');
+            // // characters = (from row in rows.Skip(1)
+            // journals = (from row in rows.Skip(1)
+            //             let values = ParseCSVRow(row)
+            //             //select new CharacterSO
+            //             select new JournalSO
+            //             {
+            //                 ID = int.Parse(values[0]),
+            //                 eventTitle = values[1],
+            //                 eventText = values[2],
+            //                 journalEntry = values[3],
 
-                        }).ToList();
+            //             }).ToList();
+
+            string[] rows = csvFile.text.Split('\n');
+            journals = new List<JournalSO>();
+
+            foreach (string row in rows.Skip(1))
+            {
+                string[] values = ParseCSVRow(row);
+
+                JournalSO journal = ScriptableObject.CreateInstance<JournalSO>();
+                journal.ID = int.Parse(values[0]);
+                journal.eventTitle = values[1];
+                journal.eventText = values[2];
+                journal.journalEntry = values[3];
+
+                journals.Add(journal);
+    }
             
-            // foreach (var character in characters)
-            // {
-            //     Debug.Log("Loaded character " + character.Character_Name + " with prop sprite " + character.Prop_Sprite + " and character sprite " + character.Character_Sprite );
-            // }
         }
 
 

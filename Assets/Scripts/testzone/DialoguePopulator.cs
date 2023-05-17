@@ -6,8 +6,10 @@ using UnityEngine.UIElements;
 
 public class DialoguePopulator : MonoBehaviour
 {
-     public CSVtoSOTwo csvToSOTwo;
-    private int currentIndex = 0;
+    //public CSVtoSOTwo csvToSOTwo;
+    public DCSVtoSO dcsvToSO;
+    public JCSVtoSO jcsvToSO;
+    int currentIndex = 0;
     //private int destinationID = 0;
     private VisualElement dlogElements;
     private VisualElement dlogBG;
@@ -42,11 +44,41 @@ public class DialoguePopulator : MonoBehaviour
     private Button bThree;
     private TextElement textCThree;
     private Button cThree;
+    ///
+    private VisualElement journalUIContainer;
+    private TextElement eventText;
+    private Button journalExit;
+    private Button nextPage;
+    private Button previousPage;
+    ///
+    private Button jEButton;
+    private VisualElement NewJournalEntry;
+    private TextElement Title;
+    private TextElement SummaryText;
+    private TextElement ReflectionQ;  
+    private TextElement Question; 
 
-    private string testText;
+    // private AudioSource newLogSource;
+    // private AudioSource checkpointSource;
+    // private AudioSource pageflipSource;
+    public AudioClip newLogClip;
+    public AudioClip checkpointClip;
+    public AudioClip pageflipClip;
+    public AudioClip dialogueBeepClip;
+    AudioSource Audio;
 
+    private int previousCheckPoint;
+    string testText;
+    int pageNumber = 0;
+    List<string> jEventText = new List<string>();
+    List<int> jPages = new List<int>();
+    int jNumber = 0;
+
+    int[] pages;
+    string[] pageLog;
  private void Start()
     {
+        Audio = GetComponent<AudioSource>();
         var root = GetComponent<UIDocument>().rootVisualElement;
         dlogElements = root.Q<VisualElement>("dlog-elements");
         dlogBG = root.Q<VisualElement>("dlog-bg");
@@ -66,19 +98,35 @@ public class DialoguePopulator : MonoBehaviour
 
         twoOptionAnswers = root.Q<VisualElement>("answer-two-options-bg");
         questionTwoAnswers = root.Q<TextElement>("question-text-two");
-        textATwo = root.Q<TextElement>("text-a-two");
+        //textATwo = root.Q<TextElement>("text-a-two");
         aTwo = root.Q<Button>("button-a-two");
-        textBTwo = root.Q<TextElement>("text-b-two");
+        //textBTwo = root.Q<TextElement>("text-b-two");
         bTwo = root.Q<Button>("button-b-two");
 
         threeOptionAnswers = root.Q<VisualElement>("answer-three-options-bg");
         questionThreeAnswers = root.Q<TextElement>("question-text-three");
-        textAThree = root.Q<TextElement>("text-a-three");
+        //textAThree = root.Q<TextElement>("text-a-three");
         aThree = root.Q<Button>("button-a-three");
-        textBThree = root.Q<TextElement>("text-b-three");
+        //textBThree = root.Q<TextElement>("text-b-three");
         bThree = root.Q<Button>("button-b-three");
-        textCThree = root.Q<TextElement>("text-c-three");
+        //textCThree = root.Q<TextElement>("text-c-three");
         cThree = root.Q<Button>("button-c-three");
+
+        journal = root.Q<Button>("journal");
+        journalUIContainer = root.Q<VisualElement>("JournalUIContainer");
+        eventText = root.Q<TextElement>("journalEntry");
+        journalExit = root.Q<Button>("exit-ui-button");
+        nextPage = root.Q<Button>("next-page");
+        previousPage = root.Q<Button>("back-page");
+
+        NewJournalEntry = root.Q<VisualElement>("NewJournalEntry");
+        jEButton = root.Q<Button>("JEButton");
+        Title = root.Q<TextElement>("Title");
+        SummaryText = root.Q<TextElement>("SummaryText");
+        ReflectionQ = root.Q<TextElement>("ReflectionQ");  
+        Question = root.Q<TextElement>("Question"); 
+
+
 
         nextButton.RegisterCallback<ClickEvent>(NextDialogue);
         aTwo.RegisterCallback<ClickEvent>(NextDialogueA);
@@ -91,14 +139,27 @@ public class DialoguePopulator : MonoBehaviour
         rewindYes.RegisterCallback<ClickEvent>(RewindYes);
         rewindNo.RegisterCallback<ClickEvent>(RewindNo);
 
+        journal.RegisterCallback<ClickEvent>(ShowJournal);
+        journalExit.RegisterCallback<ClickEvent>(ExitJournal);
+        nextPage.RegisterCallback<ClickEvent>(nextPageB);
+        previousPage.RegisterCallback<ClickEvent>(preivousPageB);
+
+        jEButton.RegisterCallback<ClickEvent>(JournalEntryButton);
+
         rewindUI.style.display = DisplayStyle.None;
         twoOptionAnswers.style.display = DisplayStyle.None;
         threeOptionAnswers.style.display = DisplayStyle.None;
+        journalUIContainer.style.display = DisplayStyle.None;
+        previousPage.style.display = DisplayStyle.None;
+        NewJournalEntry.style.display = DisplayStyle.None;
+        Debug.Log("currentIndex " + currentIndex);
+        Debug.Log("dcsvToSO.dialogues " + dcsvToSO.dialogues.Count);
+        Debug.Log("jPages" + string.Join(", ", dcsvToSO.dialogues));
         PopulateUI();
     }
     private void PopulateUI()
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
 
         dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
         characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
@@ -125,8 +186,8 @@ public class DialoguePopulator : MonoBehaviour
             threeOptionAnswers.style.display = DisplayStyle.None;
 
             questionTwoAnswers.text = dialogueSO.Line;
-            textATwo.text = dialogueSO.A1Answer;
-            textBTwo.text = dialogueSO.A2Answer;
+            aTwo.text = dialogueSO.A1Answer;
+            bTwo.text = dialogueSO.A2Answer;
         }
         else if (dialogueSO.Type.Equals("c", StringComparison.CurrentCultureIgnoreCase))
         {
@@ -136,12 +197,25 @@ public class DialoguePopulator : MonoBehaviour
             threeOptionAnswers.style.display = DisplayStyle.Flex;
 
             questionThreeAnswers.text = dialogueSO.Line;
-            textAThree.text = dialogueSO.A1Answer;
-            textBThree.text = dialogueSO.A2Answer;
-            textCThree.text = dialogueSO.A3Answer;
-        }
-    }
 
+            aThree.text = dialogueSO.A1Answer;
+            bThree.text = dialogueSO.A2Answer;
+            cThree.text = dialogueSO.A3Answer;
+        }
+
+        if (dialogueSO.Effect != -1)
+        {
+
+            if (!jPages.Contains(dialogueSO.Effect))
+            {
+                NewJournalEntry.style.display = DisplayStyle.Flex;
+                jNumber = dialogueSO.Effect;
+            }
+        }
+        //journalUpdate();
+        
+        
+    }
     public void ScrollText()
     {
         StopAllCoroutines();
@@ -163,32 +237,44 @@ public class DialoguePopulator : MonoBehaviour
             // {
             //     audioSource.PlayOneShot(dialogueTypingSoundClip);
             // }
+            if (counter%4 == 0)
+            {
+                Audio.PlayOneShot(dialogueBeepClip, 0.7F);
+            }
+            
             yield return new WaitForSeconds(.02f);
             counter++;
         }
     }
     private void NextDialogue(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
         currentIndex = dialogueSO.GoToID;
         PopulateUI();
     }
     private void NextDialogueA(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
+        
         currentIndex = dialogueSO.GoToIDA1;
+
         PopulateUI();
     }
     private void NextDialogueB(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
-        currentIndex = dialogueSO.GoToIDA2;
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
+        dialogueSO = dcsvToSO.dialogues[currentIndex];
         PopulateUI();
     }
     private void NextDialogueC(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
-        currentIndex = dialogueSO.GoToIDA3;
+        //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
+        dialogueSO = dcsvToSO.dialogues[currentIndex];
+
         PopulateUI();
     }
     private void ShowRewind(ClickEvent evt)
@@ -197,15 +283,130 @@ public class DialoguePopulator : MonoBehaviour
     }
     private void RewindYes(ClickEvent evt)
     {
-        var dialogueSO = csvToSOTwo.dialogues[currentIndex];
+        var dialogueSO = dcsvToSO.dialogues[currentIndex];
         currentIndex = dialogueSO.Checkpoint;
-        PopulateUI();
         rewindUI.style.display = DisplayStyle.None;
+        PopulateUI();
+        
     }
     private void RewindNo(ClickEvent evt)
     {
         rewindUI.style.display = DisplayStyle.None;
     }
-}
+    private void ShowJournal(ClickEvent evt)
+    {
+        journalUIContainer.style.display = DisplayStyle.Flex;
+        
+    }
+    private void ExitJournal(ClickEvent evt)
+    {
+        journalUIContainer.style.display = DisplayStyle.None;
+    }
+    private void nextPageB(ClickEvent evt)
+    {
+        pageNumber++;
+        Audio.PlayOneShot(pageflipClip, 0.7F);
 
+        journalUpdate();
+
+
+    }
+    private void preivousPageB(ClickEvent evt)
+    {
+        pageNumber--;
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+
+        journalUpdate();
+
+    }
+    public void journalUpdate()
+    {
+        if (jPages.Count == 0)
+        {
+            nextPage.style.display = DisplayStyle.None;
+            previousPage.style.display = DisplayStyle.None;
+        }
+        else if (pageNumber >= 0 && pageNumber < jPages.Count)
+        {
+            if (pageNumber == jPages.Count - 1)
+            {
+                nextPage.style.display = DisplayStyle.None;
+                if (jPages.Count > 1)
+                {
+                    previousPage.style.display = DisplayStyle.Flex;
+                }
+            }
+            else if (pageNumber == 0)
+            {
+                previousPage.style.display = DisplayStyle.None;
+                if (jPages.Count > 1)
+                {
+                    nextPage.style.display = DisplayStyle.Flex;
+                }
+            }
+            else
+            {
+                nextPage.style.display = DisplayStyle.Flex;
+                previousPage.style.display = DisplayStyle.Flex;
+            }
+
+            Debug.Log("event count: " + jPages.Count);
+            Debug.Log("pageNumber: " + pageNumber);
+
+            if (pageNumber < jEventText.Count)
+            {
+                eventText.text = jEventText[pageNumber];
+            }
+            else
+            {
+                Debug.LogError("pageNumber is out of range!");
+            }
+        }
+        else
+        {
+            Debug.LogError("pageNumber is out of range!");
+        }
+        ///eventText.text = jEventText[pageNumber];
+        }
+    private void JournalEntryButton(ClickEvent evt)
+        {
+            var dialogueSO = dcsvToSO.dialogues[currentIndex];
+            
+            var journalSO = jcsvToSO.journals[jNumber];
+
+            Debug.Log("jNumber " + jNumber);
+            Debug.Log("jEventText" + journalSO.journalEntry);
+            Debug.Log("Page Number " + pageNumber);
+
+            Audio.PlayOneShot(newLogClip, 0.7F);
+
+            Debug.Log("jPages" + string.Join(", ", jPages));
+            Debug.Log("BEFORE");
+            if (dialogueSO.Effect != -1 && jPages.Count < 0)
+            {
+                if (!jPages.Contains(dialogueSO.Effect))
+                {
+                    jPages.Add(pageNumber++);
+                    jEventText.Add(journalSO.journalEntry);
+                    eventText.text = jEventText[pageNumber];
+                    pageNumber = pageNumber++;
+                }
+            }
+            else
+            {
+                jEventText.Add(journalSO.journalEntry);
+                jPages.Add(pageNumber++);
+                pageNumber = pageNumber++;
+            }
+            Debug.Log("jNumber " + jNumber);
+            Debug.Log("jEventText" + journalSO.journalEntry);
+            Debug.Log("Page Number " + pageNumber);
+
+            Debug.Log("Page Number " + pageNumber);
+            Debug.Log("jPages" + string.Join(", ", jPages));
+            Debug.Log("END");
+            journalUpdate();
+            NewJournalEntry.style.display = DisplayStyle.None;
+        }
+}
 
