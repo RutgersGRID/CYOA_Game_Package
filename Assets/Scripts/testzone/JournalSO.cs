@@ -5,7 +5,8 @@ using UnityEngine;
 public class JournalSO : ScriptableObject
 {
     public int ID;
-    public string eventTitle;
-    public string eventText;
+    public string journalTitle;
     public string journalEntry;
+    public string reflectionQuestion;
+    
 }

@@ -17,19 +17,6 @@ public class JCSVtoSO : MonoBehaviour
 
         private void ParseCSVData()
         {
-            // string[] rows = csvFile.text.Split('\n');
-            // // characters = (from row in rows.Skip(1)
-            // journals = (from row in rows.Skip(1)
-            //             let values = ParseCSVRow(row)
-            //             //select new CharacterSO
-            //             select new JournalSO
-            //             {
-            //                 ID = int.Parse(values[0]),
-            //                 eventTitle = values[1],
-            //                 eventText = values[2],
-            //                 journalEntry = values[3],
-
-            //             }).ToList();
 
             string[] rows = csvFile.text.Split('\n');
             journals = new List<JournalSO>();
@@ -40,9 +27,9 @@ public class JCSVtoSO : MonoBehaviour
 
                 JournalSO journal = ScriptableObject.CreateInstance<JournalSO>();
                 journal.ID = int.Parse(values[0]);
-                journal.eventTitle = values[1];
-                journal.eventText = values[2];
-                journal.journalEntry = values[3];
+                journal.journalTitle = values[1];
+                journal.journalEntry = values[2];
+                journal.reflectionQuestion = values[3];
 
                 journals.Add(journal);
     }

@@ -42,7 +42,7 @@ public class testscript : MonoBehaviour
     private Button cThree;
     ///
     private VisualElement journalUIContainer;
-    private TextElement eventText;
+    private TextElement journalEntry;
     private Button journalExit;
     private Button nextPage;
     private Button previousPage;
@@ -102,7 +102,7 @@ public class testscript : MonoBehaviour
 
         journal = root.Q<Button>("journal");
         journalUIContainer = root.Q<VisualElement>("JournalUIContainer");
-        eventText = root.Q<TextElement>("journalEntry");
+        journalEntry = root.Q<TextElement>("journalEntry");
         journalExit = root.Q<Button>("exit-ui-button");
         nextPage = root.Q<Button>("next-page");
         previousPage = root.Q<Button>("back-page");
@@ -351,8 +351,8 @@ public class testscript : MonoBehaviour
             if (pageNumber < jEventText.Count)
             {
                 //eventText.text = jEventText[jEventText.Count -1];
-                eventText.text = jEventText[pageNumber];
-                Debug.Log("pageNumber: " + pageNumber + ", eventText: " + eventText.text);
+                journalEntry.text = jEventText[pageNumber];
+                Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
                 Debug.Log("jPages" + string.Join(", ", jPages));
                 Debug.Log("jEventText" + string.Join(", ", jEventText));
             }
@@ -389,14 +389,14 @@ public class testscript : MonoBehaviour
                     jPages.Add(jNumber);
                     //jPages.Add(pageNumber);
                     jEventText.Add(journalSO.journalEntry);
-                    eventText.text = jEventText[pageNumber];
+                    journalEntry.text = jEventText[pageNumber];
                 }
             }
             else if (!jPages.Contains(jNumber))
             {
                 jEventText.Add(journalSO.journalEntry);
                 jPages.Add(jNumber);
-                eventText.text = jEventText[jPages.Count -1];
+                journalEntry.text = jEventText[jPages.Count -1];
             }
             Debug.Log("jNumber " + jNumber);
             Debug.Log("jEventText" + journalSO.journalEntry);
