@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 708983105}
   - component: {fileID: 708983106}
   - component: {fileID: 708983107}
+  - component: {fileID: 708983108}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -184,7 +185,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708983096}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89410a8fb0b7934469a771b3406dda25, type: 3}
   m_Name: 
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708983096}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7318d3cca8b60ab4db40bd9a0bfde630, type: 3}
   m_Name: 
@@ -352,6 +353,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &708983108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708983096}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892dabfac22f49143813c523a66f5d3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dcsvToSO: {fileID: 708983102}
+  jcsvToSO: {fileID: 708983106}
+  newLogClip: {fileID: 8300000, guid: 9c8a33041313b214e97e2dfbd0217a0a, type: 3}
+  checkpointClip: {fileID: 8300000, guid: 522a716f743a7864590f46cd9154d110, type: 3}
+  pageflipClip: {fileID: 8300000, guid: 8015f55648d386648aaf89da76f96eb3, type: 3}
+  dialogueBeepClip: {fileID: 8300000, guid: 9749d645e2879f9488d1a8d57763b859, type: 3}
 --- !u!1 &1897269520
 GameObject:
   m_ObjectHideFlags: 0

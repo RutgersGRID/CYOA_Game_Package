@@ -12,14 +12,14 @@ EditorBuildSettings:
     path: Assets/Scenes/PrototypeUITools.unity
     guid: c1aac7ab696e04f4d8d3e2ab18f00ce4
   - enabled: 0
-    path: Assets/Scenes/PickA.unity
-    guid: 0967b4bdbaa5b7d4781f184222b95054
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/PickC.unity
-    guid: 1b354743088be564495559fb67ea30b8
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/PickB.unity
-    guid: 4b399b04b25400b429ce7273dd8d5aaa
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/TestZone.unity
     guid: 85b1daed0b0aab349993c143204ffef0
