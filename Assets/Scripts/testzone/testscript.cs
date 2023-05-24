@@ -111,10 +111,8 @@ public class testscript : MonoBehaviour
         jEButton = root.Q<Button>("JEButton");
         Title = root.Q<TextElement>("Title");
         SummaryText = root.Q<TextElement>("SummaryText");
-        ReflectionQ = root.Q<TextElement>("ReflectionQ");  
-        Question = root.Q<TextElement>("Question"); 
-
-
+        ReflectionQ = root.Q<TextElement>("reflectionQ");  
+        Question = root.Q<TextElement>("reflectionQuestion"); 
 
         nextButton.RegisterCallback<ClickEvent>(NextDialogue);
         aTwo.RegisterCallback<ClickEvent>(NextDialogueA);
@@ -201,6 +199,10 @@ public class testscript : MonoBehaviour
             if (!jPages.Contains(dialogueSO.Effect))
             {
                 jNumber = dialogueSO.Effect;
+                var journalSO = jcsvToSO.journals[jNumber];
+                Title.text = journalSO.journalTitle;
+                SummaryText.text = journalSO.journalEntry;
+                Question.text = journalSO.reflectionQuestion;
                 NewJournalEntry.style.display = DisplayStyle.Flex;
             }
         }
@@ -208,6 +210,7 @@ public class testscript : MonoBehaviour
         {
                 NewJournalEntry.style.display = DisplayStyle.Flex;
         }
+        journalUpdate();
     }
     public void ScrollText()
     {
@@ -250,6 +253,11 @@ public class testscript : MonoBehaviour
         var dialogueSO = dcsvToSO.dialogues[currentIndex];
         var journalSO = jcsvToSO.journals[dialogueSO.EffectA1];
         jNumber = dialogueSO.EffectA1;
+
+        Title.text = journalSO.journalTitle;
+        SummaryText.text = journalSO.journalEntry;
+        Question.text = journalSO.reflectionQuestion;
+
         currentIndex = dialogueSO.GoToIDA1;
         dialogueSO = dcsvToSO.dialogues[currentIndex];
         Debug.Log("jNumber " + jNumber);
@@ -260,6 +268,11 @@ public class testscript : MonoBehaviour
         var dialogueSO = dcsvToSO.dialogues[currentIndex];
         var journalSO = jcsvToSO.journals[dialogueSO.EffectA2];
         jNumber = dialogueSO.EffectA2;
+
+        Title.text = journalSO.journalTitle;
+        SummaryText.text = journalSO.journalEntry;
+        Question.text = journalSO.reflectionQuestion;
+
         currentIndex = dialogueSO.GoToIDA2;
         dialogueSO = dcsvToSO.dialogues[currentIndex];
         Debug.Log("jNumber " + jNumber);
@@ -270,6 +283,11 @@ public class testscript : MonoBehaviour
         var dialogueSO = dcsvToSO.dialogues[currentIndex];
         var journalSO = jcsvToSO.journals[dialogueSO.EffectA3];
         jNumber = dialogueSO.EffectA3;
+
+        Title.text = journalSO.journalTitle;
+        SummaryText.text = journalSO.journalEntry;
+        Question.text = journalSO.reflectionQuestion;
+
         currentIndex = dialogueSO.GoToIDA3;
         dialogueSO = dcsvToSO.dialogues[currentIndex];
         Debug.Log("jNumber " + jNumber);
@@ -319,7 +337,8 @@ public class testscript : MonoBehaviour
     }
     public void journalUpdate()
     {
-        if (jPages.Count == 0)
+        //if (jPages.Count == 0)
+        if (jPages.Count <= 0)
         {
             nextPage.style.display = DisplayStyle.None;
             previousPage.style.display = DisplayStyle.None;
@@ -378,6 +397,7 @@ public class testscript : MonoBehaviour
             Debug.Log("jNumber " + jNumber);
             Debug.Log("jEventText" + journalSO.journalEntry);
             Debug.Log("Page Number " + pageNumber);
+
 
             Audio.PlayOneShot(newLogClip, 0.7F);
             
