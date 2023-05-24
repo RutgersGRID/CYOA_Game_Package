@@ -1,13 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="JournalUIContainer" style="position: absolute; width: 100%; height: 100%; display: flex;">
-        <ui:VisualElement name="Journelbg" style="width: 100%; height: 100%; position: absolute; background-color: rgb(171, 170, 170); opacity: 0.86; flex-direction: row; justify-content: space-around; align-items: center;" />
+    <ui:VisualElement name="JournalUIContainer" style="position: absolute; width: 100%; height: 100%; display: flex; -unity-font: initial;">
+        <ui:VisualElement name="Journelbg" style="width: 100%; height: 100%; position: absolute; background-color: rgb(0, 0, 0); opacity: 0.7; flex-direction: row; justify-content: space-around; align-items: center;" />
         <ui:VisualElement name="JContainter" style="width: 100%; height: 100%; flex-direction: row; align-items: center; justify-content: space-around;">
             <ui:VisualElement name="journal-menu" style="position: relative; width: 45%; height: 95%; top: auto; left: auto; background-color: rgb(99, 27, 97); align-items: center; justify-content: space-around;">
                 <ui:VisualElement name="event-one" style="width: 80%; height: 20%; background-color: rgb(176, 176, 176);">
                     <ui:Label text="Event one" display-tooltip-when-elided="true" name="event-one-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="event-two" style="width: 80%; height: 20%; background-color: rgb(176, 176, 176);">
-                    <ui:Label text="Event two" display-tooltip-when-elided="true" name="event-two-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
+                    <ui:Label text="Event two" display-tooltip-when-elided="true" name="event-two-label" style="color: rgb(0, 0, 0); font-size: 30px; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;);" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Help" style="width: 80%; height: 40%; background-color: rgb(176, 176, 176);">
                     <ui:Label text="Controls: left mouse click&#10;Info: rewind button to go &#10;back to a checkpoint." display-tooltip-when-elided="true" name="help-label" style="color: rgb(0, 0, 0); font-size: 30px;" />

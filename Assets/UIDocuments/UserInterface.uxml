@@ -4,7 +4,7 @@
         <ui:VisualElement name="dlog-bg" style="width: 100%; height: 100%; position: absolute; justify-content: space-around; flex-direction: row; background-image: resource(&apos;Backgrounds/Faculivingroom 2&apos;);">
             <ui:VisualElement name="CharacterLeft" class="character" style="position: relative; height: 100%; width: 40%; top: auto; left: auto; background-image: none; right: auto; -unity-background-scale-mode: scale-to-fit;" />
             <ui:VisualElement name="CharacterRight" class="character" style="position: relative; height: 100%; width: 40%; top: auto; left: auto; background-image: none; right: auto; -unity-background-scale-mode: scale-to-fit;" />
-            <ui:VisualElement name="Props" class="prop" style="position: absolute; height: 30%; width: 30%; top: 35%; left: 35%; background-image: none; -unity-background-scale-mode: scale-to-fit; right: 1%; bottom: 0;" />
+            <ui:VisualElement name="Props" class="prop" style="position: absolute; height: 70%; width: 60%; top: 15%; left: 20%; background-image: none; -unity-background-scale-mode: scale-to-fit; right: 1%; bottom: 0;" />
             <ui:VisualElement name="DBox" style="align-items: flex-end; justify-content: space-around; flex-direction: row-reverse; height: 28%; position: absolute; width: 100%; bottom: 2%; left: 0;">
                 <ui:VisualElement name="DialogueBox" style="padding-right: 0; padding-left: 0; width: 90%; height: 96%; padding-bottom: 0; background-color: rgb(0, 0, 0); margin-right: 0; margin-left: 0; margin-top: 0; margin-bottom: 0; border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; color: rgb(0, 0, 0); padding-top: 0; -unity-text-outline-color: rgb(0, 0, 0); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); opacity: 0.88; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; position: relative; align-items: center; justify-content: space-around;">
                     <ui:Label display-tooltip-when-elided="true" name="DialogueName" style="height: 20%; width: 98%; font-size: 22px; opacity: 1; position: relative; top: auto; left: auto; color: rgb(255, 255, 255); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font-definition: initial; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;);" />
@@ -53,7 +53,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="JournalUIContainer" style="position: absolute; width: 100%; height: 100%; display: flex;">
+    <ui:VisualElement name="JournalUIContainer" style="position: absolute; width: 100%; height: 100%; display: none; -unity-font: initial;">
         <ui:VisualElement name="Journelbg" style="width: 100%; height: 100%; position: absolute; background-color: rgb(171, 170, 170); opacity: 0.86; flex-direction: row; justify-content: space-around; align-items: center;" />
         <ui:VisualElement name="JContainter" style="width: 100%; height: 100%; flex-direction: row; align-items: center; justify-content: space-around;">
             <ui:VisualElement name="journal-menu" style="position: relative; width: 45%; height: 95%; top: auto; left: auto; background-color: rgb(99, 27, 97); align-items: center; justify-content: space-around;">
@@ -61,7 +61,7 @@
                     <ui:Label text="Event one" display-tooltip-when-elided="true" name="event-one-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="event-two" style="width: 80%; height: 20%; background-color: rgb(176, 176, 176);">
-                    <ui:Label text="Event two" display-tooltip-when-elided="true" name="event-two-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
+                    <ui:Label text="Event two" display-tooltip-when-elided="true" name="event-two-label" style="color: rgb(0, 0, 0); font-size: 30px; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;);" />
                 </ui:VisualElement>
                 <ui:VisualElement name="Help" style="width: 80%; height: 40%; background-color: rgb(176, 176, 176);">
                     <ui:Label text="Controls: left mouse click&#10;Info: rewind button to go &#10;back to a checkpoint." display-tooltip-when-elided="true" name="help-label" style="color: rgb(0, 0, 0); font-size: 30px;" />
@@ -78,7 +78,7 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="NewJournalEntry" style="width: 100%; height: 100%; align-items: center; justify-content: center; position: absolute; visibility: visible; display: flex;">
-        <ui:VisualElement name="NJEBG" style="width: 100%; height: 100%; position: absolute; background-color: rgb(128, 97, 109); opacity: 0.86; visibility: visible;" />
+        <ui:VisualElement name="NJEBG" style="width: 100%; height: 100%; position: absolute; background-color: rgb(0, 0, 0); opacity: 0.7; visibility: visible;" />
         <ui:VisualElement name="NJEPopup" style="width: 50%; height: 50%; background-color: rgb(255, 255, 255); border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; border-left-color: rgb(212, 212, 212); border-right-color: rgb(212, 212, 212); border-top-color: rgb(212, 212, 212); border-bottom-color: rgb(212, 212, 212); visibility: visible; justify-content: space-between; align-items: center;">
             <ui:VisualElement name="PopUpText" style="width: 100%; height: 80%; -unity-text-align: upper-center; align-items: center; top: 1%; justify-content: space-between;">
                 <ui:Label text="Title" display-tooltip-when-elided="true" name="Title" style="width: 56%; height: 22%; color: rgb(255, 255, 255); font-size: 24px; align-items: center; justify-content: flex-start; white-space: normal; background-color: rgb(135, 8, 100); -unity-text-align: middle-center; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;); -unity-font-style: bold; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;" />
