@@ -1,12 +1,13 @@
 .ui-button:hover {
-    rotate: -10deg;
-    width: 53px;
-    height: 53px;
+    rotate: 0;
+    width: 103px;
+    height: 103px;
     transition-duration: 0.3s;
+    scale: 1.05 1.05;
 }
 
 .d-button:hover {
-    background-color: rgba(94, 250, 46, 255);
+    background-color: rgb(94, 250, 46);
     transition-property: all, ignored;
     transition-duration: 0s, 0s;
     transition-timing-function: ease, ease;

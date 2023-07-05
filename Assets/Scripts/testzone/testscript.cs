@@ -43,9 +43,23 @@ public class testscript : MonoBehaviour
     ///
     private VisualElement journalUIContainer;
     private TextElement journalEntry;
+    private TextElement journalTitle;
+    private TextElement journalQuestion;
     private Button journalExit;
     private Button nextPage;
     private Button previousPage;
+    private Button reflectionPage;
+    private Button aboutPage;
+    private Button howToPlayPage;
+    private VisualElement reflectionPageContainer;
+    private VisualElement aboutPageContainer;
+    private VisualElement howToPlayPageContainer;
+    private Button bookmarkOne;
+    private Button bookmarkTwo;
+    private Button bookmarkThree;
+    private Button bookmarkFour;
+    private Button bookmarkFive;
+
     ///
     private Button jEButton;
     private VisualElement NewJournalEntry;
@@ -64,7 +78,10 @@ public class testscript : MonoBehaviour
     string testText;
     int pageNumber = 0;
     List<string> jEventText = new List<string>();
+    List<string> jEventTitle = new List<string>();
+    List<string> jEventQuestionText = new List<string>();
     List<int> jPages = new List<int>();
+
     public int jNumber = 0;
 
     int[] pages;
@@ -101,11 +118,25 @@ public class testscript : MonoBehaviour
         cThree = root.Q<Button>("button-c-three");
 
         journal = root.Q<Button>("journal");
-        journalUIContainer = root.Q<VisualElement>("JournalUIContainer");
-        journalEntry = root.Q<TextElement>("journalEntry");
+        //journalUIContainer = root.Q<VisualElement>("JournalUIContainer");
+        journalUIContainer = root.Q<VisualElement>("JournalUIContainerOld");
+        journalEntry = root.Q<TextElement>("journalSummaryText");
+        journalTitle = root.Q<TextElement>("journalTitle");
+        journalQuestion = root.Q<TextElement>("journalreflectionQuestion");
         journalExit = root.Q<Button>("exit-ui-button");
         nextPage = root.Q<Button>("next-page");
         previousPage = root.Q<Button>("back-page");
+        reflectionPage= root.Q<Button>("ReflectionEvents");
+        aboutPage= root.Q<Button>("About");
+        howToPlayPage= root.Q<Button>("HowToPlay");
+        reflectionPageContainer = root.Q<VisualElement>("ReflectionEventPage");
+        aboutPageContainer = root.Q<VisualElement>("AboutPage");
+        howToPlayPageContainer = root.Q<VisualElement>("HowToPlayPage");
+        bookmarkOne = root.Q<Button>("BookmarkOne");
+        bookmarkTwo = root.Q<Button>("BookmarkTwo");
+        bookmarkThree = root.Q<Button>("BookmarkThree");
+        bookmarkFour = root.Q<Button>("BookmarkFour");
+        bookmarkFive = root.Q<Button>("BookmarkFive");
 
         NewJournalEntry = root.Q<VisualElement>("NewJournalEntry");
         jEButton = root.Q<Button>("JEButton");
@@ -129,6 +160,14 @@ public class testscript : MonoBehaviour
         journalExit.RegisterCallback<ClickEvent>(ExitJournal);
         nextPage.RegisterCallback<ClickEvent>(nextPageB);
         previousPage.RegisterCallback<ClickEvent>(preivousPageB);
+        reflectionPage.RegisterCallback<ClickEvent>(showReflection);
+        aboutPage.RegisterCallback<ClickEvent>(showAbout);
+        howToPlayPage.RegisterCallback<ClickEvent>(showHowToPlay);
+        bookmarkOne.RegisterCallback<ClickEvent>(bMarkOne);
+        bookmarkTwo.RegisterCallback<ClickEvent>(bMarkTwo);
+        bookmarkThree.RegisterCallback<ClickEvent>(bMarkThree);
+        bookmarkFour.RegisterCallback<ClickEvent>(bMarkFour);
+        bookmarkFive.RegisterCallback<ClickEvent>(bMarkFive);
 
         jEButton.RegisterCallback<ClickEvent>(JournalEntryButton);
 
@@ -138,6 +177,13 @@ public class testscript : MonoBehaviour
         journalUIContainer.style.display = DisplayStyle.None;
         previousPage.style.display = DisplayStyle.None;
         NewJournalEntry.style.display = DisplayStyle.None;
+        howToPlayPageContainer.style.display = DisplayStyle.None;
+        aboutPageContainer.style.display = DisplayStyle.None;
+        bookmarkOne.style.display = DisplayStyle.None;
+        bookmarkTwo.style.display = DisplayStyle.None;
+        bookmarkThree.style.display = DisplayStyle.None;
+        bookmarkFour.style.display = DisplayStyle.None;
+        bookmarkFive.style.display = DisplayStyle.None;
         PopulateUI();
     }
     private void PopulateUI()
@@ -211,6 +257,24 @@ public class testscript : MonoBehaviour
                 NewJournalEntry.style.display = DisplayStyle.Flex;
         }
         journalUpdate();
+    }
+    private void showReflection(ClickEvent evt)
+    {
+        reflectionPageContainer.style.display = DisplayStyle.Flex;
+        howToPlayPageContainer.style.display = DisplayStyle.None;
+        aboutPageContainer.style.display = DisplayStyle.None;
+    }
+    private void showAbout(ClickEvent evt)
+    {
+        reflectionPageContainer.style.display = DisplayStyle.None;
+        howToPlayPageContainer.style.display = DisplayStyle.Flex;
+        aboutPageContainer.style.display = DisplayStyle.None;
+    }
+    private void showHowToPlay(ClickEvent evt)
+    {
+        reflectionPageContainer.style.display = DisplayStyle.None;
+        howToPlayPageContainer.style.display = DisplayStyle.None;
+        aboutPageContainer.style.display = DisplayStyle.Flex;
     }
     public void ScrollText()
     {
@@ -335,6 +399,36 @@ public class testscript : MonoBehaviour
         journalUpdate();
 
     }
+    private void bMarkOne(ClickEvent evt)
+    {
+        pageNumber = 0;
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+        journalUpdate();
+    }
+    private void bMarkTwo(ClickEvent evt)
+    {
+        pageNumber = 1;
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+        journalUpdate();
+    }
+    private void bMarkThree(ClickEvent evt)
+    {
+        pageNumber = 2;
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+        journalUpdate();
+    }
+    private void bMarkFour(ClickEvent evt)
+    {
+        pageNumber = 3;
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+        journalUpdate();
+    }
+    private void bMarkFive(ClickEvent evt)
+    {
+        pageNumber = 4;
+        Audio.PlayOneShot(pageflipClip, 0.7F);
+        journalUpdate();
+    }
     public void journalUpdate()
     {
         //if (jPages.Count == 0)
@@ -371,6 +465,8 @@ public class testscript : MonoBehaviour
             {
                 //eventText.text = jEventText[jEventText.Count -1];
                 journalEntry.text = jEventText[pageNumber];
+                journalTitle.text = jEventTitle[pageNumber];
+                journalQuestion.text = jEventQuestionText[pageNumber];
                 Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
                 Debug.Log("jPages" + string.Join(", ", jPages));
                 Debug.Log("jEventText" + string.Join(", ", jEventText));
@@ -409,22 +505,61 @@ public class testscript : MonoBehaviour
                     jPages.Add(jNumber);
                     //jPages.Add(pageNumber);
                     jEventText.Add(journalSO.journalEntry);
+                    jEventTitle.Add(journalSO.journalTitle);
+                    jEventQuestionText.Add(journalSO.reflectionQuestion);
                     journalEntry.text = jEventText[pageNumber];
+                    journalTitle.text = jEventTitle[pageNumber];
+                    journalQuestion.text = jEventQuestionText[pageNumber];
                 }
             }
             else if (!jPages.Contains(jNumber))
             {
                 jEventText.Add(journalSO.journalEntry);
+                jEventTitle.Add(journalSO.journalTitle);
+                jEventQuestionText.Add(journalSO.reflectionQuestion);
                 jPages.Add(jNumber);
                 journalEntry.text = jEventText[jPages.Count -1];
-            }
+                journalTitle.text = jEventTitle[jPages.Count -1];
+                journalQuestion.text = jEventQuestionText[jPages.Count -1];
+            } 
             Debug.Log("jNumber " + jNumber);
             Debug.Log("jEventText" + journalSO.journalEntry);
             Debug.Log("Page Number " + pageNumber);
 
             Debug.Log("Page Number " + pageNumber);
             Debug.Log("jPages" + string.Join(", ", jPages));
-            
+
+            if(jPages.Count >= 5)
+            {
+            bookmarkOne.style.display = DisplayStyle.Flex;
+            bookmarkTwo.style.display = DisplayStyle.Flex;
+            bookmarkThree.style.display = DisplayStyle.Flex;
+            bookmarkFour.style.display = DisplayStyle.Flex;
+            bookmarkFive.style.display = DisplayStyle.Flex;
+            }
+            if(jPages.Count >= 4)
+            {
+            bookmarkOne.style.display = DisplayStyle.Flex;
+            bookmarkTwo.style.display = DisplayStyle.Flex;
+            bookmarkThree.style.display = DisplayStyle.Flex;
+            bookmarkFour.style.display = DisplayStyle.Flex;
+            }
+            if(jPages.Count >= 3)
+            {
+            bookmarkOne.style.display = DisplayStyle.Flex;
+            bookmarkTwo.style.display = DisplayStyle.Flex;
+            bookmarkThree.style.display = DisplayStyle.Flex;
+            }
+            if(jPages.Count >= 2)
+            {
+                bookmarkOne.style.display = DisplayStyle.Flex;
+                bookmarkTwo.style.display = DisplayStyle.Flex;
+            }
+            if(jPages.Count >= 1)
+            {
+                bookmarkOne.style.display = DisplayStyle.Flex;
+            }
+
             journalUpdate();
             
             NewJournalEntry.style.display = DisplayStyle.None;

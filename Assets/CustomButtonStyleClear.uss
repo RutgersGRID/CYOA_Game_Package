@@ -1,0 +1,6 @@
+.CustomButtonStyleClear {
+    background-image: resource('Props/closebook');
+    -unity-background-image-tint-color: rgb(127, 127, 127);
+    display: flex;
+    background-color: rgba(56, 56, 56, 0);
+}
