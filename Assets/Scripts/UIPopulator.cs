@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class testscript : MonoBehaviour
+public class UIPopulator : MonoBehaviour
 {
     public DCSVtoSO dcsvToSO;
     public JCSVtoSO jcsvToSO;
@@ -73,7 +73,6 @@ public class testscript : MonoBehaviour
     public AudioClip pageflipClip;
     public AudioClip dialogueBeepClip;
     AudioSource Audio;
-
     private int previousCheckPoint;
     string testText;
     int pageNumber = 0;
@@ -81,11 +80,15 @@ public class testscript : MonoBehaviour
     List<string> jEventTitle = new List<string>();
     List<string> jEventQuestionText = new List<string>();
     List<int> jPages = new List<int>();
-
     public int jNumber = 0;
-
     int[] pages;
     string[] pageLog;
+
+    public float fadeDuration = 1.0f;
+    Sprite nextCharacter;
+    Sprite currentCharacter;
+    Sprite leftCharacter;
+    
  private void Start()
     {
         Audio = GetComponent<AudioSource>();
@@ -202,8 +205,17 @@ public class testscript : MonoBehaviour
             twoOptionAnswers.style.display = DisplayStyle.None;
             threeOptionAnswers.style.display = DisplayStyle.None;
 
+            var dialogueSO2 = dcsvToSO.dialogues[currentIndex + 1];
+            nextCharacter = dialogueSO2.LeftSideSpeaker;
+            currentCharacter = dialogueSO.LeftSideSpeaker;
+            leftCharacter = dialogueSO.LeftSideSpeaker;
+            
+            if (currentCharacter != nextCharacter)
+            {
+                FadeIn(characterImageLeft);
+            }
+
             nameText.text = dialogueSO.Speaker;
-            //dialogueText.text = dialogueSO.Line;
             testText = dialogueSO.Line;
             ScrollText();
         }
@@ -230,7 +242,6 @@ public class testscript : MonoBehaviour
             bThree.text = dialogueSO.A2Answer;
             cThree.text = dialogueSO.A3Answer;
         }
-
         if (dialogueSO.Effect != -1 && jNumber != 0)
         {
             if (!jPages.Contains(jNumber))
@@ -258,6 +269,52 @@ public class testscript : MonoBehaviour
         }
         journalUpdate();
     }
+    public void FadeIn(VisualElement targetElement)
+{
+    // Start a coroutine to fade in the background image
+    StartCoroutine(FadeInCoroutine(targetElement));
+}
+
+private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetElement)
+{
+    // Store the original opacity value
+    float originalOpacity = targetElement.style.opacity.value;
+
+    // Calculate the increment value for each frame
+    float increment = 1.0f / fadeDuration * Time.deltaTime;
+
+    // Gradually increase the opacity value until it reaches 1
+    while (targetElement.style.opacity.value < 1)
+    {
+        targetElement.style.opacity = targetElement.style.opacity.value + increment;
+        yield return null;
+    }
+
+    // Ensure the opacity value is set to 1
+    targetElement.style.opacity = 1;
+
+    // Stop the coroutine
+    yield break;
+}
+
+    // public void StartFadeOut()
+    // {
+    //     StartCoroutine(FadeOut());
+    // }
+
+    // private IEnumerator FadeOut()
+    // {
+    //     float startTime = Time.time;
+
+    //     while (Time.time < startTime + duration)
+    //     {
+    //         float t = (Time.time - startTime) / duration;
+    //         myElement.style.opacity = 1 - t;
+    //         yield return null;
+    //     }
+
+    //     myElement.style.opacity = 0;
+    // }
     private void showReflection(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.Flex;
@@ -431,7 +488,7 @@ public class testscript : MonoBehaviour
     }
     public void journalUpdate()
     {
-        //if (jPages.Count == 0)
+
         if (jPages.Count <= 0)
         {
             nextPage.style.display = DisplayStyle.None;
@@ -559,9 +616,7 @@ public class testscript : MonoBehaviour
             {
                 bookmarkOne.style.display = DisplayStyle.Flex;
             }
-
             journalUpdate();
-            
             NewJournalEntry.style.display = DisplayStyle.None;
         }
 }
