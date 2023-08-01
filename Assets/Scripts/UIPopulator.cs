@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
 
 public class UIPopulator : MonoBehaviour
 {
@@ -45,6 +47,7 @@ public class UIPopulator : MonoBehaviour
     private TextElement journalEntry;
     private TextElement journalTitle;
     private TextElement journalQuestion;
+    private VisualElement doodle;
     private Button journalExit;
     private Button nextPage;
     private Button previousPage;
@@ -79,18 +82,21 @@ public class UIPopulator : MonoBehaviour
     List<string> jEventText = new List<string>();
     List<string> jEventTitle = new List<string>();
     List<string> jEventQuestionText = new List<string>();
+    List<Sprite> jdoodle = new List<Sprite>();
     List<int> jPages = new List<int>();
     public int jNumber = 0;
     int[] pages;
     string[] pageLog;
-
-    public float fadeDuration = 1.0f;
+    ///
+    public float typingSpeed = 0.05f;
+    ///
     Sprite nextCharacter;
     Sprite currentCharacter;
-    Sprite leftCharacter;
+    Sprite rightCharacter;
     
  private void Start()
     {
+        
         Audio = GetComponent<AudioSource>();
         var root = GetComponent<UIDocument>().rootVisualElement;
         dlogElements = root.Q<VisualElement>("dlog-elements");
@@ -121,11 +127,12 @@ public class UIPopulator : MonoBehaviour
         cThree = root.Q<Button>("button-c-three");
 
         journal = root.Q<Button>("journal");
-        //journalUIContainer = root.Q<VisualElement>("JournalUIContainer");
+
         journalUIContainer = root.Q<VisualElement>("JournalUIContainerOld");
         journalEntry = root.Q<TextElement>("journalSummaryText");
         journalTitle = root.Q<TextElement>("journalTitle");
         journalQuestion = root.Q<TextElement>("journalreflectionQuestion");
+        doodle = root.Q<VisualElement>("Doodle");
         journalExit = root.Q<Button>("exit-ui-button");
         nextPage = root.Q<Button>("next-page");
         previousPage = root.Q<Button>("back-page");
@@ -205,20 +212,11 @@ public class UIPopulator : MonoBehaviour
             twoOptionAnswers.style.display = DisplayStyle.None;
             threeOptionAnswers.style.display = DisplayStyle.None;
 
-            var dialogueSO2 = dcsvToSO.dialogues[currentIndex + 1];
-            nextCharacter = dialogueSO2.LeftSideSpeaker;
-            currentCharacter = dialogueSO.LeftSideSpeaker;
-            leftCharacter = dialogueSO.LeftSideSpeaker;
-            
-            if (currentCharacter != nextCharacter)
-            {
-                FadeIn(characterImageLeft);
-            }
-
             nameText.text = dialogueSO.Speaker;
             testText = dialogueSO.Line;
-            ScrollText();
+            ScrollT(testText);
         }
+
         else if (dialogueSO.Type.Equals("b", StringComparison.CurrentCultureIgnoreCase))
         {
             dlogBG.style.display = DisplayStyle.Flex;
@@ -267,54 +265,12 @@ public class UIPopulator : MonoBehaviour
         {
                 NewJournalEntry.style.display = DisplayStyle.Flex;
         }
+        StartFadeIn(characterImageRight);
+        StartFadeIn(characterImageLeft);
+        StartFadeIn(propImage);
         journalUpdate();
     }
-    public void FadeIn(VisualElement targetElement)
-{
-    // Start a coroutine to fade in the background image
-    StartCoroutine(FadeInCoroutine(targetElement));
-}
 
-private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetElement)
-{
-    // Store the original opacity value
-    float originalOpacity = targetElement.style.opacity.value;
-
-    // Calculate the increment value for each frame
-    float increment = 1.0f / fadeDuration * Time.deltaTime;
-
-    // Gradually increase the opacity value until it reaches 1
-    while (targetElement.style.opacity.value < 1)
-    {
-        targetElement.style.opacity = targetElement.style.opacity.value + increment;
-        yield return null;
-    }
-
-    // Ensure the opacity value is set to 1
-    targetElement.style.opacity = 1;
-
-    // Stop the coroutine
-    yield break;
-}
-
-    // public void StartFadeOut()
-    // {
-    //     StartCoroutine(FadeOut());
-    // }
-
-    // private IEnumerator FadeOut()
-    // {
-    //     float startTime = Time.time;
-
-    //     while (Time.time < startTime + duration)
-    //     {
-    //         float t = (Time.time - startTime) / duration;
-    //         myElement.style.opacity = 1 - t;
-    //         yield return null;
-    //     }
-
-    //     myElement.style.opacity = 0;
-    // }
     private void showReflection(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.Flex;
@@ -324,43 +280,82 @@ private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetEleme
     private void showAbout(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
-        howToPlayPageContainer.style.display = DisplayStyle.Flex;
-        aboutPageContainer.style.display = DisplayStyle.None;
+        howToPlayPageContainer.style.display = DisplayStyle.None;
+        aboutPageContainer.style.display = DisplayStyle.Flex;
     }
     private void showHowToPlay(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
-        howToPlayPageContainer.style.display = DisplayStyle.None;
-        aboutPageContainer.style.display = DisplayStyle.Flex;
+        howToPlayPageContainer.style.display = DisplayStyle.Flex;
+        aboutPageContainer.style.display = DisplayStyle.None;
     }
-    public void ScrollText()
+    public void StartFadeIn(VisualElement visualElement)
     {
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(testText));
-
+        StartCoroutine(FadeInCoroutine(visualElement));
     }
-    IEnumerator TypeSentence (string sentence) 
-    {   //char space = " ";
-        dialogueText.text = "";
-        int counter = 0;
-        foreach (char letter in sentence.ToCharArray())
+
+    private IEnumerator FadeInCoroutine(VisualElement visualElement)
+    {
+        float targetOpacity = 1f;
+        float startOpacity = 0f;
+        float timeStep = 1f / 1f; // Calculate timeStep based on desired duration (0.5 seconds)
+
+        visualElement.style.opacity = new StyleFloat(startOpacity);
+
+        while (visualElement.style.opacity.value < targetOpacity)
         {
-            dialogueText.text += letter;
-            // if (stopAudioSource)
-            // {
-            //     audioSource.Stop();
-            // }
-            // if ((letter.Equals(" ") == false) && (counter % charInterval == 0))
-            // {
-            //     audioSource.PlayOneShot(dialogueTypingSoundClip);
-            // }
-            if (counter%4 == 0)
+            float newOpacity = Mathf.MoveTowards(visualElement.style.opacity.value, targetOpacity, timeStep * Time.deltaTime);
+            visualElement.style.opacity = new StyleFloat(newOpacity);
+            yield return null;
+        }
+
+        visualElement.style.opacity = new StyleFloat(targetOpacity);
+    }
+        public void ScrollT(string sentence)
+    {
+        StartCoroutine(TypeText(sentence));
+    }
+
+    private IEnumerator TypeText(string sentence)
+    {
+        dialogueText.text = "";
+
+        bool insideTag = false;
+        bool insideRichTextTag = false;
+        foreach (char c in sentence)
+        {
+            if (c == '<')
             {
-                Audio.PlayOneShot(dialogueBeepClip, 0.7F);
+                insideTag = true;
             }
-            
-            yield return new WaitForSeconds(.02f);
-            counter++;
+
+            if (insideTag)
+            {
+                dialogueText.text += c;
+            }
+            else
+            {
+                if (c == '>')
+                {
+                    insideRichTextTag = false;
+                }
+
+                if (!insideRichTextTag)
+                {
+                    dialogueText.text += c;
+                    yield return new WaitForSeconds(typingSpeed);
+                }
+
+                if (c == '/')
+                {
+                    insideRichTextTag = true;
+                }
+            }
+
+            if (c == '>')
+            {
+                insideTag = false;
+            }
         }
     }
     private void NextDialogue(ClickEvent evt)
@@ -378,6 +373,11 @@ private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetEleme
         Title.text = journalSO.journalTitle;
         SummaryText.text = journalSO.journalEntry;
         Question.text = journalSO.reflectionQuestion;
+        doodle.style.backgroundImage = new StyleBackground(journalSO.doodle);
+
+
+        // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
+        // doodle.style.backgroundImage = styleBackground;
 
         currentIndex = dialogueSO.GoToIDA1;
         dialogueSO = dcsvToSO.dialogues[currentIndex];
@@ -393,6 +393,10 @@ private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetEleme
         Title.text = journalSO.journalTitle;
         SummaryText.text = journalSO.journalEntry;
         Question.text = journalSO.reflectionQuestion;
+        doodle.style.backgroundImage = new StyleBackground(journalSO.doodle);
+
+        // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
+        // doodle.style.backgroundImage = styleBackground;
 
         currentIndex = dialogueSO.GoToIDA2;
         dialogueSO = dcsvToSO.dialogues[currentIndex];
@@ -408,6 +412,10 @@ private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetEleme
         Title.text = journalSO.journalTitle;
         SummaryText.text = journalSO.journalEntry;
         Question.text = journalSO.reflectionQuestion;
+        doodle.style.backgroundImage = new StyleBackground(journalSO.doodle);
+        
+        // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
+        // doodle.style.backgroundImage = styleBackground;
 
         currentIndex = dialogueSO.GoToIDA3;
         dialogueSO = dcsvToSO.dialogues[currentIndex];
@@ -524,6 +532,11 @@ private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetEleme
                 journalEntry.text = jEventText[pageNumber];
                 journalTitle.text = jEventTitle[pageNumber];
                 journalQuestion.text = jEventQuestionText[pageNumber];
+                doodle.style.backgroundImage = new StyleBackground(jdoodle[pageNumber]);
+
+                // StyleBackground styleBackground = new StyleBackground(jdoodle[pageNumber].texture);
+                // doodle.style.backgroundImage = styleBackground;
+
                 Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
                 Debug.Log("jPages" + string.Join(", ", jPages));
                 Debug.Log("jEventText" + string.Join(", ", jEventText));
@@ -564,9 +577,14 @@ private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetEleme
                     jEventText.Add(journalSO.journalEntry);
                     jEventTitle.Add(journalSO.journalTitle);
                     jEventQuestionText.Add(journalSO.reflectionQuestion);
+                    jdoodle.Add(journalSO.doodle);
                     journalEntry.text = jEventText[pageNumber];
                     journalTitle.text = jEventTitle[pageNumber];
                     journalQuestion.text = jEventQuestionText[pageNumber];
+
+                    // StyleBackground styleBackground = new StyleBackground(jdoodle[pageNumber].texture);
+                    // doodle.style.backgroundImage = styleBackground;
+                    
                 }
             }
             else if (!jPages.Contains(jNumber))
@@ -574,10 +592,15 @@ private System.Collections.IEnumerator FadeInCoroutine(VisualElement targetEleme
                 jEventText.Add(journalSO.journalEntry);
                 jEventTitle.Add(journalSO.journalTitle);
                 jEventQuestionText.Add(journalSO.reflectionQuestion);
+                jdoodle.Add(journalSO.doodle);
                 jPages.Add(jNumber);
                 journalEntry.text = jEventText[jPages.Count -1];
                 journalTitle.text = jEventTitle[jPages.Count -1];
                 journalQuestion.text = jEventQuestionText[jPages.Count -1];
+                doodle.style.backgroundImage = new StyleBackground(jdoodle[jPages.Count -1]);
+
+                // StyleBackground styleBackground = new StyleBackground(jdoodle[jPages.Count -1].texture);
+                // doodle.style.backgroundImage = styleBackground;
             } 
             Debug.Log("jNumber " + jNumber);
             Debug.Log("jEventText" + journalSO.journalEntry);
