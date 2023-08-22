@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "cyoa-game-package",
+  "private_key_id": "b4a53fe43c747c7c6e3b3559894232bcc0d50579",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCwI+DcGI1je4db\nNi7xPxcsLIZIlrtRjokUYFznD0NmhvuISrUbyxisG82FtTOKsWMgtvdheBv2DSzQ\nckS7CxErrUpfPmzLtyVixFJsOa/rIOyuWsyNy12USrTHTUzSHzPJOb6XCFUkG0O/\nBJU3rA4h50Gd7tTvFCnOYZoH6+cJJDlx+VjNjeHBFZ3fu295YibaLQlFWPm2hGhT\n2VnVovPEYi/4iGzeiw60YkdFX58CTDr5/e+1lg0r3bfs3itoZMxprpxd90LdoIAB\nld95la5XUX0oKtVLypV2gEhiDsmLeVYuDSaoH6EFFF2xgX1x2cHq/SCYUrOWmq7L\newNaLAA3AgMBAAECggEAPZkefvobIApIKM7HFdkReoJLp8EG2xu0tqqIcsm0sXtN\nJbmyonihNTc35aWb08n7N6qk0rJVXPP4kyETBjJ1m8erdal4FLoE2gh8Jpr5+Yl3\nG/ZnCMNxA3YoyHYxAl6lFp8aFul0FP9v7rJkmKaT/qlIGjo2vzFW+XTKkDCgiGJN\nHsqw1zcsHkhci7RSLudzCM5AXVjx24LCSmw4/pcPvqPvJ4Z+yqmHQb5hK0MDb5Zy\n71uZQlEDZPENK8w6+j/+VI9oguS7oQkOFzLo5Yu0Ows09wNg0h5WFprmQZrTQxFk\n11bHuONoRaM5blHfIc8Y6KMGLaokFaOGhHxcCKG32QKBgQDZtnUHo4crgiA1FCgf\no/6kQYelqqwErB/v5AzRr4xvrA8THOaMnzjcWfFKKCxrycrWM9/RnLvbWc4gnA1A\nn8qTA2To0ot3NLjQ4BGXdJYJrTl1HKCG5d5TQetr/dj/p/4/EySWFyoW6pYvuREO\n3YEZbnPdq9iRASbB1W02RL53awKBgQDPHc1Cf9Iy9mfVnEMDfFM20VRW3S1OhxiY\nrouE46kjSjk+7okWMhH10j3BA3Z6n1MRF5WBHjjRJYzKssU/SepLOGfH3sdCS+i1\n11O8hr1uamj9ZdgSccWywK8fYdGhekEWLlZATdDyDIOS5Ppif1J+3vFPVjqarwN9\nLIe/MyRpZQKBgQCAzMTnxAMP5mgPfuFN9sOLgYkypYonKX2reotq8iRvXKd+czai\nMwB8vGlXqfS9wCBUIVRkugkZeEPOXwQoG2DJINTuOMFxwKsmR6mgpMSu7OB1PH5r\n0Ep7jyAsP33Foil0P2sBsKqh7B72FNLWrIzX8tRxbF0vTDMVsaJu3LSiCQKBgQCY\nqhvpP3R98hiZYIQY5qQjzOqA2KkTsArWSBo5CuJaS9SkaYkMnj2U17KDOf0z54qA\nF8UwlklFCIudwWYY/2++oEYHElQHrxJKLvzfAuZQpAjddxtshQY3e0XaOO0fPJEL\nO36CCZnRQJ4fQb65qaXyNHzkgOfTqttEgfVRXu4g7QKBgQC5FYIGXXu+U+FHs8Oa\notOTO+qMQH9BqGYAvgXRTTHK8Fd8hol67z75V9eiMLot4jdTOhHGE+g86wU57Kds\nqLqZXGU/gx4NuYMYACwajSyXmxY9NuS+SzOXOb9QNWThgYqr3SZzujcA6H2Zyi4p\nHUV064Qtp/XjF6NSXHALv+OR6A==\n-----END PRIVATE KEY-----\n",
+  "client_email": "eric-982@cyoa-game-package.iam.gserviceaccount.com",
+  "client_id": "110011237044609510535",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/eric-982%40cyoa-game-package.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
