@@ -28,8 +28,6 @@ public class TitleScreenPopulator : MonoBehaviour
 
         proceed.RegisterCallback<ClickEvent>(nextScene);
 
-        
-
         //int counter = ccsvToSO.logins.Count;
         //Debug.Log(counter);
     }
