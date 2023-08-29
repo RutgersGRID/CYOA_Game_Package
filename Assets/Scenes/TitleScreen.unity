@@ -272,6 +272,8 @@ GameObject:
   - component: {fileID: 1531899972}
   - component: {fileID: 1531899971}
   - component: {fileID: 1531899973}
+  - component: {fileID: 1531899975}
+  - component: {fileID: 1531899974}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -317,7 +319,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531899968}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e23bee7751b1d1a4da4751c831c88871, type: 3}
   m_Name: 
@@ -331,7 +333,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531899968}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 822a6e85f00ea5a4c8ec7fd195390371, type: 3}
   m_Name: 
@@ -345,10 +347,36 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531899968}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22156bfffe2709f47b9759d3a4e3301d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: John Doe
   playerScore: 100
+--- !u!114 &1531899974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531899968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60bfcd4a4889a846b80c7c12343dc3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gsrt: {fileID: 1531899975}
+--- !u!114 &1531899975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531899968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0913c1e6a29964f8132720182224d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logins: []
