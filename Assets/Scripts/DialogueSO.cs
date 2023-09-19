@@ -12,10 +12,6 @@ public class DialogueSO : ScriptableObject
     public Sprite RightSideSpeaker;
     public Sprite Prop;
     public Sprite Background;
-    // public string LeftSideSpeaker;
-    // public string RightSideSpeaker;
-    // public string Prop;
-    // public string Background;
     public int Checkpoint;
     public string Type;
     public int GoToID;
