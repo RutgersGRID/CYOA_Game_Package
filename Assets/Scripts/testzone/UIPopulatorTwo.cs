@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-
-
 public class UIPopulatorTwo : MonoBehaviour
 {
-    public StorySheetReader SSR;
-    public JCSVtoSO jcsvToSO;
+    public StorySheetReaderTwo SSR;
+    public JournalSheetReaderTwo JSR;
     int currentIndex = 0;
     private VisualElement dlogElements;
     private VisualElement dlogBG;
@@ -62,7 +60,6 @@ public class UIPopulatorTwo : MonoBehaviour
     private Button bookmarkThree;
     private Button bookmarkFour;
     private Button bookmarkFive;
-
     ///
     private Button jEButton;
     private VisualElement NewJournalEntry;
@@ -70,7 +67,7 @@ public class UIPopulatorTwo : MonoBehaviour
     private TextElement SummaryText;
     private TextElement ReflectionQ;  
     private TextElement Question; 
-
+    /// 
     public AudioClip newLogClip;
     public AudioClip checkpointClip;
     public AudioClip pageflipClip;
@@ -96,7 +93,6 @@ public class UIPopulatorTwo : MonoBehaviour
     
  private void Start()
     {
-        
         Audio = GetComponent<AudioSource>();
         var root = GetComponent<UIDocument>().rootVisualElement;
         dlogElements = root.Q<VisualElement>("dlog-elements");
@@ -155,6 +151,12 @@ public class UIPopulatorTwo : MonoBehaviour
         ReflectionQ = root.Q<TextElement>("reflectionQ");  
         Question = root.Q<TextElement>("reflectionQuestion"); 
 
+        SSR.onDataLoaded += DataLoadedCallback;
+        SSR.StartCoroutine(SSR.ObtainSheetData());
+
+        JSR.onDataLoaded += DataLoadedCallback;
+        JSR.StartCoroutine(JSR.ObtainSheetData());
+
         nextButton.RegisterCallback<ClickEvent>(NextDialogue);
         aTwo.RegisterCallback<ClickEvent>(NextDialogueA);
         bTwo.RegisterCallback<ClickEvent>(NextDialogueB);
@@ -194,81 +196,118 @@ public class UIPopulatorTwo : MonoBehaviour
         bookmarkThree.style.display = DisplayStyle.None;
         bookmarkFour.style.display = DisplayStyle.None;
         bookmarkFive.style.display = DisplayStyle.None;
+
+        //PopulateUI();
+    }
+    void DataLoadedCallback()
+    {
+        Debug.Log("Data loaded and list populated.");
+        Debug.Log("Size of SSR.dialogues: " + SSR.dialogues.Count);
+        Debug.Log("Size of JSR.journals: " + JSR.journals.Count);
+        preloadTheList();
+        if (SSR.dialogues.Count > 0) 
+    {
         PopulateUI();
     }
+    }
+        private void preloadTheList()
+    {
+        foreach (var dialogue in SSR.dialogues)
+        {
+        }
+        foreach (var journal in JSR.journals)
+        {
+        }
+    }
+
     private void PopulateUI()
     {
-        var dialogueSO = SSR.dialogues[currentIndex];
-
-        dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Background);
-        characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeaker);
-        characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeaker);
-        propImage.style.backgroundImage = new StyleBackground(dialogueSO.Prop);
-
-        if (dialogueSO.Type.Equals("a", StringComparison.CurrentCultureIgnoreCase))
+        if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count) 
         {
-            dlogBG.style.display = DisplayStyle.Flex;
-            DBox.style.display = DisplayStyle.Flex;
-            twoOptionAnswers.style.display = DisplayStyle.None;
-            threeOptionAnswers.style.display = DisplayStyle.None;
+            var dialogueSO = SSR.dialogues[currentIndex];
 
-            nameText.text = dialogueSO.Speaker;
-            testText = dialogueSO.Line;
-            ScrollT(testText);
-        }
+            dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
+            characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
+            characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
+            propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
 
-        else if (dialogueSO.Type.Equals("b", StringComparison.CurrentCultureIgnoreCase))
-        {
-            dlogBG.style.display = DisplayStyle.Flex;
-            DBox.style.display = DisplayStyle.None;
-            twoOptionAnswers.style.display = DisplayStyle.Flex;
-            threeOptionAnswers.style.display = DisplayStyle.None;
+            Debug.Log("dialogueSO.Effects" + dialogueSO.Effects);
+            if (dialogueSO.Types.Equals("a", StringComparison.CurrentCultureIgnoreCase))
+            {
+                dlogBG.style.display = DisplayStyle.Flex;
+                DBox.style.display = DisplayStyle.Flex;
+                twoOptionAnswers.style.display = DisplayStyle.None;
+                threeOptionAnswers.style.display = DisplayStyle.None;
 
-            questionTwoAnswers.text = dialogueSO.Line;
-            aTwo.text = dialogueSO.A1Answer;
-            bTwo.text = dialogueSO.A2Answer;
-        }
-        else if (dialogueSO.Type.Equals("c", StringComparison.CurrentCultureIgnoreCase))
-        {
-            dlogBG.style.display = DisplayStyle.Flex;
-            DBox.style.display = DisplayStyle.None;
-            twoOptionAnswers.style.display = DisplayStyle.None;
-            threeOptionAnswers.style.display = DisplayStyle.Flex;
+                nameText.text = dialogueSO.Speakers;
+                testText = dialogueSO.Lines;
+                ScrollT(testText);
+            }
 
-            questionThreeAnswers.text = dialogueSO.Line;
-            aThree.text = dialogueSO.A1Answer;
-            bThree.text = dialogueSO.A2Answer;
-            cThree.text = dialogueSO.A3Answer;
-        }
-        if (dialogueSO.Effect != -1 && jNumber != 0)
-        {
-            if (!jPages.Contains(jNumber))
+            else if (dialogueSO.Types.Equals("b", StringComparison.CurrentCultureIgnoreCase))
+            {
+                dlogBG.style.display = DisplayStyle.Flex;
+                DBox.style.display = DisplayStyle.None;
+                twoOptionAnswers.style.display = DisplayStyle.Flex;
+                threeOptionAnswers.style.display = DisplayStyle.None;
+
+                questionTwoAnswers.text = dialogueSO.Lines;
+                aTwo.text = dialogueSO.A1Answers;
+                bTwo.text = dialogueSO.A2Answers;
+            }
+            else if (dialogueSO.Types.Equals("c", StringComparison.CurrentCultureIgnoreCase))
+            {
+                dlogBG.style.display = DisplayStyle.Flex;
+                DBox.style.display = DisplayStyle.None;
+                twoOptionAnswers.style.display = DisplayStyle.None;
+                threeOptionAnswers.style.display = DisplayStyle.Flex;
+
+                questionThreeAnswers.text = dialogueSO.Lines;
+                aThree.text = dialogueSO.A1Answers;
+                bThree.text = dialogueSO.A2Answers;
+                cThree.text = dialogueSO.A3Answers;
+            }
+            if (dialogueSO.Effects != -1 && jNumber != 0)
+            {
+                if (!jPages.Contains(jNumber))
+                {
+                    NewJournalEntry.style.display = DisplayStyle.Flex;
+                }
+            }
+            else if (dialogueSO.Effects != -1)
+            {
+                if (!jPages.Contains(dialogueSO.Effects))
+                {
+                    jNumber = dialogueSO.Effects;
+
+                    if (jNumber < 0 || jNumber >= JSR.journals.Count) // Check added here
+                    {
+                        Debug.LogError("jNumber out of range!");
+                        return;
+                    }
+
+                    var journalSO = JSR.journals[jNumber];
+                    Title.text = journalSO.journalTitles;
+                    SummaryText.text = journalSO.journalEntrys;
+                    Question.text = journalSO.reflectionQuestions;
+                    NewJournalEntry.style.display = DisplayStyle.Flex;
+                }
+            }
+            else if (!jPages.Contains(jNumber) && jPages.Count > 0)
             {
                 NewJournalEntry.style.display = DisplayStyle.Flex;
-                //jNumber = dialogueSO.Effect;
             }
+            
+            StartFadeIn(characterImageRight);
+            StartFadeIn(characterImageLeft);
+            StartFadeIn(propImage);
+            journalUpdate();
         }
-        else if (dialogueSO.Effect != -1)
+        else 
         {
-            //if (!jPages.Contains(jNumber))
-            if (!jPages.Contains(dialogueSO.Effect))
-            {
-                jNumber = dialogueSO.Effect;
-                var journalSO = jcsvToSO.journals[jNumber];
-                Title.text = journalSO.journalTitle;
-                SummaryText.text = journalSO.journalEntry;
-                Question.text = journalSO.reflectionQuestion;
-                NewJournalEntry.style.display = DisplayStyle.Flex;
-            }
+            Debug.LogError("currentIndex out of range! Value: " + currentIndex);
         }
-        else if (!jPages.Contains(jNumber) && jPages.Count>0)
-        {
-                NewJournalEntry.style.display = DisplayStyle.Flex;
-        }
-        StartFadeIn(characterImageRight);
-        StartFadeIn(characterImageLeft);
-        StartFadeIn(propImage);
-        journalUpdate();
+        
     }
 
     private void showReflection(ClickEvent evt)
@@ -359,27 +398,44 @@ public class UIPopulatorTwo : MonoBehaviour
         }
     }
     private void NextDialogue(ClickEvent evt)
+{
+    Debug.Log($"CurrentIndex before change: {currentIndex}");
+    if (currentIndex < 0 || currentIndex >= SSR.dialogues.Count)
     {
-        var dialogueSO = SSR.dialogues[currentIndex];
-        currentIndex = dialogueSO.GoToID;
-        PopulateUI();
+        Debug.LogError("Current index is out of range!");
+        return; 
     }
+
+    var dialogueSO = SSR.dialogues[currentIndex];
+    int nextIndex = dialogueSO.GoToIDs;
+
+    // Check if the next index is within range
+    if (nextIndex < 0 || nextIndex >= SSR.dialogues.Count)
+    {
+        Debug.LogError($"GoToID {nextIndex} is out of range!");
+        return; // Exit function early
+    }
+
+    currentIndex = nextIndex;  // Update current index to the valid next index
+    PopulateUI();
+}
     private void NextDialogueA(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
-        var journalSO = jcsvToSO.journals[dialogueSO.EffectA1];
-        jNumber = dialogueSO.EffectA1;
+        var journalSO = JSR.journals[dialogueSO.EffectA1s];
+        //var journalSO = jcsvToSO.journals[dialogueSO.EffectA1];
+        jNumber = dialogueSO.EffectA1s;
 
-        Title.text = journalSO.journalTitle;
-        SummaryText.text = journalSO.journalEntry;
-        Question.text = journalSO.reflectionQuestion;
-        doodle.style.backgroundImage = new StyleBackground(journalSO.doodle);
+        Title.text = journalSO.journalTitles;
+        SummaryText.text = journalSO.journalEntrys;
+        Question.text = journalSO.reflectionQuestions;
+        doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
 
 
         // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
         // doodle.style.backgroundImage = styleBackground;
 
-        currentIndex = dialogueSO.GoToIDA1;
+        currentIndex = dialogueSO.GoToIDA1s;
         dialogueSO = SSR.dialogues[currentIndex];
         Debug.Log("jNumber " + jNumber);
         PopulateUI();
@@ -387,18 +443,19 @@ public class UIPopulatorTwo : MonoBehaviour
     private void NextDialogueB(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
-        var journalSO = jcsvToSO.journals[dialogueSO.EffectA2];
-        jNumber = dialogueSO.EffectA2;
+        var journalSO = JSR.journals[dialogueSO.EffectA2s];
+        //var journalSO = jcsvToSO.journals[dialogueSO.EffectA2];
+        jNumber = dialogueSO.EffectA2s;
 
-        Title.text = journalSO.journalTitle;
-        SummaryText.text = journalSO.journalEntry;
-        Question.text = journalSO.reflectionQuestion;
-        doodle.style.backgroundImage = new StyleBackground(journalSO.doodle);
+        Title.text = journalSO.journalTitles;
+        SummaryText.text = journalSO.journalEntrys;
+        Question.text = journalSO.reflectionQuestions;
+        doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
 
         // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
         // doodle.style.backgroundImage = styleBackground;
 
-        currentIndex = dialogueSO.GoToIDA2;
+        currentIndex = dialogueSO.GoToIDA2s;
         dialogueSO = SSR.dialogues[currentIndex];
         Debug.Log("jNumber " + jNumber);
         PopulateUI();
@@ -406,18 +463,19 @@ public class UIPopulatorTwo : MonoBehaviour
     private void NextDialogueC(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
-        var journalSO = jcsvToSO.journals[dialogueSO.EffectA3];
-        jNumber = dialogueSO.EffectA3;
+        var journalSO = JSR.journals[dialogueSO.EffectA3s];
+        //var journalSO = jcsvToSO.journals[dialogueSO.EffectA3];
+        jNumber = dialogueSO.EffectA3s;
 
-        Title.text = journalSO.journalTitle;
-        SummaryText.text = journalSO.journalEntry;
-        Question.text = journalSO.reflectionQuestion;
-        doodle.style.backgroundImage = new StyleBackground(journalSO.doodle);
+        Title.text = journalSO.journalTitles;
+        SummaryText.text = journalSO.journalEntrys;
+        Question.text = journalSO.reflectionQuestions;
+        doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
         
         // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
         // doodle.style.backgroundImage = styleBackground;
 
-        currentIndex = dialogueSO.GoToIDA3;
+        currentIndex = dialogueSO.GoToIDA3s;
         dialogueSO = SSR.dialogues[currentIndex];
         Debug.Log("jNumber " + jNumber);
         PopulateUI();
@@ -429,7 +487,7 @@ public class UIPopulatorTwo : MonoBehaviour
     private void RewindYes(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
-        currentIndex = dialogueSO.Checkpoint;
+        currentIndex = dialogueSO.Checkpoints;
         rewindUI.style.display = DisplayStyle.None;
         PopulateUI();
         
@@ -453,8 +511,6 @@ public class UIPopulatorTwo : MonoBehaviour
         Audio.PlayOneShot(pageflipClip, 0.7F);
         Debug.Log("Clicked Next");
         journalUpdate();
-
-
     }
     private void preivousPageB(ClickEvent evt)
     {
@@ -496,7 +552,6 @@ public class UIPopulatorTwo : MonoBehaviour
     }
     public void journalUpdate()
     {
-
         if (jPages.Count <= 0)
         {
             nextPage.style.display = DisplayStyle.None;
@@ -558,41 +613,38 @@ public class UIPopulatorTwo : MonoBehaviour
         {
             //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
             var dialogueSO = SSR.dialogues[currentIndex];
-            var journalSO = jcsvToSO.journals[jNumber];
+            var journalSO = JSR.journals[jNumber];
+            //var journalSO = jcsvToSO.journals[jNumber];
 
             Debug.Log("jNumber " + jNumber);
-            Debug.Log("jEventText" + journalSO.journalEntry);
+            Debug.Log("jEventText" + journalSO.journalEntrys);
             Debug.Log("Page Number " + pageNumber);
-
 
             Audio.PlayOneShot(newLogClip, 0.7F);
             
-            if (dialogueSO.Effect != -1 && jPages.Count < 0)
+            if (dialogueSO.Effects != -1 && jPages.Count < 0)
             {
                 //if (!jPages.Contains(dialogueSO.Effect))
                 if (!jPages.Contains(jNumber))
                 {
                     jPages.Add(jNumber);
                     //jPages.Add(pageNumber);
-                    jEventText.Add(journalSO.journalEntry);
-                    jEventTitle.Add(journalSO.journalTitle);
-                    jEventQuestionText.Add(journalSO.reflectionQuestion);
-                    jdoodle.Add(journalSO.doodle);
+                    jEventText.Add(journalSO.journalEntrys);
+                    jEventTitle.Add(journalSO.journalTitles);
+                    jEventQuestionText.Add(journalSO.reflectionQuestions);
+                    jdoodle.Add(journalSO.doodles);
                     journalEntry.text = jEventText[pageNumber];
                     journalTitle.text = jEventTitle[pageNumber];
                     journalQuestion.text = jEventQuestionText[pageNumber];
-
-                    // StyleBackground styleBackground = new StyleBackground(jdoodle[pageNumber].texture);
-                    // doodle.style.backgroundImage = styleBackground;
                     
                 }
             }
             else if (!jPages.Contains(jNumber))
             {
-                jEventText.Add(journalSO.journalEntry);
-                jEventTitle.Add(journalSO.journalTitle);
-                jEventQuestionText.Add(journalSO.reflectionQuestion);
-                jdoodle.Add(journalSO.doodle);
+                jEventText.Add(journalSO.journalEntrys);
+                jEventTitle.Add(journalSO.journalTitles);
+                jEventQuestionText.Add(journalSO.reflectionQuestions);
+                jdoodle.Add(journalSO.doodles);
                 jPages.Add(jNumber);
                 journalEntry.text = jEventText[jPages.Count -1];
                 journalTitle.text = jEventTitle[jPages.Count -1];
@@ -603,7 +655,7 @@ public class UIPopulatorTwo : MonoBehaviour
                 // doodle.style.backgroundImage = styleBackground;
             } 
             Debug.Log("jNumber " + jNumber);
-            Debug.Log("jEventText" + journalSO.journalEntry);
+            Debug.Log("jEventText" + journalSO.journalEntrys);
             Debug.Log("Page Number " + pageNumber);
 
             Debug.Log("Page Number " + pageNumber);

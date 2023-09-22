@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using SimpleJSON;
 
-public class JournalSheetReader : MonoBehaviour
+public class JournalSheetReaderTwo : MonoBehaviour
 {
     [System.Serializable]
     public class JournalSO : ScriptableObject
@@ -15,32 +15,31 @@ public class JournalSheetReader : MonoBehaviour
         public string journalEntrys;
         public Sprite doodles;
         public string reflectionQuestions;
-        
     }
 
     public List<JournalSO> journals = new List<JournalSO>();
     private string ResourcesLoadP = "Props/";
-    // public Text display;
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1yCNwNPDCFJP4VmggLayE66kTOhGo2xjYBN_iaiWQFvM/values:batchGet?ranges=Sheet1&key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
-
-    private void Start()
+    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1yCNwNPDCFJP4VmggLayE66kTOhGo2xjYBN_iaiWQFvM/values/Journal?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    public delegate void OnDataLoaded();
+    public event OnDataLoaded onDataLoaded;
+    void Start()
     {
-        StartCoroutine(ObtainSheetData());
+        // StartCoroutine(ObtainSheetData());
     }
 
-    private JournalSO CreateJournalSO(int id, string journaltitle, string journalentry, Sprite doodle, string reflectionquestion)
+    private JournalSO CreateJournalSO(int id, string journalTitle, string journalEntry, Sprite doodle, string reflectionQuestion)
     {
         JournalSO journal = ScriptableObject.CreateInstance<JournalSO>();
         journal.IDs = id;
-        journal.journalTitles = journaltitle;
-        journal.journalEntrys = journalentry;
+        journal.journalTitles = journalTitle;
+        journal.journalEntrys = journalEntry;
         journal.doodles = doodle;
-        journal.reflectionQuestions = reflectionquestion;
+        journal.reflectionQuestions = reflectionQuestion;
 
         return journal;
     }
 
-    IEnumerator ObtainSheetData()
+    public IEnumerator ObtainSheetData()
     {
         UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
         yield return www.SendWebRequest();
@@ -54,7 +53,7 @@ public class JournalSheetReader : MonoBehaviour
         {
             var parsedJson = JSON.Parse(www.downloadHandler.text);
             var valuesArray = parsedJson["values"].AsArray;
-            for (int i = 1; i < valuesArray.Count; i++)  // Start from 1 to skip the first row
+            for(int i = 1; i < valuesArray.Count; i++)
             {
                 var item = valuesArray[i];
                 var id = int.Parse(item[0].Value);
@@ -62,20 +61,20 @@ public class JournalSheetReader : MonoBehaviour
                 var journalEntry = item[2].Value;
                 var doodle = Resources.Load<Sprite>(ResourcesLoadP + item[3].Value);
                 var reflectionQuestion = item[4].Value;
-
-                // Create the ScriptableObject and add it to the journals list
+                
                 journals.Add(CreateJournalSO(id, journalTitle, journalEntry, doodle, reflectionQuestion));
             }
         }
         if (journals.Count == 0)
         {
-            Debug.LogWarning("FROM JournalSheetReader");
+            Debug.LogWarning("FROM JournalSheetReaderTwo");
             Debug.LogWarning("The journals list was not populated. Please check the source or the structure of the Google Sheet.");
         }
         else
         {
-            Debug.Log($"FROM JournalSheetReader");
+            Debug.Log($"FROM JournalSheetReaderTwo");
             Debug.Log($"Successfully populated journals list with {journals.Count} entries.");
         }
+        onDataLoaded?.Invoke();
     }
 }

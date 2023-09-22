@@ -15,12 +15,14 @@ public class GoogleSheetReaderTwo : MonoBehaviour
     }
 
     public List<LoginSO> logins = new List<LoginSO>();
-    // public Text display;
     private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1cC9iRPYMR9jgyKbeBM-wBO03rG5SPvONt8t-5fNJrTs/values/Codes?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+
+    public delegate void OnDataLoaded();
+    public event OnDataLoaded onDataLoaded;
 
     private void Start()
     {
-        StartCoroutine(ObtainSheetData());
+        //StartCoroutine(ObtainSheetData());
     }
 
     private LoginSO CreateLoginSO(string accessCode, string workshopIdCode)
@@ -29,11 +31,13 @@ public class GoogleSheetReaderTwo : MonoBehaviour
         login.AccessCodes = accessCode;
         login.WorkshopIDCodes = workshopIdCode;
 
+
         return login;
     }
 
-    IEnumerator ObtainSheetData()
+    public IEnumerator ObtainSheetData()
     {
+        //Debug.Log("ObtainSheetData started. Fetching data...");
         UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
         yield return www.SendWebRequest();
 
@@ -44,17 +48,29 @@ public class GoogleSheetReaderTwo : MonoBehaviour
         }
         else
         {
+            //Debug.Log("Data fetched successfully. Processing...");
             var parsedJson = JSON.Parse(www.downloadHandler.text);
             var valuesArray = parsedJson["values"].AsArray;
-            for (int i = 1; i < valuesArray.Count; i++)  // Start from 1 to skip the first row
+            for (int i = 1; i < valuesArray.Count; i++)
             {
                 var item = valuesArray[i];
                 var accessCode = item[0].Value;
                 var workshopIdCode = item[1].Value;
-                
-                // Create the ScriptableObject and add it to the logins list
                 logins.Add(CreateLoginSO(accessCode, workshopIdCode));
+
             }
+
+            // Check if logins list was populated
+            if (logins.Count == 0)
+            {
+                Debug.LogWarning("The logins list was not populated. Please check the source or the structure of the Google Sheet.");
+            }
+            else
+            {
+                Debug.Log($"Successfully populated logins list with {logins.Count} entries.");
+            }
+
+            onDataLoaded?.Invoke();
         }
     }
 }

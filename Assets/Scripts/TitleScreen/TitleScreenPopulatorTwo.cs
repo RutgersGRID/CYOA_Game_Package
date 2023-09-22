@@ -14,22 +14,38 @@ public class TitleScreenPopulatorTwo : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("TitleScreenPopulatorTwo started. Subscribing to event...");
         var root = GetComponent<UIDocument>().rootVisualElement;
         Accesscode = root.Q<TextField>("AccessCodeTF");
         Workshopid = root.Q<TextField>("WorkshopIDTF");
         proceed = root.Q<Button>("Proceed");
 
-        string accessCodeValue = Accesscode.value;
-        string workshopIdValue = Workshopid.value;
-
+        // Subscribe to the onDataLoaded event
         proceed.RegisterCallback<ClickEvent>(nextScene);
+        gsrt.onDataLoaded += DataLoadedCallback;
+        gsrt.StartCoroutine(gsrt.ObtainSheetData());
     }
 
+    void DataLoadedCallback()
+    {
+        Debug.Log("Data loaded and list populated.");
+        Debug.Log("Size of gsrt.dialogues: " + gsrt.logins.Count);
+        preloadTheList();
+    }
+
+        private void preloadTheList()
+    {
+        foreach (var login in gsrt.logins)
+        {
+
+        }
+    }
     private void nextScene(ClickEvent evt)
     {   
+        Debug.Log("Size of gsrt.dialogues: " + gsrt.logins.Count);
         string accessCodeValue = Accesscode.value;
         string workshopIdValue = Workshopid.value;
-        string sceneToLoad = "TestZone";
+        //string sceneToLoad = "TestZone";
         Boolean match = false;
 
         for(int currentIndex = 0; currentIndex < gsrt.logins.Count; currentIndex++)
@@ -37,10 +53,13 @@ public class TitleScreenPopulatorTwo : MonoBehaviour
             var LoginSO = gsrt.logins[currentIndex];
             
             Debug.Log(currentIndex);
-            Debug.Log("Accesscode value: " + accessCodeValue);
-            Debug.Log("Workshopid value: " + workshopIdValue);
+            // Debug.Log("Accesscode value: " + accessCodeValue);
+            // Debug.Log("Workshopid value: " + workshopIdValue);
             Debug.Log("LoginSO.AccessCodes: " + LoginSO.AccessCodes);
             Debug.Log("LoginSO.WorkshopIDCodes: " + LoginSO.WorkshopIDCodes);
+            // Debug.Log("LoginSO.TestSpaces: " + LoginSO.TestSpaces);
+
+            Debug.Log("Size of gsrt.dialogues: " + gsrt.logins.Count);
             
             if (accessCodeValue.Equals(LoginSO.AccessCodes) && workshopIdValue.Equals(LoginSO.WorkshopIDCodes))
             {
@@ -57,8 +76,8 @@ public class TitleScreenPopulatorTwo : MonoBehaviour
         }
     }
 
-    void Update()
+    void OnDestroy()
     {
-        
+        gsrt.onDataLoaded -= DataLoadedCallback;
     }
 }
