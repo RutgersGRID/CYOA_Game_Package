@@ -9,7 +9,7 @@ public class TitleScreenPopulatorTwo : MonoBehaviour
     private TextField Accesscode;
     private TextField Workshopid;
     private Button proceed;
-
+    public string sceneToLoad;
     public GoogleSheetReaderTwo gsrt;
 
     void Start()
@@ -65,7 +65,7 @@ public class TitleScreenPopulatorTwo : MonoBehaviour
             {
                 Debug.Log("Codes match!");
                 match = true;
-                //SceneManager.LoadScene(sceneToLoad);
+                SceneManager.LoadScene(sceneToLoad);
                 break;
             }
         }

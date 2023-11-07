@@ -72,6 +72,7 @@ public class UIPopulatorTwo : MonoBehaviour
     public AudioClip checkpointClip;
     public AudioClip pageflipClip;
     public AudioClip dialogueBeepClip;
+    public AudioClip keywordSFX;
     AudioSource Audio;
     private int previousCheckPoint;
     string testText;
@@ -87,6 +88,8 @@ public class UIPopulatorTwo : MonoBehaviour
     ///
     public float typingSpeed = 0.05f;
     ///
+    string keywordstring;
+    
     Sprite nextCharacter;
     Sprite currentCharacter;
     Sprite rightCharacter;
@@ -241,7 +244,9 @@ public class UIPopulatorTwo : MonoBehaviour
 
                 nameText.text = dialogueSO.Speakers;
                 testText = dialogueSO.Lines;
-                ScrollT(testText);
+                keywordstring = dialogueSO.Keywords;
+                keywordSFX = dialogueSO.SoundEFXs;
+                ScrollT(testText, keywordstring);
             }
 
             else if (dialogueSO.Types.Equals("b", StringComparison.CurrentCultureIgnoreCase))
@@ -350,13 +355,56 @@ public class UIPopulatorTwo : MonoBehaviour
 
         visualElement.style.opacity = new StyleFloat(targetOpacity);
     }
-        public void ScrollT(string sentence)
+        public void ScrollT(string sentence, string keywordstring)
     {
-        StartCoroutine(TypeText(sentence));
+        StartCoroutine(TypeText(sentence, keywordstring));
     }
 
-    private IEnumerator TypeText(string sentence)
+    // private IEnumerator TypeText(string sentence)
+    // {
+    //     dialogueText.text = "";
+
+    //     bool insideTag = false;
+    //     bool insideRichTextTag = false;
+    //     foreach (char c in sentence)
+    //     {
+    //         if (c == '<')
+    //         {
+    //             insideTag = true;
+    //         }
+
+    //         if (insideTag)
+    //         {
+    //             dialogueText.text += c;
+    //         }
+    //         else
+    //         {
+    //             if (c == '>')
+    //             {
+    //                 insideRichTextTag = false;
+    //             }
+
+    //             if (!insideRichTextTag)
+    //             {
+    //                 dialogueText.text += c;
+    //                 yield return new WaitForSeconds(typingSpeed);
+    //             }
+
+    //             if (c == '/')
+    //             {
+    //                 insideRichTextTag = true;
+    //             }
+    //         }
+
+    //         if (c == '>')
+    //         {
+    //             insideTag = false;
+    //         }
+    //     }
+    // }
+    private IEnumerator TypeText(string sentence, string keywordstring)
     {
+        //var dialogueSO = SSR.dialogues[currentIndex];
         dialogueText.text = "";
 
         bool insideTag = false;
@@ -371,6 +419,12 @@ public class UIPopulatorTwo : MonoBehaviour
             if (insideTag)
             {
                 dialogueText.text += c;
+                
+                if (dialogueText.text.Contains(keywordstring))
+                {
+                    Debug.Log($"Found the target string: {keywordstring} in dialogueText.text!");
+                     Audio.PlayOneShot(keywordSFX, 0.7F);
+                }
             }
             else
             {
@@ -423,17 +477,12 @@ public class UIPopulatorTwo : MonoBehaviour
     {
         var dialogueSO = SSR.dialogues[currentIndex];
         var journalSO = JSR.journals[dialogueSO.EffectA1s];
-        //var journalSO = jcsvToSO.journals[dialogueSO.EffectA1];
         jNumber = dialogueSO.EffectA1s;
 
         Title.text = journalSO.journalTitles;
         SummaryText.text = journalSO.journalEntrys;
         Question.text = journalSO.reflectionQuestions;
         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-
-
-        // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
-        // doodle.style.backgroundImage = styleBackground;
 
         currentIndex = dialogueSO.GoToIDA1s;
         dialogueSO = SSR.dialogues[currentIndex];
