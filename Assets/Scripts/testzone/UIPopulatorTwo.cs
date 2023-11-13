@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+using UnityEngine.Networking;
+
 public class UIPopulatorTwo : MonoBehaviour
 {
     public StorySheetReaderTwo SSR;
@@ -89,10 +90,10 @@ public class UIPopulatorTwo : MonoBehaviour
     public float typingSpeed = 0.05f;
     ///
     string keywordstring;
+    private string entryPoint;
+    private string answerFillIn;
     
-    Sprite nextCharacter;
-    Sprite currentCharacter;
-    Sprite rightCharacter;
+    private Dictionary<string, string> formFields = new Dictionary<string, string>();
     
  private void Start()
     {
@@ -223,11 +224,110 @@ public class UIPopulatorTwo : MonoBehaviour
         }
     }
 
+private void AddFormField(string fieldName, string fieldValue)
+{
+    // Add the field to the dictionary
+    formFields[fieldName] = fieldValue;
+}
+
+// Create a method to submit form data
+private void SubmitFormData()
+{
+    string googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/formResponse";
+
+    // Create a WWWForm and add form data
+    WWWForm form = new WWWForm();
+    form.AddField("entry.1360379984", PlayerPrefs.GetString("AccessCode"));
+    form.AddField("entry.1388253662", PlayerPrefs.GetString("WorkshopId"));
+
+    // Add form fields from the dictionary
+    foreach (var kvp in formFields)
+    {
+        form.AddField(kvp.Key, kvp.Value);
+    }
+
+    // Debug.Log to check form field data before submission
+    Debug.Log("Form Data Before Submission:");
+    Debug.Log("AccessCode: " + PlayerPrefs.GetString("AccessCode"));
+    Debug.Log("WorkshopId: " + PlayerPrefs.GetString("WorkshopId"));
+    foreach (var kvp in formFields)
+    {
+        Debug.Log(kvp.Key + ": " + kvp.Value);
+    }
+
+    // Send the form data to the Google Form
+    StartCoroutine(SendFormResponse(googleFormURL, form));
+}
+
+// Create a method to send the form data
+private IEnumerator SendFormResponse(string url, WWWForm form)
+{
+    using (UnityWebRequest www = UnityWebRequest.Post(url, form))
+    {
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error submitting form: " + www.error);
+        }
+        else
+        {
+            Debug.Log("Form submitted successfully!");
+        }
+    }
+}
+
+private void OnApplicationQuit()
+{
+    // Debug.Log to check if OnApplicationQuit is being called
+    Debug.Log("Application is quitting. Submitting form data...");
+    
+    // Submit the form data when the application quits
+    SubmitFormData();
+}
+
     private void PopulateUI()
     {
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count) 
         {
             var dialogueSO = SSR.dialogues[currentIndex];
+
+            ////
+            var currentRightImage = characterImageRight.style.backgroundImage;
+            var currentLeftImage = characterImageLeft.style.backgroundImage;
+            var currentPropImage = propImage.style.backgroundImage;
+            var currentDlogBGImage = dlogBG.style.backgroundImage;
+
+            // Update the background images based on dialogueSO
+            characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
+            characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
+            propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
+            dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
+
+            // Check if characterImageRight has changed and trigger StartFadeIn if it has
+            if (currentRightImage != characterImageRight.style.backgroundImage)
+            {
+                StartFadeIn(characterImageRight);
+            }
+
+            // Check if characterImageLeft has changed and trigger StartFadeIn if it has
+            if (currentLeftImage != characterImageLeft.style.backgroundImage)
+            {
+                StartFadeIn(characterImageLeft);
+            }
+
+            // Check if propImage has changed and trigger StartFadeIn if it has
+            if (currentPropImage != propImage.style.backgroundImage)
+            {
+                StartFadeIn(propImage);
+            }
+
+            // Check if dlogBG has changed and trigger StartFadeIn if it has
+            if (currentDlogBGImage != dlogBG.style.backgroundImage)
+            {
+                StartFadeIn(dlogBG);
+            }
+            ////
 
             dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
             characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
@@ -302,10 +402,7 @@ public class UIPopulatorTwo : MonoBehaviour
             {
                 NewJournalEntry.style.display = DisplayStyle.Flex;
             }
-            
-            StartFadeIn(characterImageRight);
-            StartFadeIn(characterImageLeft);
-            StartFadeIn(propImage);
+        
             journalUpdate();
         }
         else 
@@ -337,12 +434,12 @@ public class UIPopulatorTwo : MonoBehaviour
     {
         StartCoroutine(FadeInCoroutine(visualElement));
     }
-
     private IEnumerator FadeInCoroutine(VisualElement visualElement)
     {
+    
         float targetOpacity = 1f;
         float startOpacity = 0f;
-        float timeStep = 1f / 1f; // Calculate timeStep based on desired duration (0.5 seconds)
+        float timeStep = 1f / 1f; // Calculate timeStep based on desired duration (1 second)
 
         visualElement.style.opacity = new StyleFloat(startOpacity);
 
@@ -360,97 +457,62 @@ public class UIPopulatorTwo : MonoBehaviour
         StartCoroutine(TypeText(sentence, keywordstring));
     }
 
-    // private IEnumerator TypeText(string sentence)
-    // {
-    //     dialogueText.text = "";
-
-    //     bool insideTag = false;
-    //     bool insideRichTextTag = false;
-    //     foreach (char c in sentence)
-    //     {
-    //         if (c == '<')
-    //         {
-    //             insideTag = true;
-    //         }
-
-    //         if (insideTag)
-    //         {
-    //             dialogueText.text += c;
-    //         }
-    //         else
-    //         {
-    //             if (c == '>')
-    //             {
-    //                 insideRichTextTag = false;
-    //             }
-
-    //             if (!insideRichTextTag)
-    //             {
-    //                 dialogueText.text += c;
-    //                 yield return new WaitForSeconds(typingSpeed);
-    //             }
-
-    //             if (c == '/')
-    //             {
-    //                 insideRichTextTag = true;
-    //             }
-    //         }
-
-    //         if (c == '>')
-    //         {
-    //             insideTag = false;
-    //         }
-    //     }
-    // }
     private IEnumerator TypeText(string sentence, string keywordstring)
+{
+    dialogueText.text = "";
+
+    // Disable the nextButton at the start
+    nextButton.SetEnabled(false);
+
+    // Set to true when you start scrolling text
+    //bool textScrolling = true;
+    int characterCounter = 0;
+
+    for (int i = 0; i < sentence.Length; i++)
     {
-        //var dialogueSO = SSR.dialogues[currentIndex];
-        dialogueText.text = "";
+        char c = sentence[i];
 
-        bool insideTag = false;
-        bool insideRichTextTag = false;
-        foreach (char c in sentence)
+        if (c == '<')
         {
-            if (c == '<')
-            {
-                insideTag = true;
-            }
+            int endIndex = sentence.IndexOf('>', i);
 
-            if (insideTag)
+            if (endIndex != -1)
             {
-                dialogueText.text += c;
-                
-                if (dialogueText.text.Contains(keywordstring))
-                {
-                    Debug.Log($"Found the target string: {keywordstring} in dialogueText.text!");
-                     Audio.PlayOneShot(keywordSFX, 0.7F);
-                }
-            }
-            else
-            {
-                if (c == '>')
-                {
-                    insideRichTextTag = false;
-                }
-
-                if (!insideRichTextTag)
-                {
-                    dialogueText.text += c;
-                    yield return new WaitForSeconds(typingSpeed);
-                }
-
-                if (c == '/')
-                {
-                    insideRichTextTag = true;
-                }
-            }
-
-            if (c == '>')
-            {
-                insideTag = false;
+                string tag = sentence.Substring(i, endIndex - i + 1);
+                dialogueText.text += tag;
+                i = endIndex; // Skip the tag
             }
         }
+        else
+        {
+            dialogueText.text += c;
+            characterCounter++; // Increment the character counter
+
+            // Play the beep sound every fourth character
+            if (characterCounter % 4 == 0)
+            {
+                Audio.PlayOneShot(dialogueBeepClip, 0.7F);
+            }
+        }
+
+        if (dialogueText.text.Contains(keywordstring) && !string.IsNullOrEmpty(keywordstring))
+        {
+            Debug.Log($"Found the target string: {keywordstring} in dialogueText.text!");
+            Audio.PlayOneShot(keywordSFX, 0.7F);
+        }
+
+        // Check if the text scrolling is finished
+        if (i == sentence.Length - 1)
+        {
+            //textScrolling = false;
+            nextButton.SetEnabled(true);
+        }
+        else
+        {
+            yield return new WaitForSeconds(typingSpeed);
+        }
     }
+}
     private void NextDialogue(ClickEvent evt)
 {
     Debug.Log($"CurrentIndex before change: {currentIndex}");
@@ -476,44 +538,92 @@ public class UIPopulatorTwo : MonoBehaviour
     private void NextDialogueA(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
-        var journalSO = JSR.journals[dialogueSO.EffectA1s];
-        jNumber = dialogueSO.EffectA1s;
 
-        Title.text = journalSO.journalTitles;
-        SummaryText.text = journalSO.journalEntrys;
-        Question.text = journalSO.reflectionQuestions;
-        doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
+        // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
+        Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA1s);
+
+        if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s < JSR.journals.Count)
+        //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s)
+        {
+            var journalSO = JSR.journals[dialogueSO.EffectA1s];
+            jNumber = dialogueSO.EffectA1s;
+
+            Debug.Log("JSR.journals Count: " + JSR.journals.Count);
+
+            Title.text = journalSO.journalTitles;
+            SummaryText.text = journalSO.journalEntrys;
+            Question.text = journalSO.reflectionQuestions;
+            doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
+        }
+        else
+        {
+            Title.text = "";
+            SummaryText.text = "";
+            Question.text = "";
+            doodle.style.backgroundImage = new StyleBackground();
+        }
+
+        AddFormField(dialogueSO.EntryPoints, dialogueSO.A1Answers);
 
         currentIndex = dialogueSO.GoToIDA1s;
-        dialogueSO = SSR.dialogues[currentIndex];
-        Debug.Log("jNumber " + jNumber);
-        PopulateUI();
+
+        if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
+        {
+            dialogueSO = SSR.dialogues[currentIndex];
+            Debug.Log("jNumber " + jNumber);
+            PopulateUI();
+        }
+        else
+        {
+            Debug.LogError("currentIndex is out of bounds.");
+        }
     }
     private void NextDialogueB(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
-        var journalSO = JSR.journals[dialogueSO.EffectA2s];
-        //var journalSO = jcsvToSO.journals[dialogueSO.EffectA2];
-        jNumber = dialogueSO.EffectA2s;
+        // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
+        Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA1s);
 
-        Title.text = journalSO.journalTitles;
-        SummaryText.text = journalSO.journalEntrys;
-        Question.text = journalSO.reflectionQuestions;
-        doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
+        if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA2s < JSR.journals.Count)
+        //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s)
+        {
+            var journalSO = JSR.journals[dialogueSO.EffectA2s];
+            jNumber = dialogueSO.EffectA2s;
 
-        // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
-        // doodle.style.backgroundImage = styleBackground;
+            Debug.Log("JSR.journals Count: " + JSR.journals.Count);
+
+            Title.text = journalSO.journalTitles;
+            SummaryText.text = journalSO.journalEntrys;
+            Question.text = journalSO.reflectionQuestions;
+            doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
+        }
+        else
+        {
+            Title.text = "";
+            SummaryText.text = "";
+            Question.text = "";
+            doodle.style.backgroundImage = new StyleBackground();
+        }
+
+        AddFormField(dialogueSO.EntryPoints, dialogueSO.A2Answers);
 
         currentIndex = dialogueSO.GoToIDA2s;
-        dialogueSO = SSR.dialogues[currentIndex];
-        Debug.Log("jNumber " + jNumber);
-        PopulateUI();
+
+        if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
+        {
+            dialogueSO = SSR.dialogues[currentIndex];
+            Debug.Log("jNumber " + jNumber);
+            PopulateUI();
+        }
+        else
+        {
+            Debug.LogError("currentIndex is out of bounds.");
+        }
     }
     private void NextDialogueC(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
         var journalSO = JSR.journals[dialogueSO.EffectA3s];
-        //var journalSO = jcsvToSO.journals[dialogueSO.EffectA3];
         jNumber = dialogueSO.EffectA3s;
 
         Title.text = journalSO.journalTitles;
@@ -521,9 +631,6 @@ public class UIPopulatorTwo : MonoBehaviour
         Question.text = journalSO.reflectionQuestions;
         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
         
-        // StyleBackground styleBackground = new StyleBackground(journalSO.doodle.texture);
-        // doodle.style.backgroundImage = styleBackground;
-
         currentIndex = dialogueSO.GoToIDA3s;
         dialogueSO = SSR.dialogues[currentIndex];
         Debug.Log("jNumber " + jNumber);

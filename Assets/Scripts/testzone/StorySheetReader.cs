@@ -32,6 +32,7 @@ public class StorySheetReader : MonoBehaviour
         public string A3Answer;
         public int GoToIDA3;
         public int EffectA3;
+        //public string EntryPoint;
     }
 
     public List<DialogueSO> dialogues = new List<DialogueSO>();
@@ -69,6 +70,7 @@ public class StorySheetReader : MonoBehaviour
     dialogue.A3Answer = A3Answer;
     dialogue.GoToIDA3 = GoToIDA3;
     dialogue.EffectA3 = EffectA3;
+    //dialogue.EntryPoint = EntryPoint;
 
     return dialogue;
     }
@@ -111,6 +113,7 @@ public class StorySheetReader : MonoBehaviour
                 string A3Answer = item[17].Value;
                 int GoToIDA3 = int.Parse(item[18].Value);
                 int EffectA3 = int.Parse(item[19].Value);
+                //string EntryPoint = Parse(item[20].Value);
 
                 dialogues.Add(CreateDialogueSO(ID, Speaker, Line, LeftSideSpeaker, RightSideSpeaker, Prop, Background, Checkpoint, Type, GoToID, Effect, A1Answer, GoToIDA1, EffectA1, A2Answer, GoToIDA2, EffectA2, A3Answer, GoToIDA3, EffectA3));
                 Debug.Log("Dialogue added. Current count: " + dialogues.Count);

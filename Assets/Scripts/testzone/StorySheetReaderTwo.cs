@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.Networking;
 using SimpleJSON;
 
@@ -32,6 +33,7 @@ public class StorySheetReaderTwo : MonoBehaviour
         public string A3Answers;
         public int GoToIDA3s;
         public int EffectA3s;
+        public string EntryPoints;
     }
     public List<DialogueSO> dialogues = new List<DialogueSO>();
     private string ResourcesLoadC = "Characters/";
@@ -47,7 +49,7 @@ public class StorySheetReaderTwo : MonoBehaviour
         // StartCoroutine(ObtainSheetData());
     }
 
-    private DialogueSO CreateDialogueSO(int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3)
+    private DialogueSO CreateDialogueSO(int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3, string EntryPoint)
     {
         DialogueSO dialogue = ScriptableObject.CreateInstance<DialogueSO>();
         dialogue.IDs = ID;
@@ -72,6 +74,7 @@ public class StorySheetReaderTwo : MonoBehaviour
         dialogue.A3Answers = A3Answer;
         dialogue.GoToIDA3s = GoToIDA3;
         dialogue.EffectA3s = EffectA3;
+        dialogue.EntryPoints = EntryPoint;
 
         return dialogue;
     }
@@ -142,8 +145,9 @@ public class StorySheetReaderTwo : MonoBehaviour
                 var A3Answer = item[19].Value;
                 var GoToIDA3 = SafeIntParse(item[20].Value);
                 var EffectA3 = SafeIntParse(item[21].Value);
+                var EntryPoint = item[22].Value;
 
-                dialogues.Add(CreateDialogueSO(ID, Speaker, Line, Keyword, SoundEFX, LeftSideSpeaker, RightSideSpeaker, Prop, Background, Checkpoint, Type, GoToID, Effect, A1Answer, GoToIDA1, EffectA1, A2Answer, GoToIDA2, EffectA2, A3Answer, GoToIDA3, EffectA3));
+                dialogues.Add(CreateDialogueSO(ID, Speaker, Line, Keyword, SoundEFX, LeftSideSpeaker, RightSideSpeaker, Prop, Background, Checkpoint, Type, GoToID, Effect, A1Answer, GoToIDA1, EffectA1, A2Answer, GoToIDA2, EffectA2, A3Answer, GoToIDA3, EffectA3, EntryPoint));
             }
         }
         if (dialogues.Count == 0)

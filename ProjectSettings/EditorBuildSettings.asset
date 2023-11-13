@@ -5,22 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Prototype.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 0
     path: Assets/Scenes/PrototypeUITools.unity
     guid: c1aac7ab696e04f4d8d3e2ab18f00ce4
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/TestZone.unity
     guid: 85b1daed0b0aab349993c143204ffef0
+  - enabled: 1
+    path: Assets/Scenes/Intro Animation.unity
+    guid: e0ffb5bd38e634f4a9bec14186e1bad7
   m_configObjects: {}

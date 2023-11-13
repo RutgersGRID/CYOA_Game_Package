@@ -65,6 +65,8 @@ public class TitleScreenPopulatorTwo : MonoBehaviour
             {
                 Debug.Log("Codes match!");
                 match = true;
+                PlayerPrefs.SetString("AccessCode", accessCodeValue);
+                PlayerPrefs.SetString("WorkshopId", workshopIdValue);
                 SceneManager.LoadScene(sceneToLoad);
                 break;
             }
