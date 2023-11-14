@@ -9,19 +9,6 @@
     <canvas id="unity-canvas" width=960 height=600 tabindex="-1" style="width: 960px; height: 600px; background: #231F20"></canvas>
     <script src="Build/Build.loader.js"></script>
     <script>
-      function SetScreenOrientation() {
-        // Check if the browser supports the Screen Orientation API
-        if (typeof screen.orientation !== 'undefined' && screen.orientation.lock) {
-          // Lock the screen orientation to landscape
-          screen.orientation.lock('landscape');
-        } else if (typeof screen.lockOrientation !== 'undefined' && screen.lockOrientation) {
-          // For older browsers that support the deprecated lockOrientation method
-          screen.lockOrientation('landscape');
-        }
-      }
-
-      window.onload = SetScreenOrientation;
-
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
         var meta = document.createElement('meta');
@@ -45,6 +32,8 @@
         companyName: "DefaultCompany",
         productName: "VPVA Prototype",
         productVersion: "1.0",
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
       });
     </script>
   </body>

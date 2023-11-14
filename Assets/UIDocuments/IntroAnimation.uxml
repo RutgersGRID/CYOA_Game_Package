@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="ContainerTW" style="flex-grow: 1; background-color: rgb(255, 255, 255); width: 100%; height: 100%; opacity: 1; background-image: none;">
+        <ui:VisualElement name="FrameContainer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 80%; height: 50%; align-self: center; align-items: center; justify-content: center; position: relative; top: 5%; background-image: resource(&apos;AnimationImages/Frame1&apos;);" />
+        <ui:VisualElement name="ButtonContainerPhoto" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); height: 5%; width: 30%; align-items: center; align-self: center; justify-content: space-around;">
+            <ui:Button text="Continue" display-tooltip-when-elided="true" name="AImageButton" style="width: 80%; height: 40%; background-color: rgb(155, 187, 89); border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;); -unity-font-definition: initial; color: rgb(255, 255, 255); font-size: 16px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

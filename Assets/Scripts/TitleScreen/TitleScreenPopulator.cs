@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+//using UnityEditor.UIElements;
 using UnityEngine.SceneManagement;
 
 public class TitleScreenPopulator : MonoBehaviour
@@ -27,8 +27,6 @@ public class TitleScreenPopulator : MonoBehaviour
         string workshopIdValue = Workshopid.value;
 
         proceed.RegisterCallback<ClickEvent>(nextScene);
-
-        
 
         //int counter = ccsvToSO.logins.Count;
         //Debug.Log(counter);
