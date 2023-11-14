@@ -291,7 +291,7 @@ MonoBehaviour:
   dialogueBeepClip: {fileID: 8300000, guid: 9749d645e2879f9488d1a8d57763b859, type: 3}
   keywordSFX: {fileID: 0}
   jNumber: 0
-  typingSpeed: 0.02
+  typingSpeed: 0.01
 --- !u!114 &708983109
 MonoBehaviour:
   m_ObjectHideFlags: 0
