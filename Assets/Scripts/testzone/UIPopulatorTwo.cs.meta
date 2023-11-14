@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: fe17e9a576c65164bbf849c139cc7294
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - SSR: {instanceID: 0}
+  - JSR: {instanceID: 0}
+  - newLogClip: {fileID: 8300000, guid: 9c8a33041313b214e97e2dfbd0217a0a, type: 3}
+  - checkpointClip: {instanceID: 0}
+  - pageflipClip: {instanceID: 0}
+  - dialogueBeepClip: {fileID: 8300000, guid: 9749d645e2879f9488d1a8d57763b859, type: 3}
+  - keywordSFX: {instanceID: 0}
+  executionOrder: 1100
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Dithering: 0
   m_ClearDepth: 1
   m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
   m_UseScreenCoordOverride: 0
   m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
@@ -269,8 +270,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1531899969}
   - component: {fileID: 1531899970}
-  - component: {fileID: 1531899972}
-  - component: {fileID: 1531899971}
+  - component: {fileID: 1531899975}
+  - component: {fileID: 1531899974}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -309,7 +310,7 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: c173d6c72e52b454c9429f9ad113c304, type: 3}
   m_SortingOrder: 0
---- !u!114 &1531899971
+--- !u!114 &1531899974
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -318,12 +319,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1531899968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e23bee7751b1d1a4da4751c831c88871, type: 3}
+  m_Script: {fileID: 11500000, guid: f60bfcd4a4889a846b80c7c12343dc3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  csvFile: {fileID: 4900000, guid: 29e9e3661132a6041b407bf0c6e8cecb, type: 3}
-  logins: []
---- !u!114 &1531899972
+  sceneToLoad: TestZone
+  gsrt: {fileID: 1531899975}
+--- !u!114 &1531899975
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -332,8 +333,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1531899968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 822a6e85f00ea5a4c8ec7fd195390371, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f0913c1e6a29964f8132720182224d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   logins: []
-  ccsvToSO: {fileID: 1531899971}
