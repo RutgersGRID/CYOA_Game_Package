@@ -581,10 +581,11 @@ private void OnApplicationQuit()
     private void NextDialogueB(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
-        // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
-        Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA1s);
 
-        if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA2s < JSR.journals.Count)
+        // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
+        Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA2s);
+
+        if (dialogueSO.EffectA2s >= 0 && dialogueSO.EffectA2s < JSR.journals.Count)
         //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s)
         {
             var journalSO = JSR.journals[dialogueSO.EffectA2s];
