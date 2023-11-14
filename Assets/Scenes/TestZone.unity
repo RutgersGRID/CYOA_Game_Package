@@ -285,13 +285,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SSR: {fileID: 708983109}
   JSR: {fileID: 708983110}
-  newLogClip: {fileID: 0}
+  newLogClip: {fileID: 8300000, guid: 9c8a33041313b214e97e2dfbd0217a0a, type: 3}
   checkpointClip: {fileID: 0}
-  pageflipClip: {fileID: 0}
+  pageflipClip: {fileID: 8300000, guid: 8015f55648d386648aaf89da76f96eb3, type: 3}
   dialogueBeepClip: {fileID: 8300000, guid: 9749d645e2879f9488d1a8d57763b859, type: 3}
   keywordSFX: {fileID: 0}
   jNumber: 0
-  typingSpeed: 0.01
+  typingSpeed: 0.02
 --- !u!114 &708983109
 MonoBehaviour:
   m_ObjectHideFlags: 0
