@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FR: {fileID: 987430917}
-  sceneToLoad: 
+  sceneToLoad: Photo
 --- !u!1 &1284793547
 GameObject:
   m_ObjectHideFlags: 0

@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f60bfcd4a4889a846b80c7c12343dc3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: TestZone
+  sceneToLoad: TriggerWarning
   gsrt: {fileID: 1531899975}
 --- !u!114 &1531899975
 MonoBehaviour:
