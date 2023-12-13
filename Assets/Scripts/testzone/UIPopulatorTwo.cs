@@ -9,6 +9,7 @@ public class UIPopulatorTwo : MonoBehaviour
 {
     public StorySheetReaderTwo SSR;
     public JournalSheetReaderTwo JSR;
+    public CreditSheetReader CSR;
     int currentIndex = 0;
     private VisualElement dlogElements;
     private VisualElement dlogBG;
@@ -56,6 +57,8 @@ public class UIPopulatorTwo : MonoBehaviour
     private VisualElement reflectionPageContainer;
     private VisualElement aboutPageContainer;
     private VisualElement howToPlayPageContainer;
+    private TextElement aboutText;
+    private TextElement htpText;
     private Button bookmarkOne;
     private Button bookmarkTwo;
     private Button bookmarkThree;
@@ -92,6 +95,9 @@ public class UIPopulatorTwo : MonoBehaviour
     string keywordstring;
     private string entryPoint;
     private string answerFillIn;
+    /// <summary>
+    private Coroutine currentTypeTextCoroutine = null;
+    /// </summary>
     
     private Dictionary<string, string> formFields = new Dictionary<string, string>();
     
@@ -140,8 +146,10 @@ public class UIPopulatorTwo : MonoBehaviour
         aboutPage= root.Q<Button>("About");
         howToPlayPage= root.Q<Button>("HowToPlay");
         reflectionPageContainer = root.Q<VisualElement>("ReflectionEventPage");
-        aboutPageContainer = root.Q<VisualElement>("AboutPage");
-        howToPlayPageContainer = root.Q<VisualElement>("HowToPlayPage");
+        aboutPageContainer = root.Q<VisualElement>("AboutEventPage");
+        aboutText = root.Q<TextElement>("AboutText");
+        htpText = root.Q<TextElement>("HTPText");
+        howToPlayPageContainer = root.Q<VisualElement>("HowToPlayEventPage");
         bookmarkOne = root.Q<Button>("BookmarkOne");
         bookmarkTwo = root.Q<Button>("BookmarkTwo");
         bookmarkThree = root.Q<Button>("BookmarkThree");
@@ -160,6 +168,9 @@ public class UIPopulatorTwo : MonoBehaviour
 
         JSR.onDataLoaded += DataLoadedCallback;
         JSR.StartCoroutine(JSR.ObtainSheetData());
+
+        CSR.onDataLoaded += DataLoadedCallback;
+        CSR.StartCoroutine(CSR.ObtainSheetData());
 
         nextButton.RegisterCallback<ClickEvent>(NextDialogue);
         aTwo.RegisterCallback<ClickEvent>(NextDialogueA);
@@ -201,6 +212,8 @@ public class UIPopulatorTwo : MonoBehaviour
         bookmarkFour.style.display = DisplayStyle.None;
         bookmarkFive.style.display = DisplayStyle.None;
 
+        Debug.Log("Size of CSR.credits: " + CSR.credits.Count);
+        
         //PopulateUI();
     }
     void DataLoadedCallback()
@@ -208,11 +221,24 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log("Data loaded and list populated.");
         Debug.Log("Size of SSR.dialogues: " + SSR.dialogues.Count);
         Debug.Log("Size of JSR.journals: " + JSR.journals.Count);
+        Debug.Log("Size of CSR.credits: " + CSR.credits.Count);
         preloadTheList();
+        if (CSR.credits.Count > 0)
+        {
+            UpdateAboutAndHtpTexts();
+        }
         if (SSR.dialogues.Count > 0) 
-    {
-        PopulateUI();
+        {
+            PopulateUI();
+        }
     }
+    private void UpdateAboutAndHtpTexts()
+    {
+        var creditSO = CSR.credits[0]; // Assuming you want to display the first CreditSO
+        Debug.Log(creditSO.creditTexts);
+        Debug.Log(creditSO.htpTexts);
+        aboutText.text = creditSO.creditTexts;
+        htpText.text = creditSO.htpTexts;
     }
         private void preloadTheList()
     {
@@ -220,6 +246,9 @@ public class UIPopulatorTwo : MonoBehaviour
         {
         }
         foreach (var journal in JSR.journals)
+        {
+        }
+        foreach (var credit in CSR.credits)
         {
         }
     }
@@ -303,6 +332,9 @@ private void OnApplicationQuit()
             characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
             propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
             dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
+
+            /// Populate the About and How to Play page
+            
 
             // Check if characterImageRight has changed and trigger StartFadeIn if it has
             if (currentRightImage != characterImageRight.style.backgroundImage)
@@ -396,6 +428,8 @@ private void OnApplicationQuit()
                     SummaryText.text = journalSO.journalEntrys;
                     Question.text = journalSO.reflectionQuestions;
                     NewJournalEntry.style.display = DisplayStyle.Flex;
+
+                    
                 }
             }
             else if (!jPages.Contains(jNumber) && jPages.Count > 0)
@@ -454,7 +488,14 @@ private void OnApplicationQuit()
     }
         public void ScrollT(string sentence, string keywordstring)
     {
-        StartCoroutine(TypeText(sentence, keywordstring));
+    //     StartCoroutine(TypeText(sentence, keywordstring));
+    // }
+        if (currentTypeTextCoroutine != null)
+        {
+            StopCoroutine(currentTypeTextCoroutine);
+        }
+
+        currentTypeTextCoroutine = StartCoroutine(TypeText(sentence, keywordstring));
     }
 
     private IEnumerator TypeText(string sentence, string keywordstring)
@@ -462,7 +503,7 @@ private void OnApplicationQuit()
     dialogueText.text = "";
 
     // Disable the nextButton at the start
-    nextButton.SetEnabled(false);
+    //nextButton.SetEnabled(false);
 
     // Set to true when you start scrolling text
     //bool textScrolling = true;
@@ -740,14 +781,10 @@ private void OnApplicationQuit()
             }
             if (pageNumber < jEventText.Count)
             {
-                //eventText.text = jEventText[jEventText.Count -1];
                 journalEntry.text = jEventText[pageNumber];
                 journalTitle.text = jEventTitle[pageNumber];
                 journalQuestion.text = jEventQuestionText[pageNumber];
                 doodle.style.backgroundImage = new StyleBackground(jdoodle[pageNumber]);
-
-                // StyleBackground styleBackground = new StyleBackground(jdoodle[pageNumber].texture);
-                // doodle.style.backgroundImage = styleBackground;
 
                 Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
                 Debug.Log("jPages" + string.Join(", ", jPages));
@@ -808,8 +845,6 @@ private void OnApplicationQuit()
                 journalQuestion.text = jEventQuestionText[jPages.Count -1];
                 doodle.style.backgroundImage = new StyleBackground(jdoodle[jPages.Count -1]);
 
-                // StyleBackground styleBackground = new StyleBackground(jdoodle[jPages.Count -1].texture);
-                // doodle.style.backgroundImage = styleBackground;
             } 
             Debug.Log("jNumber " + jNumber);
             Debug.Log("jEventText" + journalSO.journalEntrys);

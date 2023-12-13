@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 708983108}
   - component: {fileID: 708983110}
   - component: {fileID: 708983109}
+  - component: {fileID: 708983111}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -285,6 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SSR: {fileID: 708983109}
   JSR: {fileID: 708983110}
+  CSR: {fileID: 708983111}
   newLogClip: {fileID: 8300000, guid: 9c8a33041313b214e97e2dfbd0217a0a, type: 3}
   checkpointClip: {fileID: 0}
   pageflipClip: {fileID: 8300000, guid: 8015f55648d386648aaf89da76f96eb3, type: 3}
@@ -318,6 +320,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   journals: []
+--- !u!114 &708983111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708983096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc3fc244adee9f41962d6a662cbd4fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  credits: []
 --- !u!1 &1897269520
 GameObject:
   m_ObjectHideFlags: 0
