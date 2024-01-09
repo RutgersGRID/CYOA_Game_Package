@@ -54,9 +54,13 @@ public class UIPopulatorTwo : MonoBehaviour
     private Button reflectionPage;
     private Button aboutPage;
     private Button howToPlayPage;
+    private Button aboutThisToolPage;
+    private Button aboutGRIDPage;
     private VisualElement reflectionPageContainer;
     private VisualElement aboutPageContainer;
     private VisualElement howToPlayPageContainer;
+    private VisualElement aboutThisToolContainer;
+    private VisualElement aboutGRIDContainer;
     private TextElement aboutText;
     private TextElement htpText;
     private Button bookmarkOne;
@@ -142,11 +146,15 @@ public class UIPopulatorTwo : MonoBehaviour
         journalExit = root.Q<Button>("exit-ui-button");
         nextPage = root.Q<Button>("next-page");
         previousPage = root.Q<Button>("back-page");
-        reflectionPage= root.Q<Button>("ReflectionEvents");
+        reflectionPage = root.Q<Button>("ReflectionEvents");
         aboutPage= root.Q<Button>("About");
-        howToPlayPage= root.Q<Button>("HowToPlay");
+        howToPlayPage = root.Q<Button>("HowToPlay");
+        aboutThisToolPage = root.Q<Button>("AboutThisTool");
+        aboutGRIDPage = root.Q<Button>("AboutGRID");
         reflectionPageContainer = root.Q<VisualElement>("ReflectionEventPage");
         aboutPageContainer = root.Q<VisualElement>("AboutEventPage");
+        aboutThisToolContainer = root.Q<VisualElement>("AboutToolEventPage");
+        aboutGRIDContainer = root.Q<VisualElement>("AboutGRIDEventPage");
         aboutText = root.Q<TextElement>("AboutText");
         htpText = root.Q<TextElement>("HTPText");
         howToPlayPageContainer = root.Q<VisualElement>("HowToPlayEventPage");
@@ -190,6 +198,9 @@ public class UIPopulatorTwo : MonoBehaviour
         reflectionPage.RegisterCallback<ClickEvent>(showReflection);
         aboutPage.RegisterCallback<ClickEvent>(showAbout);
         howToPlayPage.RegisterCallback<ClickEvent>(showHowToPlay);
+        aboutThisToolPage.RegisterCallback<ClickEvent>(showAboutThisTool);
+        aboutGRIDPage.RegisterCallback<ClickEvent>(showAboutGRID);
+        
         bookmarkOne.RegisterCallback<ClickEvent>(bMarkOne);
         bookmarkTwo.RegisterCallback<ClickEvent>(bMarkTwo);
         bookmarkThree.RegisterCallback<ClickEvent>(bMarkThree);
@@ -451,19 +462,42 @@ private void OnApplicationQuit()
         reflectionPageContainer.style.display = DisplayStyle.Flex;
         howToPlayPageContainer.style.display = DisplayStyle.None;
         aboutPageContainer.style.display = DisplayStyle.None;
+        aboutThisToolContainer.style.display = DisplayStyle.None;
+        aboutGRIDContainer.style.display = DisplayStyle.None;
     }
     private void showAbout(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
         howToPlayPageContainer.style.display = DisplayStyle.None;
         aboutPageContainer.style.display = DisplayStyle.Flex;
+        aboutThisToolContainer.style.display = DisplayStyle.None;
+        aboutGRIDContainer.style.display = DisplayStyle.None;
     }
     private void showHowToPlay(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
         howToPlayPageContainer.style.display = DisplayStyle.Flex;
         aboutPageContainer.style.display = DisplayStyle.None;
+        aboutThisToolContainer.style.display = DisplayStyle.None;
+        aboutGRIDContainer.style.display = DisplayStyle.None;
     }
+    private void showAboutThisTool(ClickEvent evt)
+    {
+        reflectionPageContainer.style.display = DisplayStyle.None;
+        howToPlayPageContainer.style.display = DisplayStyle.None;
+        aboutPageContainer.style.display = DisplayStyle.None;
+        aboutThisToolContainer.style.display = DisplayStyle.Flex;
+        aboutGRIDContainer.style.display = DisplayStyle.None;
+    }
+    private void showAboutGRID(ClickEvent evt)
+    {
+        reflectionPageContainer.style.display = DisplayStyle.None;
+        howToPlayPageContainer.style.display = DisplayStyle.None;
+        aboutPageContainer.style.display = DisplayStyle.None;
+        aboutThisToolContainer.style.display = DisplayStyle.None;
+        aboutGRIDContainer.style.display = DisplayStyle.Flex;
+    }
+
     public void StartFadeIn(VisualElement visualElement)
     {
         StartCoroutine(FadeInCoroutine(visualElement));
@@ -498,62 +532,47 @@ private void OnApplicationQuit()
         currentTypeTextCoroutine = StartCoroutine(TypeText(sentence, keywordstring));
     }
 
-    private IEnumerator TypeText(string sentence, string keywordstring)
+private bool instantCompleteRequested = false;
+private void Update()
 {
+    // Check for input in Update to catch it more reliably
+    if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
+    {
+        instantCompleteRequested = true;
+    }
+}
+private IEnumerator TypeText(string sentence, string keywordstring)
+{
+    instantCompleteRequested = false;  // Reset the flag at the start of each new line
+    Debug.Log("TypeText coroutine started with new line");
     dialogueText.text = "";
-
-    // Disable the nextButton at the start
-    //nextButton.SetEnabled(false);
-
-    // Set to true when you start scrolling text
-    //bool textScrolling = true;
     int characterCounter = 0;
 
     for (int i = 0; i < sentence.Length; i++)
     {
+        if (instantCompleteRequested)
+        {
+            Debug.Log("Instant completion requested");
+            dialogueText.text = sentence;
+            break; // Exit the loop immediately
+        }
+
         char c = sentence[i];
+        dialogueText.text += c;
+        characterCounter++;
 
-        if (c == '<')
+        if (characterCounter % 4 == 0)
         {
-            int endIndex = sentence.IndexOf('>', i);
-
-            if (endIndex != -1)
-            {
-                string tag = sentence.Substring(i, endIndex - i + 1);
-                dialogueText.text += tag;
-                i = endIndex; // Skip the tag
-            }
-        }
-        else
-        {
-            dialogueText.text += c;
-            characterCounter++; // Increment the character counter
-
-            // Play the beep sound every fourth character
-            if (characterCounter % 4 == 0)
-            {
-                Audio.PlayOneShot(dialogueBeepClip, 0.7F);
-            }
+            Audio.PlayOneShot(dialogueBeepClip, 0.7F);
         }
 
-        if (dialogueText.text.Contains(keywordstring) && !string.IsNullOrEmpty(keywordstring))
-        {
-            Debug.Log($"Found the target string: {keywordstring} in dialogueText.text!");
-            Audio.PlayOneShot(keywordSFX, 0.7F);
-        }
-
-        // Check if the text scrolling is finished
-        if (i == sentence.Length - 1)
-        {
-            //textScrolling = false;
-            nextButton.SetEnabled(true);
-        }
-        else
-        {
-            yield return new WaitForSeconds(typingSpeed);
-        }
+        yield return new WaitForSeconds(typingSpeed);
     }
+
+    nextButton.SetEnabled(true);
+    Debug.Log("Coroutine ended");
 }
+/// 
     private void NextDialogue(ClickEvent evt)
 {
     Debug.Log($"CurrentIndex before change: {currentIndex}");
