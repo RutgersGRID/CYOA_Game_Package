@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
@@ -57,6 +57,7 @@ public class IntroAnimationPopulator : MonoBehaviour
     {
         foreach (var frame in FR.frames)
         {
+            // Preload frames if needed
         }
     }
 
@@ -67,13 +68,8 @@ public class IntroAnimationPopulator : MonoBehaviour
             nextButton.SetEnabled(false);
             var frameSO = FR.frames[currentIndex];
             var currentframeStill = frameStill.style.backgroundImage;
-            frameStill.style.backgroundImage = new StyleBackground(frameSO.frameStills);
 
-            // Check if the current frame is different from the previous one
-            if (currentframeStill != frameStill.style.backgroundImage)
-            {
-                StartFadeIn(frameStill);
-            }
+            StartCoroutine(FadeInOutCoroutine(frameStill, currentframeStill, frameSO.frameStills));
         }
         else
         {
@@ -82,34 +78,46 @@ public class IntroAnimationPopulator : MonoBehaviour
         }
     }
 
-    public void StartFadeIn(VisualElement visualElement)
+    private IEnumerator FadeInOutCoroutine(VisualElement visualElement, StyleBackground currentBackground, Sprite nextSprite)
+{
+    isAnimating = true;
+    float startOpacity = 1f;
+    float targetOpacity = 0f;
+    float duration = 1f; // Duration of the fade animation in seconds
+
+    float startTime = Time.time;
+    while (Time.time - startTime < duration)
     {
-        StartCoroutine(FadeInCoroutine(visualElement));
+        float progress = (Time.time - startTime) / duration;
+        float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+        visualElement.style.opacity = new StyleFloat(newOpacity);
+        yield return null;
     }
 
-    private IEnumerator FadeInCoroutine(VisualElement visualElement)
+    visualElement.style.opacity = new StyleFloat(targetOpacity);
+
+    // Set the next frame image using the nextSprite
+    var nextBackground = new StyleBackground(nextSprite.texture);
+
+    frameStill.style.backgroundImage = nextBackground;
+
+    startOpacity = 0f;
+    targetOpacity = 1f;
+
+    startTime = Time.time;
+    while (Time.time - startTime < duration)
     {
-        isAnimating = true;
-        float targetOpacity = 1f;
-        float startOpacity = 0f;
-        float duration = 1f; // Duration of the fade-in animation in seconds
-
-        visualElement.style.opacity = new StyleFloat(startOpacity);
-
-        float startTime = Time.time;
-        while (Time.time - startTime < duration)
-        {
-            float progress = (Time.time - startTime) / duration;
-            float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-            visualElement.style.opacity = new StyleFloat(newOpacity);
-            yield return null;
-        }
-
-        visualElement.style.opacity = new StyleFloat(targetOpacity);
-        currentIndex++;
-        isAnimating = false;
-        
-        // Start the animation for the next frame
-        StartNextFrameAnimation();
+        float progress = (Time.time - startTime) / duration;
+        float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+        visualElement.style.opacity = new StyleFloat(newOpacity);
+        yield return null;
     }
+
+    visualElement.style.opacity = new StyleFloat(targetOpacity);
+    currentIndex++;
+    isAnimating = false;
+
+    // Start the animation for the next frame
+    StartNextFrameAnimation();
+}
 }
