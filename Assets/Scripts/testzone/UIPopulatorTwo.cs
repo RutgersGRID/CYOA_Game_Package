@@ -642,7 +642,7 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         }
 
         AddFormField(dialogueSO.EntryPoints, dialogueSO.A1Answers);
-
+        Debug.Log(dialogueSO.EntryPoints + dialogueSO.A1Answers);
         currentIndex = dialogueSO.GoToIDA1s;
 
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
@@ -685,6 +685,7 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         }
 
         AddFormField(dialogueSO.EntryPoints, dialogueSO.A2Answers);
+        Debug.Log(dialogueSO.EntryPoints + dialogueSO.A2Answers);
 
         currentIndex = dialogueSO.GoToIDA2s;
 
