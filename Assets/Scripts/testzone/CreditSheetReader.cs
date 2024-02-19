@@ -11,20 +11,22 @@ public class CreditSheetReader : MonoBehaviour
     {
         public string creditTexts;
         public string htpTexts;
+        public string creditGRIDTexts;
     }
     public List<CreditSO> credits = new List<CreditSO>();
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/18CvNs0wYUN_56fnWVS_hhRIbyzK5xGj8CoPI--ZwILw/values/About?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1siqnxHf_l6edo4DkiAk135eAa3nGQoP1AAiowkpo1Oo/values/About?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
         // StartCoroutine(ObtainSheetData());
     }
-    private CreditSO CreateCreditSO(string creditText, string htpText)
+    private CreditSO CreateCreditSO(string creditText, string htpText, string creditGRIDText)
     {
         CreditSO credit = ScriptableObject.CreateInstance<CreditSO>();
         credit.creditTexts = creditText;
         credit.htpTexts = htpText;
+        credit.creditGRIDTexts = creditGRIDText;
 
         return credit;
     }
@@ -47,8 +49,9 @@ public class CreditSheetReader : MonoBehaviour
                 var item = valuesArray[i];
                 var creditText = item[0].Value;
                 var htpText = item[1].Value;
+                var creditGRIDText = item[2].Value;
                 
-                credits.Add(CreateCreditSO(creditText, htpText));
+                credits.Add(CreateCreditSO(creditText, htpText, creditGRIDText));
             }
         }
         if (credits.Count == 0)

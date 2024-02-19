@@ -63,6 +63,7 @@ public class UIPopulatorTwo : MonoBehaviour
     private VisualElement aboutGRIDContainer;
     private TextElement aboutText;
     private TextElement htpText;
+    private TextElement creditGRIDText;
     private Button bookmarkOne;
     private Button bookmarkTwo;
     private Button bookmarkThree;
@@ -157,6 +158,7 @@ public class UIPopulatorTwo : MonoBehaviour
         aboutGRIDContainer = root.Q<VisualElement>("AboutGRIDEventPage");
         aboutText = root.Q<TextElement>("AboutText");
         htpText = root.Q<TextElement>("HTPText");
+        creditGRIDText = root.Q<TextElement>("AGText");
         howToPlayPageContainer = root.Q<VisualElement>("HowToPlayEventPage");
         bookmarkOne = root.Q<Button>("BookmarkOne");
         bookmarkTwo = root.Q<Button>("BookmarkTwo");
@@ -250,6 +252,7 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log(creditSO.htpTexts);
         aboutText.text = creditSO.creditTexts;
         htpText.text = creditSO.htpTexts;
+        creditGRIDText.text = creditSO.creditGRIDTexts;
     }
         private void preloadTheList()
     {
@@ -350,25 +353,25 @@ private void OnApplicationQuit()
             // Check if characterImageRight has changed and trigger StartFadeIn if it has
             if (currentRightImage != characterImageRight.style.backgroundImage)
             {
-                StartFadeIn(characterImageRight);
+                StartCoroutine(FadeInOutCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
             }
 
             // Check if characterImageLeft has changed and trigger StartFadeIn if it has
             if (currentLeftImage != characterImageLeft.style.backgroundImage)
             {
-                StartFadeIn(characterImageLeft);
+                
             }
 
             // Check if propImage has changed and trigger StartFadeIn if it has
             if (currentPropImage != propImage.style.backgroundImage)
             {
-                StartFadeIn(propImage);
+                
             }
 
             // Check if dlogBG has changed and trigger StartFadeIn if it has
             if (currentDlogBGImage != dlogBG.style.backgroundImage)
             {
-                StartFadeIn(dlogBG);
+                
             }
             ////
 
@@ -498,28 +501,43 @@ private void OnApplicationQuit()
         aboutGRIDContainer.style.display = DisplayStyle.Flex;
     }
 
-    public void StartFadeIn(VisualElement visualElement)
+private IEnumerator FadeInOutCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
+{
+    float startOpacity = 1f;
+    float targetOpacity = 0f;
+    float duration = 1f; // Duration of the fade animation in seconds
+
+    float startTime = Time.time;
+    while (Time.time - startTime < duration)
     {
-        StartCoroutine(FadeInCoroutine(visualElement));
+        float progress = (Time.time - startTime) / duration;
+        float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+        background.style.opacity = new StyleFloat(newOpacity);
+        yield return null;
     }
-    private IEnumerator FadeInCoroutine(VisualElement visualElement)
+
+    background.style.opacity = new StyleFloat(targetOpacity);
+
+    // Set the next frame image using the nextSprite
+    var nextBackground = new StyleBackground(nextSprite.texture);
+
+    background.style.backgroundImage = nextBackground;
+
+    startOpacity = 0f;
+    targetOpacity = 1f;
+
+    startTime = Time.time;
+    while (Time.time - startTime < duration)
     {
-    
-        float targetOpacity = 1f;
-        float startOpacity = 0f;
-        float timeStep = 1f / 1f; // Calculate timeStep based on desired duration (1 second)
-
-        visualElement.style.opacity = new StyleFloat(startOpacity);
-
-        while (visualElement.style.opacity.value < targetOpacity)
-        {
-            float newOpacity = Mathf.MoveTowards(visualElement.style.opacity.value, targetOpacity, timeStep * Time.deltaTime);
-            visualElement.style.opacity = new StyleFloat(newOpacity);
-            yield return null;
-        }
-
-        visualElement.style.opacity = new StyleFloat(targetOpacity);
+        float progress = (Time.time - startTime) / duration;
+        float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+        background.style.opacity = new StyleFloat(newOpacity);
+        yield return null;
     }
+
+    background.style.opacity = new StyleFloat(targetOpacity);
+    currentIndex++;
+}
         public void ScrollT(string sentence, string keywordstring)
     {
     //     StartCoroutine(TypeText(sentence, keywordstring));

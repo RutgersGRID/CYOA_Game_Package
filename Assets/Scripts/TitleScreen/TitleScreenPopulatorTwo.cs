@@ -70,6 +70,10 @@ public class TitleScreenPopulatorTwo : MonoBehaviour
                 SceneManager.LoadScene(sceneToLoad);
                 break;
             }
+            else
+            {
+                Debug.Log("Codes did not match: " + accessCodeValue + " and " + workshopIdValue);
+            }
         }
 
         if (!match)
