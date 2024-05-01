@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using SimpleJSON;
 
-public class StorySheetReader : MonoBehaviour
+public class Obsolete_StorySheetReader : MonoBehaviour
 {
     [System.Serializable]
     public class DialogueSO : ScriptableObject

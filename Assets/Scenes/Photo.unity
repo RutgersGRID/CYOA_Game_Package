@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59665ec2c9acf6448b3b5dc89f5c0736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: TestZone
+  sceneToLoad: CYOA_Scene
 --- !u!1 &1280570411
 GameObject:
   m_ObjectHideFlags: 0
