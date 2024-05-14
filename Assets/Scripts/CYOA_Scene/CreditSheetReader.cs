@@ -14,7 +14,7 @@ public class CreditSheetReader : MonoBehaviour
         public string creditGRIDTexts;
     }
     public List<CreditSO> credits = new List<CreditSO>();
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1siqnxHf_l6edo4DkiAk135eAa3nGQoP1AAiowkpo1Oo/values/About?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string ABOUT_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs/values/About?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
@@ -32,7 +32,7 @@ public class CreditSheetReader : MonoBehaviour
     }
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(ABOUT_SHEET_URL);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)

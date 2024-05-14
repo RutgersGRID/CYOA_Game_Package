@@ -15,7 +15,7 @@ public class FrameReader : MonoBehaviour
     }
     public List<FrameSO> frames = new List<FrameSO>();
     private string ResourcesLoadAI = "AnimationImages/";
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1yCNwNPDCFJP4VmggLayE66kTOhGo2xjYBN_iaiWQFvM/values/Frames?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string FRAMES_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs/values/IntroFrames?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
@@ -57,7 +57,7 @@ public class FrameReader : MonoBehaviour
     }
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(FRAMES_SHEET_URL);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
@@ -80,13 +80,14 @@ public class FrameReader : MonoBehaviour
         }
         if (frames.Count == 0)
         {
-            Debug.LogWarning("FROM FrameReader");
-            Debug.LogWarning("The frames list was not populated. Please check the source or the structure of the Google Sheet.");
+            Debug.LogWarning("FROM FrameReader: FAILURE");
+
+            Debug.LogWarning("The frames list was not populated. Please check the source or the structure of the Google Sheet: "+ FRAMES_SHEET_URL);
         }
         else
         {
-            Debug.Log($"FROM FrameReader");
-            Debug.Log($"Successfully populated framess list with {frames.Count} entries.");
+            Debug.Log($"FROM FrameReader: SUCCESS");
+            Debug.Log($"Successfully populated frames list with {frames.Count} entries from "+ FRAMES_SHEET_URL);
         }
         onDataLoaded?.Invoke();
     }

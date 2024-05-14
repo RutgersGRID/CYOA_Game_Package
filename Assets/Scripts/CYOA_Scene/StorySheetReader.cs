@@ -39,7 +39,7 @@ public class StorySheetReader : MonoBehaviour
     private string ResourcesLoadC = "Characters/";
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1Jwj58ptzQYkZvjsmVyzzCos5BwxwezuHiDb5BF3uXE0/values:batchGet?ranges=Sheet1&key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string STORY_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1Jwj58ptzQYkZvjsmVyzzCos5BwxwezuHiDb5BF3uXE0/values:batchGet?ranges=Sheet1&key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     
     private void Start()
     {
@@ -77,7 +77,7 @@ public class StorySheetReader : MonoBehaviour
 
     IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(STORY_SHEET_URL);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
@@ -126,7 +126,7 @@ public class StorySheetReader : MonoBehaviour
         }
             else
             {
-                Debug.Log($"Successfully populated dialogues list with {dialogues.Count} entries.");
+                Debug.Log($"Successfully populated dialogues list with {dialogues.Count} entries from "+ STORY_SHEET_URL);
             }
     
         }
