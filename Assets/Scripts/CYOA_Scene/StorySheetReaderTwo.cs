@@ -46,7 +46,9 @@ public class StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    private const string OBSOLETE_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs/values/OldSheet2?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1AleQnI67lpOmJ9-TWLoVRQUogoe0lSXZeHZjb-V8bu4/values/StoryText?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/127RLzQZ2qb4ZDp6CuvgPn6z-9T58lgnAXhlk0I3z3Fc/values/TestSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1qdFQcWRaIods2ur-CPmDyiqOHeYWP488M-Lf0RLmjhc/values/OldSheet2?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
@@ -113,7 +115,7 @@ public class StorySheetReaderTwo : MonoBehaviour
 
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(OBSOLETE_SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
