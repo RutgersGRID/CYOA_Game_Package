@@ -96,6 +96,7 @@ public class UIPopulatorTwo : MonoBehaviour
     string[] pageLog;
     ///
     public float typingSpeed = 0.05f;
+    public float fadeDuration = 0.5f;
     ///
     string keywordstring;
     private string entryPoint;
@@ -229,12 +230,19 @@ public class UIPopulatorTwo : MonoBehaviour
         
         //PopulateUI();
     }
+
     void DataLoadedCallback()
     {
         Debug.Log("Data loaded and list populated.");
         Debug.Log("Size of SSR.dialogues: " + SSR.dialogues.Count);
         Debug.Log("Size of JSR.journals: " + JSR.journals.Count);
         Debug.Log("Size of CSR.credits: " + CSR.credits.Count);
+        
+        // Print detailed information about SSR, JSR, and CSR
+        PrintSSRData();
+        PrintJSRData();
+        PrintCSRData();
+        
         preloadTheList();
         if (CSR.credits.Count > 0)
         {
@@ -245,16 +253,35 @@ public class UIPopulatorTwo : MonoBehaviour
             PopulateUI();
         }
     }
-    private void UpdateAboutAndHtpTexts()
+
+    private void PrintSSRData()
     {
-        var creditSO = CSR.credits[0]; // Assuming you want to display the first CreditSO
-        Debug.Log(creditSO.creditTexts);
-        Debug.Log(creditSO.htpTexts);
-        aboutText.text = creditSO.creditTexts;
-        htpText.text = creditSO.htpTexts;
-        creditGRIDText.text = creditSO.creditGRIDTexts;
+        Debug.Log("Printing SSR data:");
+        foreach (var dialogue in SSR.dialogues)
+        {
+            Debug.Log($"ID: {dialogue.IDs}, Speaker: {dialogue.Speakers}, Line: {dialogue.Lines}, Keywords: {dialogue.Keywords}");
+        }
     }
-        private void preloadTheList()
+
+    private void PrintJSRData()
+    {
+        Debug.Log("Printing JSR data:");
+        foreach (var journal in JSR.journals)
+        {
+            Debug.Log($"Title: {journal.journalTitles}, Entry: {journal.journalEntrys}, Question: {journal.reflectionQuestions}");
+        }
+    }
+
+    private void PrintCSRData()
+    {
+        Debug.Log("Printing CSR data:");
+        foreach (var credit in CSR.credits)
+        {
+            Debug.Log($"Credit Texts: {credit.creditTexts}, HTP Texts: {credit.htpTexts}, Credit GRID Texts: {credit.creditGRIDTexts}");
+        }
+    }
+
+    private void preloadTheList()
     {
         foreach (var dialogue in SSR.dialogues)
         {
@@ -265,6 +292,16 @@ public class UIPopulatorTwo : MonoBehaviour
         foreach (var credit in CSR.credits)
         {
         }
+    }
+
+    private void UpdateAboutAndHtpTexts()
+    {
+        var creditSO = CSR.credits[0]; // Assuming you want to display the first CreditSO
+        Debug.Log(creditSO.creditTexts);
+        Debug.Log(creditSO.htpTexts);
+        aboutText.text = creditSO.creditTexts;
+        htpText.text = creditSO.htpTexts;
+        creditGRIDText.text = creditSO.creditGRIDTexts;
     }
 
 private void AddFormField(string fieldName, string fieldValue)
@@ -334,6 +371,12 @@ private void OnApplicationQuit()
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count) 
         {
             var dialogueSO = SSR.dialogues[currentIndex];
+        // Ensure no overlapping coroutines
+            if (characterImageLeft == null || characterImageRight == null || propImage == null || dlogBG == null)
+        {
+            Debug.LogError("One or more VisualElements are not assigned!");
+            return;
+        }
 
             ////
             var currentRightImage = characterImageRight.style.backgroundImage;
@@ -347,33 +390,24 @@ private void OnApplicationQuit()
             propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
             dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
 
-            /// Populate the About and How to Play page
-            
-
-            // Check if characterImageRight has changed and trigger StartFadeIn if it has
+            // Check if characterImageLeft has changed and trigger StartFadeIn if it has
             if (currentRightImage != characterImageRight.style.backgroundImage)
             {
-                characterImageRight.style.opacity = 0;
                 StartCoroutine(FadeInCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
             }
-
-            // Check if characterImageLeft has changed and trigger StartFadeIn if it has
             if (currentLeftImage != characterImageLeft.style.backgroundImage)
             {
-                
+                StartCoroutine(FadeInCoroutine(characterImageLeft, currentLeftImage, dialogueSO.LeftSideSpeakers));
             }
-
-            // Check if propImage has changed and trigger StartFadeIn if it has
             if (currentPropImage != propImage.style.backgroundImage)
             {
-                
+                StartCoroutine(FadeInCoroutine(propImage, currentPropImage, dialogueSO.Props));
             }
-
-            // Check if dlogBG has changed and trigger StartFadeIn if it has
             if (currentDlogBGImage != dlogBG.style.backgroundImage)
             {
-                
+                StartCoroutine(FadeInCoroutine(dlogBG, currentDlogBGImage, dialogueSO.Backgrounds));
             }
+
             ////
 
             dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
@@ -460,7 +494,34 @@ private void OnApplicationQuit()
         }
         
     }
+///
+    private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
+    {
+        // Check if nextSprite is null and do nothing if true
+        if (nextSprite == null)
+        {
+            yield break;  // Do nothing and exit the coroutine
+        }
 
+        float startOpacity = 0f; // Start fully transparent
+        float targetOpacity = 1f; // End fully opaque
+        float duration = fadeDuration; // Duration of the fade animation in seconds
+
+        var nextBackground = new StyleBackground(nextSprite.texture);
+        background.style.backgroundImage = nextBackground;
+
+        float startTime = Time.time;
+        while (Time.time - startTime < duration)
+        {
+            float progress = (Time.time - startTime) / duration;
+            float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+            background.style.opacity = new StyleFloat(newOpacity);
+            yield return null;
+        }
+
+        background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+    }
+/// 
     private void showReflection(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.Flex;
@@ -502,28 +563,32 @@ private void OnApplicationQuit()
         aboutGRIDContainer.style.display = DisplayStyle.Flex;
     }
 
-private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
-{
-    float startOpacity = 0f; // Start fully transparent
-    float targetOpacity = 1f; // End fully opaque
-    float duration = .5f; // Duration of the fade animation in seconds
+// private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
+// {
+//     float startOpacity = 0f; // Start fully transparent
+//     float targetOpacity = 1f; // End fully opaque
+//     float duration = .5f; // Duration of the fade animation in seconds
 
-    // Set the background image at the start if needed
-    var nextBackground = new StyleBackground(nextSprite.texture);
-    background.style.backgroundImage = nextBackground;
+//     // Set the background image at the start if needed
 
-    float startTime = Time.time;
-    while (Time.time - startTime < duration)
-    {
-        float progress = (Time.time - startTime) / duration;
-        float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-        background.style.opacity = new StyleFloat(newOpacity);
-        yield return null;
-    }
+//     // Check if next sprite exists
+//     // Then if it exists then else put a missing background or default texture.
 
-    background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
-    currentIndex++;
-}
+//     var nextBackground = new StyleBackground(nextSprite.texture);
+//     background.style.backgroundImage = nextBackground;
+
+//     float startTime = Time.time;
+//     while (Time.time - startTime < duration)
+//     {
+//         float progress = (Time.time - startTime) / duration;
+//         float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+//         background.style.opacity = new StyleFloat(newOpacity);
+//         yield return null;
+//     }
+
+//     background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+//     currentIndex++;
+// }
         public void ScrollT(string sentence, string keywordstring)
     {
     //     StartCoroutine(TypeText(sentence, keywordstring));

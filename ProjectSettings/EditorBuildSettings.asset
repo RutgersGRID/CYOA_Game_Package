@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/PrototypeUITools.unity
     guid: c1aac7ab696e04f4d8d3e2ab18f00ce4
   - enabled: 1
-    path: Assets/Scenes/TitleScreen.unity
+    path: Assets/Scenes/AccessControl.unity
     guid: e55f30f5e51279445a85091060dc7947
   - enabled: 1
     path: Assets/Scenes/Prototype.unity
