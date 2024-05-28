@@ -40,8 +40,7 @@ public class Obsolete_StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1AleQnI67lpOmJ9-TWLoVRQUogoe0lSXZeHZjb-V8bu4/values/StoryText?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1ksXqcHwthFPc_jMstAku4xuhxFUs5q93W6L78eyfX2U/values/Sheet1?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string OBS_STORY_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs/values/Sheet1?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
@@ -108,7 +107,8 @@ public class Obsolete_StorySheetReaderTwo : MonoBehaviour
 
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        Debug.Log("Sheet Data loaded by Obsolete_StorySheetReaderTwo");
+        UnityWebRequest www = UnityWebRequest.Get(OBS_STORY_SHEET_URL);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)

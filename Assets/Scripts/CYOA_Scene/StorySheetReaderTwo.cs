@@ -51,10 +51,7 @@ public class StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1AleQnI67lpOmJ9-TWLoVRQUogoe0lSXZeHZjb-V8bu4/values/StoryText?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
-    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/127RLzQZ2qb4ZDp6CuvgPn6z-9T58lgnAXhlk0I3z3Fc/values/TestSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
-    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1D6ttQZLDzZ9Ijzw-0CeJtO_MUR1lc3qPJj0SmTk86nM/values/Story?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";    
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1kj78zj3o_u2tTsUKlK7iPnYGrz0Qckh5Mt8e1je4iEo/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string STORY_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
@@ -121,7 +118,8 @@ public class StorySheetReaderTwo : MonoBehaviour
 
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        Debug.Log("Sheet Data loaded by Story Sheet Reader Two");
+        UnityWebRequest www = UnityWebRequest.Get(STORY_SHEET_URL);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
