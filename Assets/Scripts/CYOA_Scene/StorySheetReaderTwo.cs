@@ -51,7 +51,7 @@ public class StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    private const string STORY_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string STORY_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
