@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class TitleScreenPopulatorTwo : MonoBehaviour
+public class AccessControlPopulatorTwo : MonoBehaviour
 {
     private TextField Accesscode;
     private TextField Workshopid;
