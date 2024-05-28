@@ -42,7 +42,7 @@ public class JournalSheetReader : MonoBehaviour
 
     IEnumerator ObtainSheetData()
     {
-        Console.Log("Journal Sheet Reader One");
+        Debug.Log("Sheet Data loaded by Journal Sheet Reader One");
         UnityWebRequest www = UnityWebRequest.Get(JOURNAL_SHEET_URL);
         yield return www.SendWebRequest();
 
