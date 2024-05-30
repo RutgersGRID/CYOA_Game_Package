@@ -16,6 +16,7 @@ public class StorySheetReaderTwo : MonoBehaviour
     [System.Serializable]
     public class DialogueSO : ScriptableObject
     {
+        public string Scenes;
         public int IDs;
         // public string IDs;
         public string Speakers;
@@ -52,9 +53,9 @@ public class StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
     //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1AleQnI67lpOmJ9-TWLoVRQUogoe0lSXZeHZjb-V8bu4/values/StoryText?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
-    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/127RLzQZ2qb4ZDp6CuvgPn6z-9T58lgnAXhlk0I3z3Fc/values/TestSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/127RLzQZ2qb4ZDp6CuvgPn6z-9T58lgnAXhlk0I3z3Fc/values/TestSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1D6ttQZLDzZ9Ijzw-0CeJtO_MUR1lc3qPJj0SmTk86nM/values/Story?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";    
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1kj78zj3o_u2tTsUKlK7iPnYGrz0Qckh5Mt8e1je4iEo/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1kj78zj3o_u2tTsUKlK7iPnYGrz0Qckh5Mt8e1je4iEo/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
@@ -62,9 +63,10 @@ public class StorySheetReaderTwo : MonoBehaviour
         // StartCoroutine(ObtainSheetData());
     }
     //private DialogueSO CreateDialogueSO(string ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, string Checkpoint, string Type, string GoToID, int Effect, string A1Answer, string GoToIDA1, int EffectA1, string A2Answer, string GoToIDA2, int EffectA2, string A3Answer, string GoToIDA3, int EffectA3, string EntryPoint)
-    private DialogueSO CreateDialogueSO(int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3, string EntryPoint)
+    private DialogueSO CreateDialogueSO(string Scene, int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3, string EntryPoint)
     {
         DialogueSO dialogue = ScriptableObject.CreateInstance<DialogueSO>();
+        dialogue.Scenes = Scene;
         dialogue.IDs = ID;
         dialogue.Speakers = Speaker;
         dialogue.Lines = Line;
@@ -137,36 +139,37 @@ public class StorySheetReaderTwo : MonoBehaviour
             {
                 var item = valuesArray[i];
                 //var ID = SafeIntParse(item[0].Value);
-                var ID = SafeIntParse(item[0].Value);
-                var Speaker = item[1].Value;
-                var Line = item[2].Value;
-                var Keyword = item[3].Value;
-                var SoundEFX = Resources.Load<AudioClip>(ResourcesLoadSEFX + item[4].Value);
-                var LeftSideSpeaker = Resources.Load<Sprite>(ResourcesLoadC + item[5].Value);
-                var RightSideSpeaker = Resources.Load<Sprite>(ResourcesLoadC + item[6].Value);
+                var Scene = item[0].Value;
+                var ID = SafeIntParse(item[1].Value);
+                var Speaker = item[2].Value;
+                var Line = item[3].Value;
+                var Keyword = item[4].Value;
+                var SoundEFX = Resources.Load<AudioClip>(ResourcesLoadSEFX + item[5].Value);
+                var LeftSideSpeaker = Resources.Load<Sprite>(ResourcesLoadC + item[6].Value);
+                var RightSideSpeaker = Resources.Load<Sprite>(ResourcesLoadC + item[7].Value);
                 var Prop = Resources.Load<Sprite>(ResourcesLoadP + item[7].Value);
-                var Background = Resources.Load<Sprite>(ResourcesLoadBG + item[8].Value);
+                var Background = Resources.Load<Sprite>(ResourcesLoadBG + item[9].Value);
                 //var Checkpoint = SafeIntParse(item[9].Value);
-                var Checkpoint = SafeIntParse(item[9].Value);
-                var Type = item[10].Value;
+                var Checkpoint = SafeIntParse(item[10].Value);
+                var Type = item[11].Value;
                 //var GoToID = SafeIntParse(item[11].Value);
-                var GoToID = SafeIntParse(item[11].Value);
-                var Effect = SafeIntParse(item[12].Value);
-                var A1Answer = item[13].Value;
+                var GoToID = SafeIntParse(item[12].Value);
+                var Effect = SafeIntParse(item[13].Value);
+                var A1Answer = item[14].Value;
                 //var GoToIDA1 = SafeIntParse(item[14].Value);
-                var GoToIDA1 = SafeIntParse(item[14].Value);
-                var EffectA1 = SafeIntParse(item[15].Value);
-                var A2Answer = item[16].Value;
+                var GoToIDA1 = SafeIntParse(item[15].Value);
+                var EffectA1 = SafeIntParse(item[16].Value);
+                var A2Answer = item[17].Value;
                 //var GoToIDA2 = SafeIntParse(item[17].Value);
-                var GoToIDA2 = SafeIntParse(item[17].Value);
-                var EffectA2 = SafeIntParse(item[18].Value);
-                var A3Answer = item[19].Value;
+                var GoToIDA2 = SafeIntParse(item[18].Value);
+                var EffectA2 = SafeIntParse(item[19].Value);
+                var A3Answer = item[20].Value;
                 //var GoToIDA3 = SafeIntParse(item[20].Value);
-                var GoToIDA3 = SafeIntParse(item[20].Value);
-                var EffectA3 = SafeIntParse(item[21].Value);
-                var EntryPoint = item[22].Value;
+                var GoToIDA3 = SafeIntParse(item[21].Value);
+                var EffectA3 = SafeIntParse(item[22].Value);
+                var EntryPoint = item[23].Value;
 
-                dialogues.Add(CreateDialogueSO(ID, Speaker, Line, Keyword, SoundEFX, LeftSideSpeaker, RightSideSpeaker, Prop, Background, Checkpoint, Type, GoToID, Effect, A1Answer, GoToIDA1, EffectA1, A2Answer, GoToIDA2, EffectA2, A3Answer, GoToIDA3, EffectA3, EntryPoint));
+                dialogues.Add(CreateDialogueSO(Scene, ID, Speaker, Line, Keyword, SoundEFX, LeftSideSpeaker, RightSideSpeaker, Prop, Background, Checkpoint, Type, GoToID, Effect, A1Answer, GoToIDA1, EffectA1, A2Answer, GoToIDA2, EffectA2, A3Answer, GoToIDA3, EffectA3, EntryPoint));
             }
         }
         if (dialogues.Count == 0)

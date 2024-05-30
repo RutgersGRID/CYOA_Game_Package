@@ -310,23 +310,48 @@ private void AddFormField(string fieldName, string fieldValue)
     formFields[fieldName] = fieldValue;
 }
 
-// Create a method to submit form data
+// Method to submit form data
+// private void SubmitFormData()
+// {
+//     string googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/formResponse";
+
+//     // Create a WWWForm and add form data
+//     WWWForm form = new WWWForm();
+//     form.AddField("entry.1360379984", PlayerPrefs.GetString("AccessCode"));
+//     form.AddField("entry.1388253662", PlayerPrefs.GetString("WorkshopId"));
+
+//     // Add form fields from the dictionary
+//     foreach (var kvp in formFields)
+//     {
+//         form.AddField(kvp.Key, kvp.Value);
+//     }
+
+//     // Debug.Log to check form field data before submission
+//     Debug.Log("Form Data Before Submission:");
+//     Debug.Log("AccessCode: " + PlayerPrefs.GetString("AccessCode"));
+//     Debug.Log("WorkshopId: " + PlayerPrefs.GetString("WorkshopId"));
+//     foreach (var kvp in formFields)
+//     {
+//         Debug.Log(kvp.Key + ": " + kvp.Value);
+//     }
+
+//     // Send the form data to the Google Form
+//     StartCoroutine(SendFormResponse(googleFormURL, form));
+// }
+
 private void SubmitFormData()
 {
-    string googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/formResponse";
-
-    // Create a WWWForm and add form data
+    // string googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/formResponse";
+    string googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/viewform";
     WWWForm form = new WWWForm();
     form.AddField("entry.1360379984", PlayerPrefs.GetString("AccessCode"));
     form.AddField("entry.1388253662", PlayerPrefs.GetString("WorkshopId"));
 
-    // Add form fields from the dictionary
     foreach (var kvp in formFields)
     {
         form.AddField(kvp.Key, kvp.Value);
     }
 
-    // Debug.Log to check form field data before submission
     Debug.Log("Form Data Before Submission:");
     Debug.Log("AccessCode: " + PlayerPrefs.GetString("AccessCode"));
     Debug.Log("WorkshopId: " + PlayerPrefs.GetString("WorkshopId"));
@@ -335,7 +360,6 @@ private void SubmitFormData()
         Debug.Log(kvp.Key + ": " + kvp.Value);
     }
 
-    // Send the form data to the Google Form
     StartCoroutine(SendFormResponse(googleFormURL, form));
 }
 
@@ -359,10 +383,7 @@ private IEnumerator SendFormResponse(string url, WWWForm form)
 
 private void OnApplicationQuit()
 {
-    // Debug.Log to check if OnApplicationQuit is being called
     Debug.Log("Application is quitting. Submitting form data...");
-    
-    // Submit the form data when the application quits
     SubmitFormData();
 }
 
