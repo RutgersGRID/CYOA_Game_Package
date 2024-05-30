@@ -39,7 +39,7 @@ public class StorySheetReader : MonoBehaviour
     private string ResourcesLoadC = "Characters/";
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
-    private const string STORY_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1Jwj58ptzQYkZvjsmVyzzCos5BwxwezuHiDb5BF3uXE0/values:batchGet?ranges=Sheet1&key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string STORY_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1O88FIl3Z6QkR6Tlteuzb3qDcig6ci1hqNIoUYqqUCx8/values:batchGet?ranges=Sheet1&key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     
     private void Start()
     {
@@ -77,6 +77,7 @@ public class StorySheetReader : MonoBehaviour
 
     IEnumerator ObtainSheetData()
     {
+        Debug.Log("Sheet Data loaded by Story Sheet Reader (One)");
         UnityWebRequest www = UnityWebRequest.Get(STORY_SHEET_URL);
         yield return www.SendWebRequest();
 

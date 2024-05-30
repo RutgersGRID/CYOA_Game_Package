@@ -15,7 +15,7 @@ public class GoogleSheetReaderTwo : MonoBehaviour
     }
 
     public List<LoginSO> logins = new List<LoginSO>();
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1cC9iRPYMR9jgyKbeBM-wBO03rG5SPvONt8t-5fNJrTs/values/Codes?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string CONTROL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1cC9iRPYMR9jgyKbeBM-wBO03rG5SPvONt8t-5fNJrTs/values/Codes?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
 
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
@@ -38,7 +38,7 @@ public class GoogleSheetReaderTwo : MonoBehaviour
     public IEnumerator ObtainSheetData()
     {
         //Debug.Log("ObtainSheetData started. Fetching data...");
-        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(CONTROL_SHEET_URL);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
