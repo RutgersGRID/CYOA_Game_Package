@@ -20,7 +20,7 @@ public class JournalSheetReaderTwo : MonoBehaviour
     public List<JournalSO> journals = new List<JournalSO>();
     private string ResourcesLoadP = "Props/";
     //private const string JOURNAL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1kj78zj3o_u2tTsUKlK7iPnYGrz0Qckh5Mt8e1je4iEo/values/JournalSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
-    private const string JOURNAL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs/values/JournalSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string JOURNAL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/JournalSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
