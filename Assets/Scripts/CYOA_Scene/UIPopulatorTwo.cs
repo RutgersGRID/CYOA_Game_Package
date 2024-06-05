@@ -259,7 +259,7 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log("Printing SSR data:");
         foreach (var dialogue in SSR.dialogues)
         {
-            Debug.Log($"ID: {dialogue.IDs}, Speaker: {dialogue.Speakers}, Line: {dialogue.Lines}, Keywords: {dialogue.Keywords}");
+            //Debug.Log($"ID: {dialogue.IDs}, Speaker: {dialogue.Speakers}, Line: {dialogue.Lines}, Keywords: {dialogue.Keywords}");
         }
     }
 
@@ -268,7 +268,7 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log("Printing JSR data:");
         foreach (var journal in JSR.journals)
         {
-            Debug.Log($"Title: {journal.journalTitles}, Entry: {journal.journalEntrys}, Question: {journal.reflectionQuestions}");
+            Debug.Log($"ID: {journal.IDs}, Title: {journal.journalTitles}, Entry: {journal.journalEntrys}, Question: {journal.reflectionQuestions}");
         }
     }
 
@@ -277,7 +277,7 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log("Printing CSR data:");
         foreach (var credit in CSR.credits)
         {
-            Debug.Log($"Credit Texts: {credit.creditTexts}, HTP Texts: {credit.htpTexts}, Credit GRID Texts: {credit.creditGRIDTexts}");
+            //Debug.Log($"Credit Texts: {credit.creditTexts}, HTP Texts: {credit.htpTexts}, Credit GRID Texts: {credit.creditGRIDTexts}");
         }
     }
 
@@ -474,20 +474,14 @@ private void OnApplicationQuit()
                 bThree.text = dialogueSO.A2Answers;
                 cThree.text = dialogueSO.A3Answers;
             }
-            if (dialogueSO.Effects != -1 && jNumber != 0)
-            {
-                if (!jPages.Contains(jNumber))
-                {
-                    NewJournalEntry.style.display = DisplayStyle.Flex;
-                }
-            }
-            else if (dialogueSO.Effects != -1)
+
+            if (dialogueSO.Effects != -1)
             {
                 if (!jPages.Contains(dialogueSO.Effects))
                 {
                     jNumber = dialogueSO.Effects;
 
-                    if (jNumber < 0 || jNumber >= JSR.journals.Count) // Check added here
+                    if (jNumber < 0 || jNumber >= JSR.journals.Count)
                     {
                         Debug.LogError("jNumber out of range!");
                         return;
@@ -498,15 +492,8 @@ private void OnApplicationQuit()
                     SummaryText.text = journalSO.journalEntrys;
                     Question.text = journalSO.reflectionQuestions;
                     NewJournalEntry.style.display = DisplayStyle.Flex;
-
-                    
                 }
             }
-            else if (!jPages.Contains(jNumber) && jPages.Count > 0)
-            {
-                NewJournalEntry.style.display = DisplayStyle.Flex;
-            }
-        
             journalUpdate();
         }
         else 
@@ -692,7 +679,8 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
         Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA1s);
 
-        if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s < JSR.journals.Count)
+        if (dialogueSO.EffectA1s >= 0 )
+        //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s < JSR.journals.Count)
         //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s)
         {
             var journalSO = JSR.journals[dialogueSO.EffectA1s];
@@ -858,61 +846,109 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         Audio.PlayOneShot(pageflipClip, 0.7F);
         journalUpdate();
     }
+    // public void journalUpdate()
+    // {
+    //     if (jPages.Count <= 0)
+    //     {
+    //         nextPage.style.display = DisplayStyle.None;
+    //         previousPage.style.display = DisplayStyle.None;
+    //     }
+        
+    //     else if (pageNumber >= 0 && pageNumber < jPages.Count)
+    //     {
+    //         if (pageNumber == jPages.Count - 1)
+    //         {
+    //             nextPage.style.display = DisplayStyle.None;
+    //             if (jPages.Count > 1)
+    //             {
+    //                 previousPage.style.display = DisplayStyle.Flex;
+    //             }
+    //         }
+    //         else if (pageNumber == 0)
+    //         {
+    //             previousPage.style.display = DisplayStyle.None;
+    //             if (jPages.Count > 1)
+    //             {
+    //                 nextPage.style.display = DisplayStyle.Flex;
+    //             }
+    //         }
+    //         else
+    //         {
+    //             nextPage.style.display = DisplayStyle.Flex;
+    //             previousPage.style.display = DisplayStyle.Flex;
+    //         }
+    //         if (pageNumber < jEventText.Count)
+    //         {
+    //             journalEntry.text = jEventText[pageNumber];
+    //             journalTitle.text = jEventTitle[pageNumber];
+    //             journalQuestion.text = jEventQuestionText[pageNumber];
+    //             doodle.style.backgroundImage = new StyleBackground(jdoodle[pageNumber]);
+
+    //             Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
+    //             Debug.Log("jPages" + string.Join(", ", jPages));
+    //             Debug.Log("jEventText" + string.Join(", ", jEventText));
+    //         }
+    //         else
+    //         {
+    //             Debug.LogError("pageNumber is out of range! jEventText count: " + jEventText.Count);
+    //             // Handle the error, e.g., set eventText.text to an error message or disable UI elements
+    //         }
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError("pageNumber is out of range! jPages count: " + jPages.Count);
+    //         Debug.LogError("pageNumber is out of range! pageNumber count: " + pageNumber);
+    //         // Handle the error, e.g., set eventText.text to an error message or disable UI elements
+    //     }
+    // }
     public void journalUpdate()
+{
+    if (jPages.Count <= 0)
     {
-        if (jPages.Count <= 0)
+        nextPage.style.display = DisplayStyle.None;
+        previousPage.style.display = DisplayStyle.None;
+    }
+    else if (pageNumber >= 0 && pageNumber < jPages.Count)
+    {
+        if (pageNumber == jPages.Count - 1)
         {
             nextPage.style.display = DisplayStyle.None;
-            previousPage.style.display = DisplayStyle.None;
-        }
-        
-        else if (pageNumber >= 0 && pageNumber < jPages.Count)
-        {
-            if (pageNumber == jPages.Count - 1)
+            if (jPages.Count > 1)
             {
-                nextPage.style.display = DisplayStyle.None;
-                if (jPages.Count > 1)
-                {
-                    previousPage.style.display = DisplayStyle.Flex;
-                }
-            }
-            else if (pageNumber == 0)
-            {
-                previousPage.style.display = DisplayStyle.None;
-                if (jPages.Count > 1)
-                {
-                    nextPage.style.display = DisplayStyle.Flex;
-                }
-            }
-            else
-            {
-                nextPage.style.display = DisplayStyle.Flex;
                 previousPage.style.display = DisplayStyle.Flex;
             }
-            if (pageNumber < jEventText.Count)
+        }
+        else if (pageNumber == 0)
+        {
+            previousPage.style.display = DisplayStyle.None;
+            if (jPages.Count > 1)
             {
-                journalEntry.text = jEventText[pageNumber];
-                journalTitle.text = jEventTitle[pageNumber];
-                journalQuestion.text = jEventQuestionText[pageNumber];
-                doodle.style.backgroundImage = new StyleBackground(jdoodle[pageNumber]);
-
-                Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
-                Debug.Log("jPages" + string.Join(", ", jPages));
-                Debug.Log("jEventText" + string.Join(", ", jEventText));
-            }
-            else
-            {
-                Debug.LogError("pageNumber is out of range! jEventText count: " + jEventText.Count);
-                // Handle the error, e.g., set eventText.text to an error message or disable UI elements
+                nextPage.style.display = DisplayStyle.Flex;
             }
         }
         else
         {
-            Debug.LogError("pageNumber is out of range! jPages count: " + jPages.Count);
-            Debug.LogError("pageNumber is out of range! pageNumber count: " + pageNumber);
-            // Handle the error, e.g., set eventText.text to an error message or disable UI elements
+            nextPage.style.display = DisplayStyle.Flex;
+            previousPage.style.display = DisplayStyle.Flex;
+        }
+        if (pageNumber < jEventText.Count)
+        {
+            journalEntry.text = jEventText[pageNumber];
+            journalTitle.text = jEventTitle[pageNumber];
+            journalQuestion.text = jEventQuestionText[pageNumber];
+            doodle.style.backgroundImage = new StyleBackground(jdoodle[pageNumber]);
+        }
+        else
+        {
+            Debug.LogError("pageNumber is out of range! jEventText count: " + jEventText.Count);
         }
     }
+    else
+    {
+        Debug.LogError("pageNumber is out of range! jPages count: " + jPages.Count);
+    }
+}
+
     private void JournalEntryButton(ClickEvent evt)
         {
             //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
