@@ -1,9 +1,4 @@
 
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEngine.UIElements;
-// using UnityEngine.Networking;
 using SimpleJSON;
 using System;
 using System.Collections;
@@ -315,7 +310,7 @@ public class StorySheetReaderTwo : MonoBehaviour
                 var LeftSideSpeaker = Resources.Load<Sprite>(ResourcesLoadC + item[5].Value);
                 var RightSideSpeaker = Resources.Load<Sprite>(ResourcesLoadC + item[6].Value);
                 var Prop = Resources.Load<Sprite>(ResourcesLoadP + item[7].Value);
-                var Background = Resources.Load<Sprite>(ResourcesLoadBG + item[9].Value);
+                var Background = Resources.Load<Sprite>(ResourcesLoadBG + item[8].Value);
                 //var Checkpoint = SafeIntParse(item[9].Value);
                 var Checkpoint = SafeIntParse(item[9].Value);
                 var Type = item[10].Value;
