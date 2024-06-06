@@ -47,7 +47,7 @@ public class StorySheetReaderTwo : MonoBehaviour
     // private string ResourcesLoadP = "Props/";
     // private string ResourcesLoadBG = "Backgrounds/";
     // private string ResourcesLoadSEFX = "Sounds/";
-    // private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1O88FIl3Z6QkR6Tlteuzb3qDcig6ci1hqNIoUYqqUCx8/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    // private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1Q793Lo8hsyxlNvFJT8V1bGSYP9yWYY8PU8TeGaGU-w8/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     // //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/127RLzQZ2qb4ZDp6CuvgPn6z-9T58lgnAXhlk0I3z3Fc/values/TestSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     // //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1D6ttQZLDzZ9Ijzw-0CeJtO_MUR1lc3qPJj0SmTk86nM/values/Story?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";    
     // //private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1kj78zj3o_u2tTsUKlK7iPnYGrz0Qckh5Mt8e1je4iEo/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
@@ -218,7 +218,7 @@ public class StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1O88FIl3Z6QkR6Tlteuzb3qDcig6ci1hqNIoUYqqUCx8/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1Q793Lo8hsyxlNvFJT8V1bGSYP9yWYY8PU8TeGaGU-w8/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
