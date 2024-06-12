@@ -15,7 +15,7 @@ public class GoogleSheetReaderTwo : MonoBehaviour
     }
 
     public List<LoginSO> logins = new List<LoginSO>();
-    private const string CONTROL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1cC9iRPYMR9jgyKbeBM-wBO03rG5SPvONt8t-5fNJrTs/values/Codes?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string CONTROL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/Access?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
 
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
