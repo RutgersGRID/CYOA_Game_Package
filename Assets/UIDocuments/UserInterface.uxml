@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/ButtonStyle.uss?fileID=7433441132597879392&amp;guid=546d8ea5bbbd9a749ada18461382478e&amp;type=3#ButtonStyle" />
     <ui:VisualElement name="dlog-elements" style="width: 100%; height: 100%;">
-        <ui:VisualElement name="dlog-bg" style="width: 100%; height: 100%; position: absolute; justify-content: space-around; flex-direction: row; background-image: resource(&apos;Backgrounds/Faculivingroom 2&apos;); display: flex;" />
+        <ui:VisualElement name="dlog-bg" style="width: 100%; height: 100%; position: absolute; justify-content: space-around; flex-direction: row; background-image: none; display: flex;" />
         <ui:VisualElement name="dlogPG" style="width: 100%; height: 100%; position: absolute; justify-content: space-around; flex-direction: row; background-image: none; display: flex;">
             <ui:VisualElement name="CharacterLeft" class="character" style="position: relative; height: 100%; width: 40%; top: auto; left: auto; background-image: none; right: auto; -unity-background-scale-mode: scale-to-fit;" />
             <ui:VisualElement name="CharacterRight" class="character" style="position: relative; height: 100%; width: 40%; top: auto; left: auto; background-image: none; right: auto; -unity-background-scale-mode: scale-to-fit; transition-duration: 4s; transition-property: opacity; -unity-background-image-tint-color: rgb(255, 255, 255);" />

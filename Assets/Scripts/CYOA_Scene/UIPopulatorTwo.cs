@@ -316,7 +316,6 @@ public class UIPopulatorTwo : MonoBehaviour
         creditGRIDText.text = creditSO.creditGRIDTexts;
     }
 
-
 public async void SaveData(Dictionary<string, object> data)
 {
     try
@@ -530,32 +529,7 @@ public async void SaveData(Dictionary<string, object> data)
         aboutGRIDContainer.style.display = DisplayStyle.Flex;
     }
 
-// private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
-// {
-//     float startOpacity = 0f; // Start fully transparent
-//     float targetOpacity = 1f; // End fully opaque
-//     float duration = .5f; // Duration of the fade animation in seconds
 
-//     // Set the background image at the start if needed
-
-//     // Check if next sprite exists
-//     // Then if it exists then else put a missing background or default texture.
-
-//     var nextBackground = new StyleBackground(nextSprite.texture);
-//     background.style.backgroundImage = nextBackground;
-
-//     float startTime = Time.time;
-//     while (Time.time - startTime < duration)
-//     {
-//         float progress = (Time.time - startTime) / duration;
-//         float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-//         background.style.opacity = new StyleFloat(newOpacity);
-//         yield return null;
-//     }
-
-//     background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
-//     currentIndex++;
-// }
         public void ScrollT(string sentence, string keywordstring)
     {
     //     StartCoroutine(TypeText(sentence, keywordstring));
@@ -639,8 +613,6 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA1s);
 
         if (dialogueSO.EffectA1s >= 0 )
-        //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s < JSR.journals.Count)
-        //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s)
         {
             var journalSO = JSR.journals[dialogueSO.EffectA1s];
             jNumber = dialogueSO.EffectA1s;
@@ -660,8 +632,24 @@ private IEnumerator TypeText(string sentence, string keywordstring)
             doodle.style.backgroundImage = new StyleBackground();
         }
 
-        //AddFormField(dialogueSO.EntryPoints, dialogueSO.A1Answers);
-        //Debug.Log(dialogueSO.EntryPoints + dialogueSO.A1Answers);
+        /// records data to unity cloud save
+        var dialogueSOTwo = SSR.dialogues[currentIndex-1];
+        if (dialogueSOTwo.Types.Equals("b", StringComparison.CurrentCultureIgnoreCase))
+        {
+            AddDataToSave(dialogueSOTwo.Lines, dialogueSOTwo.A1Answers);
+            Debug.Log("Option A was clicked");
+        }
+        else if (dialogueSOTwo.Types.Equals("c", StringComparison.CurrentCultureIgnoreCase))
+        {
+            AddDataToSave(dialogueSOTwo.Lines, dialogueSOTwo.A1Answers);
+            Debug.Log("Option A was clicked");
+            // questionThreeAnswers.text = dialogueSO.Lines;
+            // aThree.text = dialogueSO.A1Answers;
+            // bThree.text = dialogueSO.A2Answers;
+            // cThree.text = dialogueSO.A3Answers;
+        }
+        ///
+
         currentIndex = dialogueSO.GoToIDA1s;
 
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
@@ -703,8 +691,23 @@ private IEnumerator TypeText(string sentence, string keywordstring)
             doodle.style.backgroundImage = new StyleBackground();
         }
 
-        //AddFormField(dialogueSO.EntryPoints, dialogueSO.A2Answers);
-        //Debug.Log(dialogueSO.EntryPoints + dialogueSO.A2Answers);
+        /// records data to unity cloud save
+        var dialogueSOTwo = SSR.dialogues[currentIndex-1];
+        if (dialogueSOTwo.Types.Equals("b", StringComparison.CurrentCultureIgnoreCase))
+        {
+            AddDataToSave(dialogueSOTwo.Lines, dialogueSOTwo.A2Answers);
+            Debug.Log("Option B was clicked");
+        }
+        else if (dialogueSOTwo.Types.Equals("c", StringComparison.CurrentCultureIgnoreCase))
+        {
+            AddDataToSave(dialogueSOTwo.Lines, dialogueSOTwo.A2Answers);
+            Debug.Log("Option B was clicked");
+            // questionThreeAnswers.text = dialogueSO.Lines;
+            // aThree.text = dialogueSO.A1Answers;
+            // bThree.text = dialogueSO.A2Answers;
+            // cThree.text = dialogueSO.A3Answers;
+        }
+        ///
 
         currentIndex = dialogueSO.GoToIDA2s;
 
@@ -729,6 +732,12 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         SummaryText.text = journalSO.journalEntrys;
         Question.text = journalSO.reflectionQuestions;
         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
+
+        /// records data to unity cloud save
+        var dialogueSOTwo = SSR.dialogues[currentIndex-1];
+        AddDataToSave(dialogueSOTwo.Lines, dialogueSOTwo.A3Answers);
+        Debug.Log("Option C was clicked");
+        ///
         
         currentIndex = dialogueSO.GoToIDA3s;
         dialogueSO = SSR.dialogues[currentIndex];
@@ -805,61 +814,7 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         Audio.PlayOneShot(pageflipClip, 0.7F);
         journalUpdate();
     }
-    // public void journalUpdate()
-    // {
-    //     if (jPages.Count <= 0)
-    //     {
-    //         nextPage.style.display = DisplayStyle.None;
-    //         previousPage.style.display = DisplayStyle.None;
-    //     }
-        
-    //     else if (pageNumber >= 0 && pageNumber < jPages.Count)
-    //     {
-    //         if (pageNumber == jPages.Count - 1)
-    //         {
-    //             nextPage.style.display = DisplayStyle.None;
-    //             if (jPages.Count > 1)
-    //             {
-    //                 previousPage.style.display = DisplayStyle.Flex;
-    //             }
-    //         }
-    //         else if (pageNumber == 0)
-    //         {
-    //             previousPage.style.display = DisplayStyle.None;
-    //             if (jPages.Count > 1)
-    //             {
-    //                 nextPage.style.display = DisplayStyle.Flex;
-    //             }
-    //         }
-    //         else
-    //         {
-    //             nextPage.style.display = DisplayStyle.Flex;
-    //             previousPage.style.display = DisplayStyle.Flex;
-    //         }
-    //         if (pageNumber < jEventText.Count)
-    //         {
-    //             journalEntry.text = jEventText[pageNumber];
-    //             journalTitle.text = jEventTitle[pageNumber];
-    //             journalQuestion.text = jEventQuestionText[pageNumber];
-    //             doodle.style.backgroundImage = new StyleBackground(jdoodle[pageNumber]);
 
-    //             Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
-    //             Debug.Log("jPages" + string.Join(", ", jPages));
-    //             Debug.Log("jEventText" + string.Join(", ", jEventText));
-    //         }
-    //         else
-    //         {
-    //             Debug.LogError("pageNumber is out of range! jEventText count: " + jEventText.Count);
-    //             // Handle the error, e.g., set eventText.text to an error message or disable UI elements
-    //         }
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("pageNumber is out of range! jPages count: " + jPages.Count);
-    //         Debug.LogError("pageNumber is out of range! pageNumber count: " + pageNumber);
-    //         // Handle the error, e.g., set eventText.text to an error message or disable UI elements
-    //     }
-    // }
     public void journalUpdate()
 {
     if (jPages.Count <= 0)
