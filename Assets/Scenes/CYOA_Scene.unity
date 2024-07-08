@@ -295,7 +295,7 @@ MonoBehaviour:
   keywordSFX: {fileID: 0}
   jNumber: 0
   typingSpeed: 0.02
-  fadeDuration: 1
+  fadeDuration: 0.5
 --- !u!114 &708983109
 MonoBehaviour:
   m_ObjectHideFlags: 0

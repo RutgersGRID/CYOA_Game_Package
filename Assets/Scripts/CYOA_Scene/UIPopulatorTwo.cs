@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Networking;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using Unity.Services.CloudSave;
 
 public class UIPopulatorTwo : MonoBehaviour
 {
@@ -99,16 +102,22 @@ public class UIPopulatorTwo : MonoBehaviour
     public float fadeDuration = 0.5f;
     ///
     string keywordstring;
-    private string entryPoint;
-    private string answerFillIn;
+    private int QAnum = 1;
     /// <summary>
     private Coroutine currentTypeTextCoroutine = null;
     /// </summary>
     
     private Dictionary<string, string> formFields = new Dictionary<string, string>();
     
- private void Start()
+    async void Start()
     {
+        await UnityServices.InitializeAsync();
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            Debug.Log("Signed in anonymously.");
+        }
+
         Audio = GetComponent<AudioSource>();
         var root = GetComponent<UIDocument>().rootVisualElement;
         dlogElements = root.Q<VisualElement>("dlog-elements");
@@ -227,6 +236,13 @@ public class UIPopulatorTwo : MonoBehaviour
         bookmarkFive.style.display = DisplayStyle.None;
 
         Debug.Log("Size of CSR.credits: " + CSR.credits.Count);
+
+        AddDataToSave("gameStartTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        Debug.Log("Data saved successfully for: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        AddDataToSave("AccessCode", PlayerPrefs.GetString("AccessCode"));
+        Debug.Log("Data saved successfully for: " + PlayerPrefs.GetString("AccessCode"));
+        AddDataToSave("WorkshopId", PlayerPrefs.GetString("WorkshopId"));
+        Debug.Log("Data saved successfully for: " + PlayerPrefs.GetString("WorkshopId"));
         
         //PopulateUI();
     }
@@ -304,89 +320,57 @@ public class UIPopulatorTwo : MonoBehaviour
         creditGRIDText.text = creditSO.creditGRIDTexts;
     }
 
-private void AddFormField(string fieldName, string fieldValue)
-{
-    // Add the field to the dictionary
-    formFields[fieldName] = fieldValue;
-}
-
-// Method to submit form data
-// private void SubmitFormData()
-// {
-//     string googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/formResponse";
-
-//     // Create a WWWForm and add form data
-//     WWWForm form = new WWWForm();
-//     form.AddField("entry.1360379984", PlayerPrefs.GetString("AccessCode"));
-//     form.AddField("entry.1388253662", PlayerPrefs.GetString("WorkshopId"));
-
-//     // Add form fields from the dictionary
-//     foreach (var kvp in formFields)
-//     {
-//         form.AddField(kvp.Key, kvp.Value);
-//     }
-
-//     // Debug.Log to check form field data before submission
-//     Debug.Log("Form Data Before Submission:");
-//     Debug.Log("AccessCode: " + PlayerPrefs.GetString("AccessCode"));
-//     Debug.Log("WorkshopId: " + PlayerPrefs.GetString("WorkshopId"));
-//     foreach (var kvp in formFields)
-//     {
-//         Debug.Log(kvp.Key + ": " + kvp.Value);
-//     }
-
-//     // Send the form data to the Google Form
-//     StartCoroutine(SendFormResponse(googleFormURL, form));
-// }
-
-private void SubmitFormData()
-{
-    // string googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/formResponse";
-    string googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLScxj2t25l3MuFxqj7M6uSNGLRX7UQGrgu5mYn4wd0JWzuaqeA/viewform";
-    WWWForm form = new WWWForm();
-    form.AddField("entry.1360379984", PlayerPrefs.GetString("AccessCode"));
-    form.AddField("entry.1388253662", PlayerPrefs.GetString("WorkshopId"));
-
-    foreach (var kvp in formFields)
+    public async void SaveData(Dictionary<string, object> data)
     {
-        form.AddField(kvp.Key, kvp.Value);
-    }
-
-    Debug.Log("Form Data Before Submission:");
-    Debug.Log("AccessCode: " + PlayerPrefs.GetString("AccessCode"));
-    Debug.Log("WorkshopId: " + PlayerPrefs.GetString("WorkshopId"));
-    foreach (var kvp in formFields)
-    {
-        Debug.Log(kvp.Key + ": " + kvp.Value);
-    }
-
-    StartCoroutine(SendFormResponse(googleFormURL, form));
-}
-
-// Create a method to send the form data
-private IEnumerator SendFormResponse(string url, WWWForm form)
-{
-    using (UnityWebRequest www = UnityWebRequest.Post(url, form))
-    {
-        yield return www.SendWebRequest();
-
-        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+        try
         {
-            Debug.LogError("Error submitting form: " + www.error);
+            // Log the data being saved for debugging purposes
+            foreach (var entry in data)
+            {
+                Debug.Log($"Saving key: {entry.Key}, value: {entry.Value}");
+            }
+
+            await CloudSaveService.Instance.Data.Player.SaveAsync(data);
+            Debug.Log("Data saved successfully!");
         }
-        else
+        catch (Exception e)
         {
-            Debug.Log("Form submitted successfully!");
+            Debug.LogError($"Error saving data: {e.Message}\nStack Trace: {e.StackTrace}");
+            if (e.InnerException != null)
+            {
+                Debug.LogError($"Inner Exception: {e.InnerException.Message}");
+            }
         }
     }
-}
 
-private void OnApplicationQuit()
-{
-    Debug.Log("Application is quitting. Submitting form data...");
-    SubmitFormData();
-}
+    private Dictionary<string, object> gameData = new Dictionary<string, object>();
 
+    public void AddDataAndSave(string key, object value)
+    {
+        gameData[key] = value;
+        SaveData(gameData);
+    }
+
+    // Simplify the AddDataToSave method
+    public void AddDataToSave(string key, string value)
+    {
+        AddDataAndSave(key, value);
+        Debug.Log($"Data type {key} saved with value: {value}");
+    }
+    // private Dictionary<object, object> gameData = new Dictionary<object, object>();
+
+    // public void AddDataAndSave(object key, object value)
+    // {
+    //     gameData[key] = value;
+    //     SaveData(gameData);
+    // }
+
+    // // Example usage
+    // public void AddDataToSave(string dataType, string dataAnswer)
+    // {
+    //     AddDataAndSave(dataType, dataAnswer);
+    //     Debug.Log($"Data type {dataType} answer saved: {dataAnswer}");
+    // }
     private void PopulateUI()
     {
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count) 
@@ -571,32 +555,6 @@ private void OnApplicationQuit()
         aboutGRIDContainer.style.display = DisplayStyle.Flex;
     }
 
-// private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
-// {
-//     float startOpacity = 0f; // Start fully transparent
-//     float targetOpacity = 1f; // End fully opaque
-//     float duration = .5f; // Duration of the fade animation in seconds
-
-//     // Set the background image at the start if needed
-
-//     // Check if next sprite exists
-//     // Then if it exists then else put a missing background or default texture.
-
-//     var nextBackground = new StyleBackground(nextSprite.texture);
-//     background.style.backgroundImage = nextBackground;
-
-//     float startTime = Time.time;
-//     while (Time.time - startTime < duration)
-//     {
-//         float progress = (Time.time - startTime) / duration;
-//         float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-//         background.style.opacity = new StyleFloat(newOpacity);
-//         yield return null;
-//     }
-
-//     background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
-//     currentIndex++;
-// }
         public void ScrollT(string sentence, string keywordstring)
     {
     //     StartCoroutine(TypeText(sentence, keywordstring));
@@ -669,19 +627,30 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         return; // Exit function early
     }
 
-    currentIndex = nextIndex;  // Update current index to the valid next index
+    currentIndex = nextIndex;  
+    // Update current index to the valid next index
     PopulateUI();
 }
     private void NextDialogueA(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
 
+        string Qnum = "Question_"+ QAnum.ToString();
+        string Anum = "Answer_"+ QAnum.ToString();
+        AddDataAndSave(Qnum, dialogueSO.Lines);
+        AddDataAndSave(Anum, dialogueSO.A1Answers);
+        Debug.Log(dialogueSO.Lines + dialogueSO.A1Answers);
+        QAnum++;
+
+        // string afaf = "iii 353" ;
+        // Debug.Log(afaf );
+        // AddDataToSave("iii89" , dialogueSO.A1Answers);
+        //AddDataToSave(dialogueSO.Lines + dialogueSO.A1Answers);
+
         // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
         Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA1s);
 
         if (dialogueSO.EffectA1s >= 0 )
-        //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s < JSR.journals.Count)
-        //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s)
         {
             var journalSO = JSR.journals[dialogueSO.EffectA1s];
             jNumber = dialogueSO.EffectA1s;
@@ -701,8 +670,6 @@ private IEnumerator TypeText(string sentence, string keywordstring)
             doodle.style.backgroundImage = new StyleBackground();
         }
 
-        AddFormField(dialogueSO.EntryPoints, dialogueSO.A1Answers);
-        Debug.Log(dialogueSO.EntryPoints + dialogueSO.A1Answers);
         currentIndex = dialogueSO.GoToIDA1s;
 
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
@@ -716,9 +683,17 @@ private IEnumerator TypeText(string sentence, string keywordstring)
             Debug.LogError("currentIndex is out of bounds.");
         }
     }
+
     private void NextDialogueB(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
+
+        string Qnum = "Question_"+ QAnum.ToString();
+        string Anum = "Answer_"+ QAnum.ToString();
+        AddDataAndSave(Qnum, dialogueSO.Lines);
+        AddDataAndSave(Anum, dialogueSO.A2Answers);
+        Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
+        QAnum++;
 
         // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
         Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA2s);
@@ -744,8 +719,8 @@ private IEnumerator TypeText(string sentence, string keywordstring)
             doodle.style.backgroundImage = new StyleBackground();
         }
 
-        AddFormField(dialogueSO.EntryPoints, dialogueSO.A2Answers);
-        Debug.Log(dialogueSO.EntryPoints + dialogueSO.A2Answers);
+        
+        Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
 
         currentIndex = dialogueSO.GoToIDA2s;
 
@@ -762,19 +737,63 @@ private IEnumerator TypeText(string sentence, string keywordstring)
     }
     private void NextDialogueC(ClickEvent evt)
     {
-        var dialogueSO = SSR.dialogues[currentIndex];
-        var journalSO = JSR.journals[dialogueSO.EffectA3s];
-        jNumber = dialogueSO.EffectA3s;
+        // var dialogueSO = SSR.dialogues[currentIndex];
+        // var journalSO = JSR.journals[dialogueSO.EffectA3s];
+        // jNumber = dialogueSO.EffectA3s;
 
-        Title.text = journalSO.journalTitles;
-        SummaryText.text = journalSO.journalEntrys;
-        Question.text = journalSO.reflectionQuestions;
-        doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
+        // Title.text = journalSO.journalTitles;
+        // SummaryText.text = journalSO.journalEntrys;
+        // Question.text = journalSO.reflectionQuestions;
+        // doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
         
-        currentIndex = dialogueSO.GoToIDA3s;
-        dialogueSO = SSR.dialogues[currentIndex];
-        Debug.Log("jNumber " + jNumber);
-        PopulateUI();
+        // currentIndex = dialogueSO.GoToIDA3s;
+        // dialogueSO = SSR.dialogues[currentIndex];
+        // Debug.Log("jNumber " + jNumber);
+        // PopulateUI();
+        var dialogueSO = SSR.dialogues[currentIndex];
+
+        string Qnum = "Question_"+ QAnum.ToString();
+        string Anum = "Answer_"+ QAnum.ToString();
+        AddDataAndSave(Qnum, dialogueSO.Lines);
+        AddDataAndSave(Anum, dialogueSO.A3Answers);
+        Debug.Log(dialogueSO.Lines + dialogueSO.A3Answers);
+        QAnum++;
+
+        // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
+        Debug.Log("dialogueSO.EffectA3s: " + dialogueSO.EffectA3s);
+
+        if (dialogueSO.EffectA3s >= 0 )
+        {
+            var journalSO = JSR.journals[dialogueSO.EffectA3s];
+            jNumber = dialogueSO.EffectA3s;
+
+            Debug.Log("JSR.journals Count: " + JSR.journals.Count);
+
+            Title.text = journalSO.journalTitles;
+            SummaryText.text = journalSO.journalEntrys;
+            Question.text = journalSO.reflectionQuestions;
+            doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
+        }
+        else
+        {
+            Title.text = "";
+            SummaryText.text = "";
+            Question.text = "";
+            doodle.style.backgroundImage = new StyleBackground();
+        }
+
+        currentIndex = dialogueSO.GoToIDA1s;
+
+        if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
+        {
+            dialogueSO = SSR.dialogues[currentIndex];
+            Debug.Log("jNumber " + jNumber);
+            PopulateUI();
+        }
+        else
+        {
+            Debug.LogError("currentIndex is out of bounds.");
+        }
     }
     private void ShowRewind(ClickEvent evt)
     {
