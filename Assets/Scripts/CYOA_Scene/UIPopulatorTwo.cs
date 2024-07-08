@@ -357,20 +357,7 @@ public class UIPopulatorTwo : MonoBehaviour
         AddDataAndSave(key, value);
         Debug.Log($"Data type {key} saved with value: {value}");
     }
-    // private Dictionary<object, object> gameData = new Dictionary<object, object>();
-
-    // public void AddDataAndSave(object key, object value)
-    // {
-    //     gameData[key] = value;
-    //     SaveData(gameData);
-    // }
-
-    // // Example usage
-    // public void AddDataToSave(string dataType, string dataAnswer)
-    // {
-    //     AddDataAndSave(dataType, dataAnswer);
-    //     Debug.Log($"Data type {dataType} answer saved: {dataAnswer}");
-    // }
+    
     private void PopulateUI()
     {
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count) 
@@ -384,10 +371,12 @@ public class UIPopulatorTwo : MonoBehaviour
         }
 
             ////
-            var currentRightImage = characterImageRight.style.backgroundImage;
+            
             var currentLeftImage = characterImageLeft.style.backgroundImage;
+            var currentRightImage = characterImageRight.style.backgroundImage;
             var currentPropImage = propImage.style.backgroundImage;
             var currentDlogBGImage = dlogBG.style.backgroundImage;
+            
 
             // Update the background images based on dialogueSO
             characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
@@ -396,29 +385,29 @@ public class UIPopulatorTwo : MonoBehaviour
             dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
 
             // Check if characterImageLeft has changed and trigger StartFadeIn if it has
-            if (currentRightImage != characterImageRight.style.backgroundImage)
+            if (currentDlogBGImage != dlogBG.style.backgroundImage)
             {
-                StartCoroutine(FadeInCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
+                StartCoroutine(FadeInCoroutine(dlogBG, currentDlogBGImage, dialogueSO.Backgrounds));
             }
             if (currentLeftImage != characterImageLeft.style.backgroundImage)
             {
                 StartCoroutine(FadeInCoroutine(characterImageLeft, currentLeftImage, dialogueSO.LeftSideSpeakers));
             }
+            if (currentRightImage != characterImageRight.style.backgroundImage)
+            {
+                StartCoroutine(FadeInCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
+            }
             if (currentPropImage != propImage.style.backgroundImage)
             {
                 StartCoroutine(FadeInCoroutine(propImage, currentPropImage, dialogueSO.Props));
             }
-            if (currentDlogBGImage != dlogBG.style.backgroundImage)
-            {
-                StartCoroutine(FadeInCoroutine(dlogBG, currentDlogBGImage, dialogueSO.Backgrounds));
-            }
 
             ////
 
-            dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
-            characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
-            characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
-            propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
+            // dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
+            // characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
+            // characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
+            // propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
 
             Debug.Log("dialogueSO.Effects" + dialogueSO.Effects);
             if (dialogueSO.Types.Equals("a", StringComparison.CurrentCultureIgnoreCase))
@@ -486,33 +475,72 @@ public class UIPopulatorTwo : MonoBehaviour
         }
         
     }
-///
+///    
+    // private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
+    // {
+    //     // Check if nextSprite is null and do nothing if true
+    //     if (nextSprite == null)
+    //     {
+    //         yield break;  // Do nothing and exit the coroutine
+    //     }
+
+    //     float startOpacity = 0f; // Start fully transparent
+    //     float targetOpacity = 1f; // End fully opaque
+    //     float duration = fadeDuration; // Duration of the fade animation in seconds
+
+    //     var nextBackground = new StyleBackground(nextSprite.texture);
+    //     background.style.backgroundImage = nextBackground;
+
+    //     float startTime = Time.time;
+    //     while (Time.time - startTime < duration)
+    //     {
+    //         float progress = (Time.time - startTime) / duration;
+    //         float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+    //         background.style.opacity = new StyleFloat(newOpacity);
+
+    //         // Print sprite name and opacity progress
+    //         Debug.Log($"Fading {background.name}: Sprite Name: {nextSprite.name}, Opacity: {newOpacity}");
+
+    //         yield return null;
+    //     }
+
+    //     background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+    //     Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
+    // }
+
     private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
+{
+    // Check if nextSprite is null and do nothing if true
+    if (nextSprite == null)
     {
-        // Check if nextSprite is null and do nothing if true
-        if (nextSprite == null)
-        {
-            yield break;  // Do nothing and exit the coroutine
-        }
-
-        float startOpacity = 0f; // Start fully transparent
-        float targetOpacity = 1f; // End fully opaque
-        float duration = fadeDuration; // Duration of the fade animation in seconds
-
-        var nextBackground = new StyleBackground(nextSprite.texture);
-        background.style.backgroundImage = nextBackground;
-
-        float startTime = Time.time;
-        while (Time.time - startTime < duration)
-        {
-            float progress = (Time.time - startTime) / duration;
-            float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-            background.style.opacity = new StyleFloat(newOpacity);
-            yield return null;
-        }
-
-        background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+        yield break;  // Do nothing and exit the coroutine
     }
+
+    float startOpacity = 0f; // Start fully transparent
+    float targetOpacity = 1f; // End fully opaque
+    float duration = fadeDuration; // Duration of the fade animation in seconds
+
+    var nextBackground = new StyleBackground(nextSprite.texture);
+    background.style.backgroundImage = nextBackground;
+
+    float startTime = Time.time;
+    while (Time.time - startTime < duration)
+    {
+        float progress = (Time.time - startTime) / duration;
+        float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+        background.style.opacity = new StyleFloat(newOpacity);
+
+        // Print sprite name and opacity progress
+        Debug.Log($"Fading {background.name}: Sprite Name: {nextSprite.name}, Opacity: {newOpacity}");
+
+        yield return null;
+    }
+
+    background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+
+    float elapsedTime = Time.time - startTime;
+    Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
+}
 /// 
     private void showReflection(ClickEvent evt)
     {
@@ -865,61 +893,7 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         Audio.PlayOneShot(pageflipClip, 0.7F);
         journalUpdate();
     }
-    // public void journalUpdate()
-    // {
-    //     if (jPages.Count <= 0)
-    //     {
-    //         nextPage.style.display = DisplayStyle.None;
-    //         previousPage.style.display = DisplayStyle.None;
-    //     }
-        
-    //     else if (pageNumber >= 0 && pageNumber < jPages.Count)
-    //     {
-    //         if (pageNumber == jPages.Count - 1)
-    //         {
-    //             nextPage.style.display = DisplayStyle.None;
-    //             if (jPages.Count > 1)
-    //             {
-    //                 previousPage.style.display = DisplayStyle.Flex;
-    //             }
-    //         }
-    //         else if (pageNumber == 0)
-    //         {
-    //             previousPage.style.display = DisplayStyle.None;
-    //             if (jPages.Count > 1)
-    //             {
-    //                 nextPage.style.display = DisplayStyle.Flex;
-    //             }
-    //         }
-    //         else
-    //         {
-    //             nextPage.style.display = DisplayStyle.Flex;
-    //             previousPage.style.display = DisplayStyle.Flex;
-    //         }
-    //         if (pageNumber < jEventText.Count)
-    //         {
-    //             journalEntry.text = jEventText[pageNumber];
-    //             journalTitle.text = jEventTitle[pageNumber];
-    //             journalQuestion.text = jEventQuestionText[pageNumber];
-    //             doodle.style.backgroundImage = new StyleBackground(jdoodle[pageNumber]);
 
-    //             Debug.Log("pageNumber: " + pageNumber + ", eventText: " + journalEntry.text);
-    //             Debug.Log("jPages" + string.Join(", ", jPages));
-    //             Debug.Log("jEventText" + string.Join(", ", jEventText));
-    //         }
-    //         else
-    //         {
-    //             Debug.LogError("pageNumber is out of range! jEventText count: " + jEventText.Count);
-    //             // Handle the error, e.g., set eventText.text to an error message or disable UI elements
-    //         }
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("pageNumber is out of range! jPages count: " + jPages.Count);
-    //         Debug.LogError("pageNumber is out of range! pageNumber count: " + pageNumber);
-    //         // Handle the error, e.g., set eventText.text to an error message or disable UI elements
-    //     }
-    // }
     public void journalUpdate()
 {
     if (jPages.Count <= 0)
