@@ -11,8 +11,36 @@ public class StorySheetReaderTwo : MonoBehaviour
     [System.Serializable]
     public class DialogueSO : ScriptableObject
     {
-        public int IDs;
-        // public string IDs;
+        // public int IDs;
+        // // public string IDs;
+        // public string Speakers;
+        // public string Lines;
+        // public string Keywords;
+        // public AudioClip SoundEFXs;
+        // public Sprite LeftSideSpeakers;
+        // public Sprite RightSideSpeakers;
+        // public Sprite Props;
+        // public Sprite Backgrounds;
+        // public int Checkpoints;
+        // //public string Checkpoints;
+        // public string Types;
+        // public int GoToIDs;
+        // //public string GoToIDs;
+        // public int Effects;
+        // public string A1Answers;
+        // public int GoToIDA1s;
+        // //public string GoToIDA1s;
+        // public int EffectA1s;
+        // public string A2Answers;
+        // public int GoToIDA2s;
+        // //public string GoToIDA2s;
+        // public int EffectA2s;
+        // public string A3Answers;
+        // public int GoToIDA3s;
+        // //public string GoToIDA3s;
+        // public int EffectA3s;
+        // public string EntryPoints;
+        public string IDs;
         public string Speakers;
         public string Lines;
         public string Keywords;
@@ -21,23 +49,18 @@ public class StorySheetReaderTwo : MonoBehaviour
         public Sprite RightSideSpeakers;
         public Sprite Props;
         public Sprite Backgrounds;
-        public int Checkpoints;
-        //public string Checkpoints;
+        public string Checkpoints;
         public string Types;
-        public int GoToIDs;
-        //public string GoToIDs;
+        public string GoToIDs;
         public int Effects;
         public string A1Answers;
-        public int GoToIDA1s;
-        //public string GoToIDA1s;
+        public string GoToIDA1s;
         public int EffectA1s;
         public string A2Answers;
-        public int GoToIDA2s;
-        //public string GoToIDA2s;
+        public string GoToIDA2s;
         public int EffectA2s;
         public string A3Answers;
-        public int GoToIDA3s;
-        //public string GoToIDA3s;
+        public string GoToIDA3s;
         public int EffectA3s;
         public string EntryPoints;
     }
@@ -54,8 +77,8 @@ public class StorySheetReaderTwo : MonoBehaviour
     {
         // StartCoroutine(ObtainSheetData());
     }
-    //private DialogueSO CreateDialogueSO(string ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, string Checkpoint, string Type, string GoToID, int Effect, string A1Answer, string GoToIDA1, int EffectA1, string A2Answer, string GoToIDA2, int EffectA2, string A3Answer, string GoToIDA3, int EffectA3, string EntryPoint)
-    private DialogueSO CreateDialogueSO( int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3, string EntryPoint)
+    //private DialogueSO CreateDialogueSO( int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3, string EntryPoint)
+    private DialogueSO CreateDialogueSO(string ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, string Checkpoint, string Type, string GoToID, int Effect, string A1Answer, string GoToIDA1, int EffectA1, string A2Answer, string GoToIDA2, int EffectA2, string A3Answer, string GoToIDA3, int EffectA3, string EntryPoint)
     {
         DialogueSO dialogue = ScriptableObject.CreateInstance<DialogueSO>();
 
@@ -130,8 +153,8 @@ public class StorySheetReaderTwo : MonoBehaviour
             for (int i = 1; i < valuesArray.Count; i++)
             {
                 var item = valuesArray[i];
+                var ID = item[0].Value;
                 //var ID = SafeIntParse(item[0].Value);
-                var ID = SafeIntParse(item[0].Value);
                 var Speaker = item[1].Value;
                 var Line = item[2].Value;
                 var Keyword = item[3].Value;
@@ -140,23 +163,23 @@ public class StorySheetReaderTwo : MonoBehaviour
                 var RightSideSpeaker = Resources.Load<Sprite>(ResourcesLoadC + item[6].Value);
                 var Prop = Resources.Load<Sprite>(ResourcesLoadP + item[7].Value);
                 var Background = Resources.Load<Sprite>(ResourcesLoadBG + item[8].Value);
+                var Checkpoint = item[9].Value;
                 //var Checkpoint = SafeIntParse(item[9].Value);
-                var Checkpoint = SafeIntParse(item[9].Value);
                 var Type = item[10].Value;
+                var GoToID = item[11].Value;
                 //var GoToID = SafeIntParse(item[11].Value);
-                var GoToID = SafeIntParse(item[11].Value);
                 var Effect = SafeIntParse(item[12].Value);
                 var A1Answer = item[13].Value;
+                var GoToIDA1 = item[14].Value;
                 //var GoToIDA1 = SafeIntParse(item[14].Value);
-                var GoToIDA1 = SafeIntParse(item[14].Value);
                 var EffectA1 = SafeIntParse(item[15].Value);
                 var A2Answer = item[16].Value;
+                var GoToIDA2 = item[17].Value;
                 //var GoToIDA2 = SafeIntParse(item[17].Value);
-                var GoToIDA2 = SafeIntParse(item[17].Value);
                 var EffectA2 = SafeIntParse(item[18].Value);
                 var A3Answer = item[19].Value;
+                var GoToIDA3 = item[20].Value;
                 //var GoToIDA3 = SafeIntParse(item[20].Value);
-                var GoToIDA3 = SafeIntParse(item[20].Value);
                 var EffectA3 = SafeIntParse(item[21].Value);
                 var EntryPoint = item[22].Value;
 
