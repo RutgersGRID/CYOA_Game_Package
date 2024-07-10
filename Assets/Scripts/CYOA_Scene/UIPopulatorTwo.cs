@@ -369,46 +369,38 @@ public class UIPopulatorTwo : MonoBehaviour
             Debug.LogError("One or more VisualElements are not assigned!");
             return;
         }
-
             ////
-            
-            var currentLeftImage = characterImageLeft.style.backgroundImage;
             var currentRightImage = characterImageRight.style.backgroundImage;
+            var currentLeftImage = characterImageLeft.style.backgroundImage;
             var currentPropImage = propImage.style.backgroundImage;
             var currentDlogBGImage = dlogBG.style.backgroundImage;
-            
-
             // Update the background images based on dialogueSO
             characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
             characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
             propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
             dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
-
             // Check if characterImageLeft has changed and trigger StartFadeIn if it has
-            if (currentDlogBGImage != dlogBG.style.backgroundImage)
+            if (currentRightImage != characterImageRight.style.backgroundImage)
             {
-                StartCoroutine(FadeInCoroutine(dlogBG, currentDlogBGImage, dialogueSO.Backgrounds));
+                StartCoroutine(FadeInCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
             }
             if (currentLeftImage != characterImageLeft.style.backgroundImage)
             {
                 StartCoroutine(FadeInCoroutine(characterImageLeft, currentLeftImage, dialogueSO.LeftSideSpeakers));
             }
-            if (currentRightImage != characterImageRight.style.backgroundImage)
-            {
-                StartCoroutine(FadeInCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
-            }
             if (currentPropImage != propImage.style.backgroundImage)
             {
                 StartCoroutine(FadeInCoroutine(propImage, currentPropImage, dialogueSO.Props));
             }
-
+            if (currentDlogBGImage != dlogBG.style.backgroundImage)
+            {
+                StartCoroutine(FadeInCoroutine(dlogBG, currentDlogBGImage, dialogueSO.Backgrounds));
+            }
             ////
-
-            // dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
-            // characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
-            // characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
-            // propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
-
+            dlogBG.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
+            characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
+            characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
+            propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
             Debug.Log("dialogueSO.Effects" + dialogueSO.Effects);
             if (dialogueSO.Types.Equals("a", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -416,21 +408,18 @@ public class UIPopulatorTwo : MonoBehaviour
                 DBox.style.display = DisplayStyle.Flex;
                 twoOptionAnswers.style.display = DisplayStyle.None;
                 threeOptionAnswers.style.display = DisplayStyle.None;
-
                 nameText.text = dialogueSO.Speakers;
                 testText = dialogueSO.Lines;
                 keywordstring = dialogueSO.Keywords;
                 keywordSFX = dialogueSO.SoundEFXs;
                 ScrollT(testText, keywordstring);
             }
-
             else if (dialogueSO.Types.Equals("b", StringComparison.CurrentCultureIgnoreCase))
             {
                 dlogBG.style.display = DisplayStyle.Flex;
                 DBox.style.display = DisplayStyle.None;
                 twoOptionAnswers.style.display = DisplayStyle.Flex;
                 threeOptionAnswers.style.display = DisplayStyle.None;
-
                 questionTwoAnswers.text = dialogueSO.Lines;
                 aTwo.text = dialogueSO.A1Answers;
                 bTwo.text = dialogueSO.A2Answers;
@@ -441,25 +430,21 @@ public class UIPopulatorTwo : MonoBehaviour
                 DBox.style.display = DisplayStyle.None;
                 twoOptionAnswers.style.display = DisplayStyle.None;
                 threeOptionAnswers.style.display = DisplayStyle.Flex;
-
                 questionThreeAnswers.text = dialogueSO.Lines;
                 aThree.text = dialogueSO.A1Answers;
                 bThree.text = dialogueSO.A2Answers;
                 cThree.text = dialogueSO.A3Answers;
             }
-
             if (dialogueSO.Effects != -1)
             {
                 if (!jPages.Contains(dialogueSO.Effects))
                 {
                     jNumber = dialogueSO.Effects;
-
                     if (jNumber < 0 || jNumber >= JSR.journals.Count)
                     {
                         Debug.LogError("jNumber out of range!");
                         return;
                     }
-
                     var journalSO = JSR.journals[jNumber];
                     Title.text = journalSO.journalTitles;
                     SummaryText.text = journalSO.journalEntrys;
@@ -475,72 +460,74 @@ public class UIPopulatorTwo : MonoBehaviour
         }
         
     }
-///    
-    // private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
-    // {
-    //     // Check if nextSprite is null and do nothing if true
-    //     if (nextSprite == null)
-    //     {
-    //         yield break;  // Do nothing and exit the coroutine
-    //     }
-
-    //     float startOpacity = 0f; // Start fully transparent
-    //     float targetOpacity = 1f; // End fully opaque
-    //     float duration = fadeDuration; // Duration of the fade animation in seconds
-
-    //     var nextBackground = new StyleBackground(nextSprite.texture);
-    //     background.style.backgroundImage = nextBackground;
-
-    //     float startTime = Time.time;
-    //     while (Time.time - startTime < duration)
-    //     {
-    //         float progress = (Time.time - startTime) / duration;
-    //         float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-    //         background.style.opacity = new StyleFloat(newOpacity);
-
-    //         // Print sprite name and opacity progress
-    //         Debug.Log($"Fading {background.name}: Sprite Name: {nextSprite.name}, Opacity: {newOpacity}");
-
-    //         yield return null;
-    //     }
-
-    //     background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
-    //     Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
-    // }
-
+   
     private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
-{
-    // Check if nextSprite is null and do nothing if true
-    if (nextSprite == null)
     {
-        yield break;  // Do nothing and exit the coroutine
+        // Check if nextSprite is null and do nothing if true
+        if (nextSprite == null)
+        {
+            yield break;  // Do nothing and exit the coroutine
+        }
+
+        float startOpacity = 0f; // Start fully transparent
+        float targetOpacity = 1f; // End fully opaque
+        float duration = fadeDuration; // Duration of the fade animation in seconds
+
+        var nextBackground = new StyleBackground(nextSprite.texture);
+        background.style.backgroundImage = nextBackground;
+
+        float startTime = Time.time;
+        while (Time.time - startTime < duration)
+        {
+            float progress = (Time.time - startTime) / duration;
+            float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+            background.style.opacity = new StyleFloat(newOpacity);
+
+            // Print sprite name and opacity progress
+            Debug.Log($"Fading {background.name}: Sprite Name: {nextSprite.name}, Opacity: {newOpacity}");
+
+            yield return null;
+        }
+
+        background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+        float elapsedTime = Time.time - startTime;
+        Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
     }
 
-    float startOpacity = 0f; // Start fully transparent
-    float targetOpacity = 1f; // End fully opaque
-    float duration = fadeDuration; // Duration of the fade animation in seconds
 
-    var nextBackground = new StyleBackground(nextSprite.texture);
-    background.style.backgroundImage = nextBackground;
+//     private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
+// {
+//     // Check if nextSprite is null and do nothing if true
+//     if (nextSprite == null)
+//     {
+//         yield break;  // Do nothing and exit the coroutine
+//     }
 
-    float startTime = Time.time;
-    while (Time.time - startTime < duration)
-    {
-        float progress = (Time.time - startTime) / duration;
-        float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-        background.style.opacity = new StyleFloat(newOpacity);
+//     float startOpacity = 0f; // Start fully transparent
+//     float targetOpacity = 1f; // End fully opaque
+//     float duration = fadeDuration; // Duration of the fade animation in seconds
 
-        // Print sprite name and opacity progress
-        Debug.Log($"Fading {background.name}: Sprite Name: {nextSprite.name}, Opacity: {newOpacity}");
+//     var nextBackground = new StyleBackground(nextSprite.texture);
+//     background.style.backgroundImage = nextBackground;
 
-        yield return null;
-    }
+//     float startTime = Time.time;
+//     while (Time.time - startTime < duration)
+//     {
+//         float progress = (Time.time - startTime) / duration;
+//         float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
+//         background.style.opacity = new StyleFloat(newOpacity);
 
-    background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+//         // Print sprite name and opacity progress
+//         Debug.Log($"Fading {background.name}: Sprite Name: {nextSprite.name}, Opacity: {newOpacity}");
 
-    float elapsedTime = Time.time - startTime;
-    Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
-}
+//         yield return null;
+//     }
+
+//     background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
+
+//     float elapsedTime = Time.time - startTime;
+//     Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
+// }
 /// 
     private void showReflection(ClickEvent evt)
     {
