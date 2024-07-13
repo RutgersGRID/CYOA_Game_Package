@@ -21,7 +21,7 @@
 //     public List<JournalSO> journals = new List<JournalSO>();
 //     private string ResourcesLoadP = "Props/";
 //     // public Text display;
-//     private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1yCNwNPDCFJP4VmggLayE66kTOhGo2xjYBN_iaiWQFvM/values:batchGet?ranges=Sheet1&key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+//     private const string input_URL = "https://sheets.googleapis.com/v4/spreadsheets/1yCNwNPDCFJP4VmggLayE66kTOhGo2xjYBN_iaiWQFvM/values:batchGet?ranges=Sheet1&key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
 
 //     private void Start()
 //     {
@@ -42,7 +42,7 @@
 
 //     IEnumerator ObtainSheetData()
 //     {
-//         UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+//         UnityWebRequest www = UnityWebRequest.Get(input_URL);
 //         yield return www.SendWebRequest();
 
 //         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
