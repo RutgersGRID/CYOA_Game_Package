@@ -891,11 +891,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: a85199a0-62b3-4454-bbb3-b3bcee08c7a9
+  cloudProjectId: 74b72f66-806f-4376-a0a1-da05efa2ffdc
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Visual Novel Engine (Current)
-  organizationId: ecy14
+  projectName: Visual Novel Engine (1)
+  organizationId: rutgers-university-grid
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
