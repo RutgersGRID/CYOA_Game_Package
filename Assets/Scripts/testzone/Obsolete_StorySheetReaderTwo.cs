@@ -40,7 +40,7 @@ public class Obsolete_StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    private const string OBS_STORY_input_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string OBS_STORY_input_URL = "https://sheets.googleapis.com/v4/spreadsheets/1CACxQvX4fPmeFt2Jb7SFGO2e3tNh5t73NMeZPBYp2Zs/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()

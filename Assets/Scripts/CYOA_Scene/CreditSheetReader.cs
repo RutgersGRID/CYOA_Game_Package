@@ -15,7 +15,7 @@ public class CreditSheetReader : MonoBehaviour
     }
     public List<CreditSO> credits = new List<CreditSO>();
     //Pointer to Alex's sheets
-    private const string ABOUT_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/CreditSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private const string ABOUT_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1CACxQvX4fPmeFt2Jb7SFGO2e3tNh5t73NMeZPBYp2Zs/values/CreditSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
