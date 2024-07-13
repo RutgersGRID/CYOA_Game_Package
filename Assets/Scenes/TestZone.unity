@@ -138,9 +138,8 @@ GameObject:
   - component: {fileID: 708983110}
   - component: {fileID: 708983109}
   - component: {fileID: 708983111}
-  - component: {fileID: 708983112}
   m_Layer: 0
-  m_Name: GameUIManager
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,7 +294,6 @@ MonoBehaviour:
   keywordSFX: {fileID: 0}
   jNumber: 0
   typingSpeed: 0.02
-  fadeDuration: 0.5
 --- !u!114 &708983109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,20 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   credits: []
---- !u!114 &708983112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708983096}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeca12a7db75634093724479c382057, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  storySheetReader: {fileID: 708983109}
---- !u!1 &1707338012
+--- !u!1 &1726200741
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -356,22 +341,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1707338014}
-  - component: {fileID: 1707338013}
+  - component: {fileID: 1726200743}
+  - component: {fileID: 1726200742}
   m_Layer: 0
-  m_Name: BlackBackground
+  m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!212 &1707338013
+--- !u!212 &1726200742
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1707338012}
+  m_GameObject: {fileID: 1726200741}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -417,13 +402,13 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &1707338014
+--- !u!4 &1726200743
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1707338012}
+  m_GameObject: {fileID: 1726200741}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 1}
