@@ -493,41 +493,6 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
     }
 
-
-//     private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
-// {
-//     // Check if nextSprite is null and do nothing if true
-//     if (nextSprite == null)
-//     {
-//         yield break;  // Do nothing and exit the coroutine
-//     }
-
-//     float startOpacity = 0f; // Start fully transparent
-//     float targetOpacity = 1f; // End fully opaque
-//     float duration = fadeDuration; // Duration of the fade animation in seconds
-
-//     var nextBackground = new StyleBackground(nextSprite.texture);
-//     background.style.backgroundImage = nextBackground;
-
-//     float startTime = Time.time;
-//     while (Time.time - startTime < duration)
-//     {
-//         float progress = (Time.time - startTime) / duration;
-//         float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-//         background.style.opacity = new StyleFloat(newOpacity);
-
-//         // Print sprite name and opacity progress
-//         Debug.Log($"Fading {background.name}: Sprite Name: {nextSprite.name}, Opacity: {newOpacity}");
-
-//         yield return null;
-//     }
-
-//     background.style.opacity = new StyleFloat(targetOpacity); // Ensure it's fully visible at the end
-
-//     float elapsedTime = Time.time - startTime;
-//     Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
-// }
-/// 
     private void showReflection(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.Flex;
@@ -620,30 +585,6 @@ public class UIPopulatorTwo : MonoBehaviour
         nextButton.SetEnabled(true);
         Debug.Log("Coroutine ended");
     }
-    /// 
-    // private void NextDialogue(ClickEvent evt)
-    // {
-    //     Debug.Log($"CurrentIndex before change: {currentIndex}");
-    //     if (currentIndex < 0 || currentIndex >= SSR.dialogues.Count)
-    //     {
-    //         Debug.LogError("Current index is out of range!");
-    //         return; 
-    //     }
-
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-    //     int nextIndex = dialogueSO.GoToIDs;
-
-    //     // Check if the next index is within range
-    //     if (nextIndex < 0 || nextIndex >= SSR.dialogues.Count)
-    //     {
-    //         Debug.LogError($"GoToID {nextIndex} is out of range!");
-    //         return; // Exit function early
-    //     }
-
-    //     currentIndex = nextIndex;  
-    //     // Update current index to the valid next index
-    //     PopulateUI();
-    // }
 
     private void NextDialogue(ClickEvent evt)
 {
@@ -669,60 +610,6 @@ public class UIPopulatorTwo : MonoBehaviour
 
     PopulateUI();
 }
-
-    // private void NextDialogueA(ClickEvent evt)
-    // {
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-
-    //     string Qnum = "Question_"+ QAnum.ToString();
-    //     string Anum = "Answer_"+ QAnum.ToString();
-    //     AddDataAndSave(Qnum, dialogueSO.Lines);
-    //     AddDataAndSave(Anum, dialogueSO.A1Answers);
-    //     Debug.Log(dialogueSO.Lines + dialogueSO.A1Answers);
-    //     QAnum++;
-
-    //     // string afaf = "iii 353" ;
-    //     // Debug.Log(afaf );
-    //     // AddDataToSave("iii89" , dialogueSO.A1Answers);
-    //     //AddDataToSave(dialogueSO.Lines + dialogueSO.A1Answers);
-
-    //     // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
-    //     Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA1s);
-
-    //     if (dialogueSO.EffectA1s >= 0 )
-    //     {
-    //         var journalSO = JSR.journals[dialogueSO.EffectA1s];
-    //         jNumber = dialogueSO.EffectA1s;
-
-    //         Debug.Log("JSR.journals Count: " + JSR.journals.Count);
-
-    //         Title.text = journalSO.journalTitles;
-    //         SummaryText.text = journalSO.journalEntrys;
-    //         Question.text = journalSO.reflectionQuestions;
-    //         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-    //     }
-    //     else
-    //     {
-    //         Title.text = "";
-    //         SummaryText.text = "";
-    //         Question.text = "";
-    //         doodle.style.backgroundImage = new StyleBackground();
-    //     }
-
-    //     currentIndex = dialogueSO.GoToIDA1s;
-
-    //     if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
-    //     {
-    //         dialogueSO = SSR.dialogues[currentIndex];
-    //         Debug.Log("jNumber " + jNumber);
-    //         PopulateUI();
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("currentIndex is out of bounds.");
-    //     }
-    // }
-
     private void NextDialogueA(ClickEvent evt)
 {
     var dialogueSO = SSR.dialogues[currentIndex];
@@ -765,58 +652,6 @@ public class UIPopulatorTwo : MonoBehaviour
     PopulateUI();
 }
 
-    // private void NextDialogueB(ClickEvent evt)
-    // {
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-
-    //     string Qnum = "Question_"+ QAnum.ToString();
-    //     string Anum = "Answer_"+ QAnum.ToString();
-    //     AddDataAndSave(Qnum, dialogueSO.Lines);
-    //     AddDataAndSave(Anum, dialogueSO.A2Answers);
-    //     Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
-    //     QAnum++;
-
-    //     // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
-    //     Debug.Log("dialogueSO.EffectA1s: " + dialogueSO.EffectA2s);
-
-    //     if (dialogueSO.EffectA2s >= 0 && dialogueSO.EffectA2s < JSR.journals.Count)
-    //     //if (dialogueSO.EffectA1s >= 0 && dialogueSO.EffectA1s)
-    //     {
-    //         var journalSO = JSR.journals[dialogueSO.EffectA2s];
-    //         jNumber = dialogueSO.EffectA2s;
-
-    //         Debug.Log("JSR.journals Count: " + JSR.journals.Count);
-
-    //         Title.text = journalSO.journalTitles;
-    //         SummaryText.text = journalSO.journalEntrys;
-    //         Question.text = journalSO.reflectionQuestions;
-    //         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-    //     }
-    //     else
-    //     {
-    //         Title.text = "";
-    //         SummaryText.text = "";
-    //         Question.text = "";
-    //         doodle.style.backgroundImage = new StyleBackground();
-    //     }
-
-        
-    //     Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
-
-    //     currentIndex = dialogueSO.GoToIDA2s;
-
-    //     if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
-    //     {
-    //         dialogueSO = SSR.dialogues[currentIndex];
-    //         Debug.Log("jNumber " + jNumber);
-    //         PopulateUI();
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("currentIndex is out of bounds.");
-    //     }
-    // }
-
     private void NextDialogueB(ClickEvent evt)
 {
     var dialogueSO = SSR.dialogues[currentIndex];
@@ -858,67 +693,6 @@ public class UIPopulatorTwo : MonoBehaviour
 
     PopulateUI();
 }
-
-    // private void NextDialogueC(ClickEvent evt)
-    // {
-    //     // var dialogueSO = SSR.dialogues[currentIndex];
-    //     // var journalSO = JSR.journals[dialogueSO.EffectA3s];
-    //     // jNumber = dialogueSO.EffectA3s;
-
-    //     // Title.text = journalSO.journalTitles;
-    //     // SummaryText.text = journalSO.journalEntrys;
-    //     // Question.text = journalSO.reflectionQuestions;
-    //     // doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-        
-    //     // currentIndex = dialogueSO.GoToIDA3s;
-    //     // dialogueSO = SSR.dialogues[currentIndex];
-    //     // Debug.Log("jNumber " + jNumber);
-    //     // PopulateUI();
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-
-    //     string Qnum = "Question_"+ QAnum.ToString();
-    //     string Anum = "Answer_"+ QAnum.ToString();
-    //     AddDataAndSave(Qnum, dialogueSO.Lines);
-    //     AddDataAndSave(Anum, dialogueSO.A3Answers);
-    //     Debug.Log(dialogueSO.Lines + dialogueSO.A3Answers);
-    //     QAnum++;
-
-    //     // Debugging statement 1: Print the value of dialogueSO.EffectA1s.
-    //     Debug.Log("dialogueSO.EffectA3s: " + dialogueSO.EffectA3s);
-
-    //     if (dialogueSO.EffectA3s >= 0 )
-    //     {
-    //         var journalSO = JSR.journals[dialogueSO.EffectA3s];
-    //         jNumber = dialogueSO.EffectA3s;
-
-    //         Debug.Log("JSR.journals Count: " + JSR.journals.Count);
-
-    //         Title.text = journalSO.journalTitles;
-    //         SummaryText.text = journalSO.journalEntrys;
-    //         Question.text = journalSO.reflectionQuestions;
-    //         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-    //     }
-    //     else
-    //     {
-    //         Title.text = "";
-    //         SummaryText.text = "";
-    //         Question.text = "";
-    //         doodle.style.backgroundImage = new StyleBackground();
-    //     }
-
-    //     currentIndex = dialogueSO.GoToIDA1s;
-
-    //     if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count)
-    //     {
-    //         dialogueSO = SSR.dialogues[currentIndex];
-    //         Debug.Log("jNumber " + jNumber);
-    //         PopulateUI();
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("currentIndex is out of bounds.");
-    //     }
-    // }
 
     private void NextDialogueC(ClickEvent evt)
 {
@@ -966,14 +740,7 @@ public class UIPopulatorTwo : MonoBehaviour
     {
         rewindUI.style.display = DisplayStyle.Flex;
     }
-    // private void RewindYes(ClickEvent evt)
-    // {
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-    //     currentIndex = dialogueSO.Checkpoints;
-    //     rewindUI.style.display = DisplayStyle.None;
-    //     PopulateUI();
-        
-    // }
+
     private void RewindYes(ClickEvent evt)
 {
     var dialogueSO = SSR.dialogues[currentIndex];
