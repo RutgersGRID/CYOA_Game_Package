@@ -424,7 +424,7 @@ public class UIPopulatorTwo : MonoBehaviour
             characterImageLeft.style.backgroundImage = new StyleBackground(dialogueSO.LeftSideSpeakers);
             characterImageRight.style.backgroundImage = new StyleBackground(dialogueSO.RightSideSpeakers);
             propImage.style.backgroundImage = new StyleBackground(dialogueSO.Props);
-            Debug.Log("dialogueSO.Effects" + dialogueSO.Effects);
+            Debug.Log("dialogueSO.JTriggers" + dialogueSO.JTriggers);
             if (dialogueSO.Types.Equals("a", StringComparison.CurrentCultureIgnoreCase))
             {
                 dlogBG.style.display = DisplayStyle.Flex;
@@ -458,11 +458,11 @@ public class UIPopulatorTwo : MonoBehaviour
                 bThree.text = dialogueSO.A2Answers;
                 cThree.text = dialogueSO.A3Answers;
             }
-            if (dialogueSO.Effects != -1)
+            if (dialogueSO.JTriggers != -1)
             {
-                if (!jPages.Contains(dialogueSO.Effects))
+                if (!jPages.Contains(dialogueSO.JTriggers))
                 {
-                    jNumber = dialogueSO.Effects;
+                    jNumber = dialogueSO.JTriggers;
                     if (jNumber < 0 || jNumber >= JSR.journals.Count)
                     {
                         Debug.LogError("jNumber out of range!");
@@ -658,10 +658,10 @@ public class UIPopulatorTwo : MonoBehaviour
     Debug.Log(dialogueSO.Lines + dialogueSO.A1Answers);
     QAnum++;
 
-    if (dialogueSO.EffectA1s >= 0 )
+    if (dialogueSO.JTriggerA1s >= 0 )
     {
-        var journalSO = JSR.journals[dialogueSO.EffectA1s];
-        jNumber = dialogueSO.EffectA1s;
+        var journalSO = JSR.journals[dialogueSO.JTriggerA1s];
+        jNumber = dialogueSO.JTriggerA1s;
 
         Title.text = journalSO.journalTitles;
         SummaryText.text = journalSO.journalEntrys;
@@ -700,10 +700,10 @@ public class UIPopulatorTwo : MonoBehaviour
     Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
     QAnum++;
 
-    if (dialogueSO.EffectA2s >= 0 && dialogueSO.EffectA2s < JSR.journals.Count)
+    if (dialogueSO.JTriggerA2s >= 0 && dialogueSO.JTriggerA2s < JSR.journals.Count)
     {
-        var journalSO = JSR.journals[dialogueSO.EffectA2s];
-        jNumber = dialogueSO.EffectA2s;
+        var journalSO = JSR.journals[dialogueSO.JTriggerA2s];
+        jNumber = dialogueSO.JTriggerA2s;
 
         Title.text = journalSO.journalTitles;
         SummaryText.text = journalSO.journalEntrys;
@@ -742,10 +742,10 @@ public class UIPopulatorTwo : MonoBehaviour
     Debug.Log(dialogueSO.Lines + dialogueSO.A3Answers);
     QAnum++;
 
-    if (dialogueSO.EffectA3s >= 0 )
+    if (dialogueSO.JTriggerA3s >= 0 )
     {
-        var journalSO = JSR.journals[dialogueSO.EffectA3s];
-        jNumber = dialogueSO.EffectA3s;
+        var journalSO = JSR.journals[dialogueSO.JTriggerA3s];
+        jNumber = dialogueSO.JTriggerA3s;
 
         Title.text = journalSO.journalTitles;
         SummaryText.text = journalSO.journalEntrys;
@@ -916,9 +916,9 @@ public class UIPopulatorTwo : MonoBehaviour
 
             Audio.PlayOneShot(newLogClip, 0.7F);
             
-            if (dialogueSO.Effects != -1 && jPages.Count < 0)
+            if (dialogueSO.JTriggers != -1 && jPages.Count < 0)
             {
-                //if (!jPages.Contains(dialogueSO.Effect))
+                //if (!jPages.Contains(dialogueSO.JTrigger))
                 if (!jPages.Contains(jNumber))
                 {
                     jPages.Add(jNumber);

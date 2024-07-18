@@ -26,20 +26,20 @@ public class StorySheetReaderTwo : MonoBehaviour
         // public string Types;
         // public int GoToIDs;
         // //public string GoToIDs;
-        // public int Effects;
+        // public int JournalTriggers;
         // public string A1Answers;
         // public int GoToIDA1s;
         // //public string GoToIDA1s;
-        // public int EffectA1s;
+        // public int JournalTriggerA1s;
         // public string A2Answers;
         // public int GoToIDA2s;
         // //public string GoToIDA2s;
-        // public int EffectA2s;
+        // public int JournalTriggerA2s;
         // public string A3Answers;
         // public int GoToIDA3s;
         // //public string GoToIDA3s;
-        // public int EffectA3s;
-        // public string EntryPoints;
+        // public int JournalTriggerA3s;
+
         public string IDs;
         public string Speakers;
         public string Lines;
@@ -52,17 +52,16 @@ public class StorySheetReaderTwo : MonoBehaviour
         public string Checkpoints;
         public string Types;
         public string GoToIDs;
-        public int Effects;
+        public int JournalTriggers;
         public string A1Answers;
         public string GoToIDA1s;
-        public int EffectA1s;
+        public int JournalTriggerA1s;
         public string A2Answers;
         public string GoToIDA2s;
-        public int EffectA2s;
+        public int JournalTriggerA2s;
         public string A3Answers;
         public string GoToIDA3s;
-        public int EffectA3s;
-        public string EntryPoints;
+        public int JournalTriggerA3s;
     }
     public List<DialogueSO> dialogues = new List<DialogueSO>();
     private string ResourcesLoadC = "Characters/";
@@ -89,8 +88,8 @@ public class StorySheetReaderTwo : MonoBehaviour
         }
         StartCoroutine(ObtainSheetData());
     }
-    //private DialogueSO CreateDialogueSO( int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3, string EntryPoint)
-    private DialogueSO CreateDialogueSO(string ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, string Checkpoint, string Type, string GoToID, int Effect, string A1Answer, string GoToIDA1, int EffectA1, string A2Answer, string GoToIDA2, int EffectA2, string A3Answer, string GoToIDA3, int EffectA3, string EntryPoint)
+    //private DialogueSO CreateDialogueSO( int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int JournalTrigger, string A1Answer, int GoToIDA1, int JournalTriggerA1, string A2Answer, int GoToIDA2, int JournalTriggerA2, string A3Answer, int GoToIDA3, int JournalTriggerA3)
+    private DialogueSO CreateDialogueSO(string ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, string Checkpoint, string Type, string GoToID, int JournalTrigger, string A1Answer, string GoToIDA1, int JournalTriggerA1, string A2Answer, string GoToIDA2, int JournalTriggerA2, string A3Answer, string GoToIDA3, int JournalTriggerA3)
     {
         DialogueSO dialogue = ScriptableObject.CreateInstance<DialogueSO>();
 
@@ -106,17 +105,16 @@ public class StorySheetReaderTwo : MonoBehaviour
         dialogue.Checkpoints = Checkpoint;
         dialogue.Types = Type;
         dialogue.GoToIDs = GoToID;
-        dialogue.Effects = Effect;
+        dialogue.JournalTriggers = JournalTrigger;
         dialogue.A1Answers = A1Answer;
         dialogue.GoToIDA1s = GoToIDA1;
-        dialogue.EffectA1s = EffectA1;
+        dialogue.JournalTriggerA1s = JournalTriggerA1;
         dialogue.A2Answers= A2Answer;
         dialogue.GoToIDA2s = GoToIDA2;
-        dialogue.EffectA2s = EffectA2;
+        dialogue.JournalTriggerA2s = JournalTriggerA2;
         dialogue.A3Answers = A3Answer;
         dialogue.GoToIDA3s = GoToIDA3;
-        dialogue.EffectA3s = EffectA3;
-        dialogue.EntryPoints = EntryPoint;
+        dialogue.JournalTriggerA3s = JournalTriggerA3;
 
         return dialogue;
     }
@@ -181,22 +179,21 @@ public class StorySheetReaderTwo : MonoBehaviour
                 var Type = item[10].Value;
                 var GoToID = item[11].Value;
                 //var GoToID = SafeIntParse(item[11].Value);
-                var Effect = SafeIntParse(item[12].Value);
+                var JournalTrigger = SafeIntParse(item[12].Value);
                 var A1Answer = item[13].Value;
                 var GoToIDA1 = item[14].Value;
                 //var GoToIDA1 = SafeIntParse(item[14].Value);
-                var EffectA1 = SafeIntParse(item[15].Value);
+                var JournalTriggerA1 = SafeIntParse(item[15].Value);
                 var A2Answer = item[16].Value;
                 var GoToIDA2 = item[17].Value;
                 //var GoToIDA2 = SafeIntParse(item[17].Value);
-                var EffectA2 = SafeIntParse(item[18].Value);
+                var JournalTriggerA2 = SafeIntParse(item[18].Value);
                 var A3Answer = item[19].Value;
                 var GoToIDA3 = item[20].Value;
                 //var GoToIDA3 = SafeIntParse(item[20].Value);
-                var EffectA3 = SafeIntParse(item[21].Value);
-                var EntryPoint = item[22].Value;
+                var JournalTriggerA3 = SafeIntParse(item[21].Value);
 
-                dialogues.Add(CreateDialogueSO( ID, Speaker, Line, Keyword, SoundEFX, LeftSideSpeaker, RightSideSpeaker, Prop, Background, Checkpoint, Type, GoToID, Effect, A1Answer, GoToIDA1, EffectA1, A2Answer, GoToIDA2, EffectA2, A3Answer, GoToIDA3, EffectA3, EntryPoint));
+                dialogues.Add(CreateDialogueSO( ID, Speaker, Line, Keyword, SoundEFX, LeftSideSpeaker, RightSideSpeaker, Prop, Background, Checkpoint, Type, GoToID, JournalTrigger, A1Answer, GoToIDA1, JournalTriggerA1, A2Answer, GoToIDA2, JournalTriggerA2, A3Answer, GoToIDA3, JournalTriggerA3));
             }
         }
         if (dialogues.Count == 0)
