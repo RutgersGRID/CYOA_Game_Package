@@ -145,4 +145,18 @@
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement name="DevToolSkip" style="width: 100%; height: 100%; align-items: center; justify-content: center; position: absolute; visibility: visible; display: flex;">
+        <ui:VisualElement name="DevToolSkipBG" style="width: 100%; height: 100%; position: absolute; background-color: rgb(27, 27, 27); opacity: 0.7; visibility: visible; font-size: 30px; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;); -unity-font-definition: initial; -unity-font-style: bold;" />
+        <ui:VisualElement name="DevToolSkipPU" style="width: 60%; height: 80%; background-color: rgb(255, 255, 255); border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; border-left-color: rgb(212, 212, 212); border-right-color: rgb(212, 212, 212); border-top-color: rgb(212, 212, 212); border-bottom-color: rgb(212, 212, 212); visibility: visible; align-items: center; justify-content: space-around;">
+            <ui:VisualElement name="top" style="width: 100%; height: 60%;">
+                <ui:Label text="Put in the Scene ID you want to test. " display-tooltip-when-elided="true" name="DevToolTxT" style="width: 100%; height: 20%; color: rgb(0, 0, 0); font-size: 22px; align-items: flex-start; justify-content: flex-start; white-space: normal; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;); -unity-font-definition: initial;" />
+                <ui:ListView focusable="true" name="DevToolSkipList" style="height: 70%; width: 100%;" />
+                <ui:TextField picking-mode="Ignore" label="SceneID" name="SceneID" />
+            </ui:VisualElement>
+            <ui:VisualElement name="bot" style="width: 50%; height: 25%; flex-direction: row; justify-content: space-between; align-items: center; align-self: center;">
+                <ui:Button text="Yes" display-tooltip-when-elided="true" name="DevToolSkipYes" style="width: 45%; height: 50%; background-color: rgb(31, 161, 21); border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;); -unity-font-definition: initial; font-size: 24px; -unity-font-style: normal;" />
+                <ui:Button text="No" display-tooltip-when-elided="true" name="DevToolSkipNo" style="width: 45%; height: 50%; background-color: rgb(164, 7, 7); border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; -unity-font: url(&apos;project://database/Assets/Fonts/HelvetiHand.ttf?fileID=12800000&amp;guid=1eb5213b93b02d345ba5f5938e95783e&amp;type=3#HelvetiHand&apos;); -unity-font-definition: initial; font-size: 24px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>

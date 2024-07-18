@@ -103,9 +103,18 @@ public class UIPopulatorTwo : MonoBehaviour
     ///
     string keywordstring;
     private int QAnum = 1;
-    /// <summary>
+
+    // DEV TOOL
+    private VisualElement devtoolskipContainer;
+    private ListView devtoolskipListView;
+    public List<string> sceneids = new List<string>();
+    private TextField devtoolskipSceneID;
+    private Button devtoolskipYes;
+    private Button devtoolskipNo;
+    
+    //
     private Coroutine currentTypeTextCoroutine = null;
-    /// </summary>
+    
     
     private Dictionary<string, string> formFields = new Dictionary<string, string>();
     
@@ -183,6 +192,12 @@ public class UIPopulatorTwo : MonoBehaviour
         ReflectionQ = root.Q<TextElement>("reflectionQ");  
         Question = root.Q<TextElement>("reflectionQuestion"); 
 
+        devtoolskipContainer = root.Q<VisualElement>("DevToolSkip");
+        devtoolskipListView = root.Q<ListView>("DevtoolSkipList");
+        devtoolskipSceneID = root.Q<TextField>("SceneID");
+        devtoolskipYes = root.Q<Button>("DevToolSkipYes");
+        devtoolskipNo = root.Q<Button>("DevToolSkipNo");
+
         SSR.onDataLoaded += DataLoadedCallback;
         SSR.StartCoroutine(SSR.ObtainSheetData());
 
@@ -221,6 +236,9 @@ public class UIPopulatorTwo : MonoBehaviour
 
         jEButton.RegisterCallback<ClickEvent>(JournalEntryButton);
 
+        devtoolskipYes.RegisterCallback<ClickEvent>(SkipScene);
+        devtoolskipNo.RegisterCallback<ClickEvent>(CloseDevTool);
+
         rewindUI.style.display = DisplayStyle.None;
         twoOptionAnswers.style.display = DisplayStyle.None;
         threeOptionAnswers.style.display = DisplayStyle.None;
@@ -234,6 +252,7 @@ public class UIPopulatorTwo : MonoBehaviour
         bookmarkThree.style.display = DisplayStyle.None;
         bookmarkFour.style.display = DisplayStyle.None;
         bookmarkFive.style.display = DisplayStyle.None;
+        devtoolskipContainer.style.display = DisplayStyle.None;
 
         Debug.Log("Size of CSR.credits: " + CSR.credits.Count);
 
@@ -244,6 +263,11 @@ public class UIPopulatorTwo : MonoBehaviour
         AddDataToSave("WorkshopId", PlayerPrefs.GetString("WorkshopId"));
         Debug.Log("Data saved successfully for: " + PlayerPrefs.GetString("WorkshopId"));
         
+        foreach (var dialogue in SSR.dialogues)
+        {
+            sceneids.Add(dialogue.IDs);
+        }
+        Debug.Log("Scene IDs: " + string.Join(", ", sceneids));
         //PopulateUI();
     }
 
@@ -255,9 +279,9 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log("Size of CSR.credits: " + CSR.credits.Count);
         
         // Print detailed information about SSR, JSR, and CSR
-        PrintSSRData();
-        PrintJSRData();
-        PrintCSRData();
+        //PrintSSRData();
+       // PrintJSRData();
+        //PrintCSRData();
         
         preloadTheList();
         if (CSR.credits.Count > 0)
@@ -544,7 +568,6 @@ public class UIPopulatorTwo : MonoBehaviour
 
         currentTypeTextCoroutine = StartCoroutine(TypeText(sentence, keywordstring));
     }
-
     private bool instantCompleteRequested = false;
     private void Update()
     {
@@ -553,7 +576,21 @@ public class UIPopulatorTwo : MonoBehaviour
         {
             instantCompleteRequested = true;
         }
+        if (Input.GetKey(KeyCode.G) && 
+            Input.GetKey(KeyCode.R) && 
+            Input.GetKey(KeyCode.I) && 
+            Input.GetKey(KeyCode.D))
+        {
+            // devtoolskipListView.itemsSource = sceneids;
+            // devtoolskipListView.makeItem = () => new Label();
+            // devtoolskipListView.bindItem = (element, i) => (element as Label).text = sceneids[i];
+            // devtoolskipListView.Rebuild();
+            devtoolskipContainer.style.display = DisplayStyle.Flex;
+            Debug.Log("DevTool now open");
+        }
     }
+
+    
     private IEnumerator TypeText(string sentence, string keywordstring)
     {
         instantCompleteRequested = false;  // Reset the flag at the start of each new line
@@ -949,4 +986,26 @@ public class UIPopulatorTwo : MonoBehaviour
             journalUpdate();
             NewJournalEntry.style.display = DisplayStyle.None;
         }
+    private void SkipScene(ClickEvent evt)
+    {
+        string sceneID = devtoolskipSceneID.value;
+    
+        // Find the index of the scene using the string ID
+        currentIndex = SSR.dialogues.FindIndex(d => d.IDs == sceneID);
+
+        // Check if the index was found
+        if (currentIndex == -1)
+        {
+            Debug.LogError($"Scene ID {sceneID} not found!");
+            return; // Exit function early if the ID is not found
+        }
+
+    // Populate the UI with the new current index
+        PopulateUI();
+        devtoolskipContainer.style.display = DisplayStyle.None;
+    }
+    private void CloseDevTool(ClickEvent evt)
+    {
+        devtoolskipContainer.style.display = DisplayStyle.None;
+    }
 }
