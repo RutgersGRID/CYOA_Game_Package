@@ -69,12 +69,25 @@ public class StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1bX_KEFkKzEpkvAaydY3TF1ZMrQUnRz2s5jKO7--Bjow/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    // private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
+    private string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetId;
+    private string sheetUrl;
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // StartCoroutine(ObtainSheetData());
+        sheetId = PlayerPrefs.GetString("SheetId", "0");
+        if (sheetId == "0")
+        {
+            sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet" + sheetKey;
+        }
+        else
+        {
+            sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
+        }
+        StartCoroutine(ObtainSheetData());
     }
     //private DialogueSO CreateDialogueSO( int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int Effect, string A1Answer, int GoToIDA1, int EffectA1, string A2Answer, int GoToIDA2, int EffectA2, string A3Answer, int GoToIDA3, int EffectA3, string EntryPoint)
     private DialogueSO CreateDialogueSO(string ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, string Checkpoint, string Type, string GoToID, int Effect, string A1Answer, string GoToIDA1, int EffectA1, string A2Answer, string GoToIDA2, int EffectA2, string A3Answer, string GoToIDA3, int EffectA3, string EntryPoint)
@@ -137,7 +150,8 @@ public class StorySheetReaderTwo : MonoBehaviour
 
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        // UnityWebRequest www = UnityWebRequest.Get(SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(sheetUrl);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)

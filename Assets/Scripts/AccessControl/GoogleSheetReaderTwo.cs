@@ -15,14 +15,26 @@ public class GoogleSheetReaderTwo : MonoBehaviour
     }
 
     public List<LoginSO> logins = new List<LoginSO>();
-    private const string CONTROL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1bX_KEFkKzEpkvAaydY3TF1ZMrQUnRz2s5jKO7--Bjow/values/Access?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
-
+    //private const string CONTROL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/Access?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
+    private string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetId;
+    private string sheetUrl;
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
 
     private void Start()
     {
-        //StartCoroutine(ObtainSheetData());
+        sheetId = PlayerPrefs.GetString("SheetId", "0");
+        if (sheetId == "0")
+        {
+            sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/Access" + sheetKey;
+        }
+        else
+        {
+            sheetUrl = sheetBaseUrl + sheetId + "/values/Access" + sheetKey;
+        }
+        StartCoroutine(ObtainSheetData());
     }
 
     private LoginSO CreateLoginSO(string accessCode, string workshopIdCode)
@@ -38,7 +50,7 @@ public class GoogleSheetReaderTwo : MonoBehaviour
     public IEnumerator ObtainSheetData()
     {
         //Debug.Log("ObtainSheetData started. Fetching data...");
-        UnityWebRequest www = UnityWebRequest.Get(CONTROL_SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(sheetUrl);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)

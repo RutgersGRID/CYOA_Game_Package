@@ -19,12 +19,25 @@ public class JournalSheetReaderTwo : MonoBehaviour
 
     public List<JournalSO> journals = new List<JournalSO>();
     private string ResourcesLoadP = "Props/";
-    private const string JOURNAL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1bX_KEFkKzEpkvAaydY3TF1ZMrQUnRz2s5jKO7--Bjow/values/JournalSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    //private const string JOURNAL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/JournalSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
+    private string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetId;
+    private string sheetUrl;
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // StartCoroutine(ObtainSheetData());
+        sheetId = PlayerPrefs.GetString("SheetId", "0");
+        if (sheetId == "0")
+        {
+            sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/JournalSheet" + sheetKey;
+        }
+        else
+        {
+            sheetUrl = sheetBaseUrl + sheetId + "/values/JournalSheet" + sheetKey;
+        }
+        StartCoroutine(ObtainSheetData());
     }
 
     private JournalSO CreateJournalSO(int id, string journalTitle, string journalEntry, Sprite doodle, string reflectionQuestion)
@@ -42,7 +55,7 @@ public class JournalSheetReaderTwo : MonoBehaviour
     public IEnumerator ObtainSheetData()
     {
         Debug.Log("Sheet Data loaded by Journal Sheet Reader Two");
-        UnityWebRequest www = UnityWebRequest.Get(JOURNAL_SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(sheetUrl);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)

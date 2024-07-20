@@ -15,12 +15,25 @@ public class FrameReader : MonoBehaviour
     }
     public List<FrameSO> frames = new List<FrameSO>();
     private string ResourcesLoadAI = "AnimationImages/";
-    private const string FRAMES_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1bX_KEFkKzEpkvAaydY3TF1ZMrQUnRz2s5jKO7--Bjow/values/IntroFrames?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    //private const string FRAMES_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/IntroFrames?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
+    private string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetId;
+    private string sheetUrl;
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // StartCoroutine(ObtainSheetData());
+        sheetId = PlayerPrefs.GetString("SheetId", "0");
+        if (sheetId == "0")
+        {
+            sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/IntroFrames" + sheetKey;
+        }
+        else
+        {
+            sheetUrl = sheetBaseUrl + sheetId + "/values/IntroFrames" + sheetKey;
+        }
+        StartCoroutine(ObtainSheetData());
     }
     private FrameSO CreateFrameSO(int id, Sprite frameStill)
     {
@@ -57,7 +70,7 @@ public class FrameReader : MonoBehaviour
     }
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(FRAMES_SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(sheetUrl);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
@@ -82,12 +95,12 @@ public class FrameReader : MonoBehaviour
         {
             Debug.LogWarning("FROM FrameReader: FAILURE");
 
-            Debug.LogWarning("The frames list was not populated. Please check the source or the structure of the Google Sheet: "+ FRAMES_SHEET_URL);
+            Debug.LogWarning("The frames list was not populated. Please check the source or the structure of the Google Sheet: "+ sheetUrl);
         }
         else
         {
             Debug.Log($"FROM FrameReader: SUCCESS");
-            Debug.Log($"Successfully populated frames list with {frames.Count} entries from "+ FRAMES_SHEET_URL);
+            Debug.Log($"Successfully populated frames list with {frames.Count} entries from "+ sheetUrl);
         }
         onDataLoaded?.Invoke();
     }
