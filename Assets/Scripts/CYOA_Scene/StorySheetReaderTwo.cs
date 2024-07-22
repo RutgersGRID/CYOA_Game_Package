@@ -77,15 +77,17 @@ public class StorySheetReaderTwo : MonoBehaviour
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        sheetId = PlayerPrefs.GetString("SheetId", "0");
-        if (sheetId == "0")
-        {
-            sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet" + sheetKey;
-        }
-        else
-        {
-            sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
-        }
+        // sheetId = PlayerPrefs.GetString("SheetId", "0");
+        // if (sheetId == "0")
+        // {
+        //     sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet" + sheetKey;
+        // }
+        // else
+        // {
+        //     sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
+        // }
+        sheetId = PlayerPrefs.GetString("SheetId");
+        sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
         StartCoroutine(ObtainSheetData());
     }
     //private DialogueSO CreateDialogueSO( int ID, string Speaker, string Line, string Keyword, AudioClip SoundEFX, Sprite LeftSideSpeaker, Sprite RightSideSpeaker, Sprite Prop, Sprite Background, int Checkpoint, string Type, int GoToID, int JournalTrigger, string A1Answer, int GoToIDA1, int JournalTriggerA1, string A2Answer, int GoToIDA2, int JournalTriggerA2, string A3Answer, int GoToIDA3, int JournalTriggerA3)

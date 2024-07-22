@@ -12,9 +12,12 @@ public class AccessControlPopulatorTwo : MonoBehaviour
     public string sceneToLoad;
     public GoogleSheetReaderTwo gsrt;
 
+
     void Start()
     {
-        Debug.Log("AccessControlPopulatorTwo started. Subscribing to event...");
+        PlayerPrefs.SetString("SheetId", "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g");
+
+        Debug.Log("SheetID:"  + PlayerPrefs.GetString("SheetId"));
         Initialize();
     }
 

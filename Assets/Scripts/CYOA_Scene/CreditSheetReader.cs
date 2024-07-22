@@ -15,12 +15,26 @@ public class CreditSheetReader : MonoBehaviour
     }
     public List<CreditSO> credits = new List<CreditSO>();
     //Pointer to Alex's sheets
-    private const string ABOUT_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/CreditSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
+    private string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+    private string sheetId;
+    private string sheetUrl;
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // StartCoroutine(ObtainSheetData());
+        // sheetId = PlayerPrefs.GetString("SheetId", "0");
+        // if (sheetId == "0")
+        // {
+        //     sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/IntroFrames" + sheetKey;
+        // }
+        // else
+        // {
+        //     sheetUrl = sheetBaseUrl + sheetId + "/values/IntroFrames" + sheetKey;
+        // }
+        sheetId = PlayerPrefs.GetString("SheetId");
+        sheetUrl = sheetBaseUrl + sheetId + "/values/CreditSheet" + sheetKey;
+        StartCoroutine(ObtainSheetData());
     }
     private CreditSO CreateCreditSO(string creditText, string htpText, string creditGRIDText)
     {
@@ -33,7 +47,7 @@ public class CreditSheetReader : MonoBehaviour
     }
     public IEnumerator ObtainSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get(ABOUT_SHEET_URL);
+        UnityWebRequest www = UnityWebRequest.Get(sheetUrl);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)

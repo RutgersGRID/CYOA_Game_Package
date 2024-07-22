@@ -24,7 +24,7 @@ public class DevTool : MonoBehaviour
         DevToolNo.RegisterCallback<ClickEvent>(DisableDevTool);
 
         DevToolUI.style.display = DisplayStyle.None;
-        PlayerPrefs.SetString("SheetId", "0");
+        //PlayerPrefs.SetString("SheetId", "0");
 
         // Find the AccessControlPopulatorTwo script in the scene
         scriptToReload = FindObjectOfType<AccessControlPopulatorTwo>();
@@ -51,6 +51,7 @@ public class DevTool : MonoBehaviour
         string testsheetIdValue = DevToolSheetID.value;
         PlayerPrefs.SetString("SheetId", testsheetIdValue);
         DevToolUI.style.display = DisplayStyle.None;
+        Debug.Log("New SheetID is."  + PlayerPrefs.GetString("SheetId"));
         ReloadScript();
     }
 
@@ -65,6 +66,7 @@ public class DevTool : MonoBehaviour
         if (scriptToReload != null)
         {
             scriptToReload.Reload();
+            Debug.Log("Reloaded!");
         }
         else
         {

@@ -25,15 +25,17 @@ public class GoogleSheetReaderTwo : MonoBehaviour
 
     private void Start()
     {
-        sheetId = PlayerPrefs.GetString("SheetId", "0");
-        if (sheetId == "0")
-        {
-            sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/Access" + sheetKey;
-        }
-        else
-        {
-            sheetUrl = sheetBaseUrl + sheetId + "/values/Access" + sheetKey;
-        }
+        // sheetId = PlayerPrefs.GetString("SheetId", "0");
+        // if (sheetId == "0")
+        // {
+        //     sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/Access" + sheetKey;
+        // }
+        // else
+        // {
+        //     sheetUrl = sheetBaseUrl + sheetId + "/values/Access" + sheetKey;
+        // }
+        sheetId = PlayerPrefs.GetString("SheetId");
+        sheetUrl = sheetBaseUrl + sheetId + "/values/Access" + sheetKey;
         StartCoroutine(ObtainSheetData());
     }
 
