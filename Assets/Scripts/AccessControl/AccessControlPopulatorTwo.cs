@@ -12,9 +12,17 @@ public class AccessControlPopulatorTwo : MonoBehaviour
     public string sceneToLoad;
     public GoogleSheetReaderTwo gsrt;
 
+
     void Start()
     {
-        Debug.Log("TitleScreenPopulatorTwo started. Subscribing to event...");
+        PlayerPrefs.SetString("SheetId", "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g");
+
+        Debug.Log("SheetID:"  + PlayerPrefs.GetString("SheetId"));
+        Initialize();
+    }
+
+    void Initialize()
+    {
         var root = GetComponent<UIDocument>().rootVisualElement;
         Accesscode = root.Q<TextField>("AccessCodeTF");
         Workshopid = root.Q<TextField>("WorkshopIDTF");
@@ -26,6 +34,20 @@ public class AccessControlPopulatorTwo : MonoBehaviour
         gsrt.StartCoroutine(gsrt.ObtainSheetData());
     }
 
+    public void Reload()
+    {
+        Debug.Log("Reloading AccessControlPopulatorTwo...");
+        // Unsubscribe from events to avoid duplication
+        proceed.UnregisterCallback<ClickEvent>(nextScene);
+        gsrt.onDataLoaded -= DataLoadedCallback;
+
+        // Optionally, reset any variables or states
+        // (you may add any additional reset logic here)
+
+        // Reinitialize the script
+        Initialize();
+    }
+
     void DataLoadedCallback()
     {
         Debug.Log("Data loaded and list populated.");
@@ -33,34 +55,30 @@ public class AccessControlPopulatorTwo : MonoBehaviour
         preloadTheList();
     }
 
-        private void preloadTheList()
+    private void preloadTheList()
     {
         foreach (var login in gsrt.logins)
         {
-
+            // Your logic here
         }
     }
+
     private void nextScene(ClickEvent evt)
-    {   
+    {
         Debug.Log("Size of gsrt.dialogues: " + gsrt.logins.Count);
         string accessCodeValue = Accesscode.value;
         string workshopIdValue = Workshopid.value;
-        //string sceneToLoad = "TestZone";
         Boolean match = false;
 
-        for(int currentIndex = 0; currentIndex < gsrt.logins.Count; currentIndex++)
+        for (int currentIndex = 0; currentIndex < gsrt.logins.Count; currentIndex++)
         {
             var LoginSO = gsrt.logins[currentIndex];
-            
+
             Debug.Log(currentIndex);
-            // Debug.Log("Accesscode value: " + accessCodeValue);
-            // Debug.Log("Workshopid value: " + workshopIdValue);
             Debug.Log("LoginSO.AccessCodes: " + LoginSO.AccessCodes);
             Debug.Log("LoginSO.WorkshopIDCodes: " + LoginSO.WorkshopIDCodes);
-            // Debug.Log("LoginSO.TestSpaces: " + LoginSO.TestSpaces);
-
             Debug.Log("Size of gsrt.dialogues: " + gsrt.logins.Count);
-            
+
             if (accessCodeValue.Equals(LoginSO.AccessCodes) && workshopIdValue.Equals(LoginSO.WorkshopIDCodes))
             {
                 Debug.Log("Codes match!");

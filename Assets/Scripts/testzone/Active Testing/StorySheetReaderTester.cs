@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class StorySheetReaderTwo : MonoBehaviour
+public class StorySheetReaderTester : MonoBehaviour
 {
     [System.Serializable]
     public class DialogueSO : ScriptableObject
@@ -86,7 +86,6 @@ public class StorySheetReaderTwo : MonoBehaviour
         // {
         //     sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
         // }
-        sheetId = PlayerPrefs.GetString("SheetId");
         sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
         StartCoroutine(ObtainSheetData());
     }
