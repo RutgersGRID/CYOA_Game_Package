@@ -36,10 +36,8 @@ public class DevTool : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.G) && 
-            Input.GetKey(KeyCode.R) && 
-            Input.GetKey(KeyCode.I) && 
-            Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.U) && 
+            Input.GetKey(KeyCode.I))
         {
             DevToolUI.style.display = DisplayStyle.Flex;
             Debug.Log("DevTool now open");

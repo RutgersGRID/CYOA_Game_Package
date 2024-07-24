@@ -576,10 +576,9 @@ public class UIPopulatorTwo : MonoBehaviour
         {
             instantCompleteRequested = true;
         }
-        if (Input.GetKey(KeyCode.G) && 
-            Input.GetKey(KeyCode.R) && 
-            Input.GetKey(KeyCode.I) && 
-            Input.GetKey(KeyCode.D))
+        if (
+            Input.GetKey(KeyCode.U) && 
+            Input.GetKey(KeyCode.I))
         {
             // devtoolskipListView.itemsSource = sceneids;
             // devtoolskipListView.makeItem = () => new Label();
