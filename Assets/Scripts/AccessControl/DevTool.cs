@@ -24,9 +24,7 @@ public class DevTool : MonoBehaviour
         DevToolNo.RegisterCallback<ClickEvent>(DisableDevTool);
 
         DevToolUI.style.display = DisplayStyle.None;
-        //PlayerPrefs.SetString("SheetId", "0");
 
-        // Find the AccessControlPopulatorTwo script in the scene
         scriptToReload = FindObjectOfType<AccessControlPopulatorTwo>();
         if (scriptToReload == null)
         {
@@ -45,30 +43,31 @@ public class DevTool : MonoBehaviour
     }
 
     private void TestSheet(ClickEvent evt)
-    {
-        string testsheetIdValue = DevToolSheetID.value;
-        PlayerPrefs.SetString("SheetId", testsheetIdValue);
-        DevToolUI.style.display = DisplayStyle.None;
-        Debug.Log("New SheetID is."  + PlayerPrefs.GetString("SheetId"));
-        ReloadScript();
-    }
+{
+    string testsheetIdValue = DevToolSheetID.value;
+    PlayerPrefs.SetString("SheetId", testsheetIdValue);
+    PlayerPrefs.Save(); // Ensure PlayerPrefs are saved immediately
+    DevToolUI.style.display = DisplayStyle.None;
+    Debug.Log("New SheetID is " + PlayerPrefs.GetString("SheetId"));
+    ReloadScript();
+}
 
-    private void DisableDevTool(ClickEvent evt)
+void ReloadScript()
+{
+    if (scriptToReload != null)
+    {
+        scriptToReload.Reload();
+        Debug.Log("Reloaded!");
+    }
+    else
+    {
+        Debug.LogError("AccessControlPopulatorTwo script reference is null!");
+    }
+}
+
+        private void DisableDevTool(ClickEvent evt)
     {
         DevToolUI.style.display = DisplayStyle.None;
         Debug.Log("DevTool now closed");
-    }
-
-    void ReloadScript()
-    {
-        if (scriptToReload != null)
-        {
-            scriptToReload.Reload();
-            Debug.Log("Reloaded!");
-        }
-        else
-        {
-            Debug.LogError("AccessControlPopulatorTwo script reference is null!");
-        }
     }
 }
