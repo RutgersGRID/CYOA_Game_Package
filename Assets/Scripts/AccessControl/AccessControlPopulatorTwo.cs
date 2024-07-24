@@ -15,7 +15,10 @@ public class AccessControlPopulatorTwo : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetString("SheetId", "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g");
+        //replace the second string in the PlayerPrefs.SetString with the unique ID portion of your Google Sheet URL.
+        //For example, if the url is docs.google.com/spreadsheets/d/abcd1234/edit the the ID portion is between the d/ and the /edit, or in this example "abcd1234" 
+
+        PlayerPrefs.SetString("SheetId", "1O88FIl3Z6QkR6Tlteuzb3qDcig6ci1hqNIoUYqqUCx8");
 
         Debug.Log("SheetID:"  + PlayerPrefs.GetString("SheetId"));
         Initialize();
