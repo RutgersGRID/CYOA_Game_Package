@@ -12,6 +12,7 @@ public class IntroAnimationPopulator : MonoBehaviour
     private Button nextButton;
     public string sceneToLoad;
     private bool isAnimating = false;
+    public float duration = 1f;
 
     void Start()
     {
@@ -30,7 +31,6 @@ public class IntroAnimationPopulator : MonoBehaviour
         if (FR != null)
         {
             FR.onDataLoaded += DataLoadedCallback;
-            // Removed the explicit call to ObtainSheetData() here
         }
         else
         {
@@ -69,7 +69,7 @@ public class IntroAnimationPopulator : MonoBehaviour
             var frameSO = FR.frames[currentIndex];
             var currentframeStill = frameStill.style.backgroundImage;
 
-            StartCoroutine(FadeInOutCoroutine(frameStill, currentframeStill, frameSO.frameStills));
+            StartCoroutine(FadeInCoroutine(frameStill, currentframeStill, frameSO.frameStills));
         }
         else
         {
@@ -78,12 +78,19 @@ public class IntroAnimationPopulator : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeInOutCoroutine(VisualElement visualElement, StyleBackground currentBackground, Sprite nextSprite)
+    private IEnumerator FadeInCoroutine(VisualElement visualElement, StyleBackground currentBackground, Sprite nextSprite)
     {
-        isAnimating = true;
-        float startOpacity = 1f;
-        float targetOpacity = 0f;
-        float duration = 1f; // Duration of the fade animation in seconds
+        if (nextSprite == null)
+        {
+            yield break;
+        }
+
+        float startOpacity = 0f;
+        float targetOpacity = 1f;
+        //float duration = 1f; // Duration of the fade animation in seconds
+
+        var nextBackground = new StyleBackground(nextSprite.texture);
+        visualElement.style.backgroundImage = nextBackground;
 
         float startTime = Time.time;
         while (Time.time - startTime < duration)
@@ -91,25 +98,7 @@ public class IntroAnimationPopulator : MonoBehaviour
             float progress = (Time.time - startTime) / duration;
             float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
             visualElement.style.opacity = new StyleFloat(newOpacity);
-            yield return null;
-        }
 
-        visualElement.style.opacity = new StyleFloat(targetOpacity);
-
-        // Set the next frame image using the nextSprite
-        var nextBackground = new StyleBackground(nextSprite.texture);
-
-        frameStill.style.backgroundImage = nextBackground;
-
-        startOpacity = 0f;
-        targetOpacity = 1f;
-
-        startTime = Time.time;
-        while (Time.time - startTime < duration)
-        {
-            float progress = (Time.time - startTime) / duration;
-            float newOpacity = Mathf.Lerp(startOpacity, targetOpacity, progress);
-            visualElement.style.opacity = new StyleFloat(newOpacity);
             yield return null;
         }
 
