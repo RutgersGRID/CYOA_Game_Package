@@ -333,6 +333,7 @@ GameObject:
   - component: {fileID: 1531899970}
   - component: {fileID: 1531899975}
   - component: {fileID: 1531899974}
+  - component: {fileID: 1531899976}
   m_Layer: 0
   m_Name: GameUIManager
   m_TagString: Untagged
@@ -398,3 +399,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logins: []
+  sheetBaseUrl: https://sheets.googleapis.com/v4/spreadsheets/
+  sheetKey: ?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg
+  sheetId: 
+  sheetUrl: 
+--- !u!114 &1531899976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531899968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e63c59628c3dc41bf3bbfd751a8337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
