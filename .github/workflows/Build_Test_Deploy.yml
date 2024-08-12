@@ -1,5 +1,4 @@
 name: Build, Test, and Deploy Unity Project
-
 on:
   push:
     branches:
@@ -10,46 +9,94 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
-  build:
-    name: Build my project ✨
+  build-android:
+    name: Build and Test Android
     runs-on: ubuntu-latest
     steps:
-      # Checkout
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: RutgersGRID/custom-checkout-action@v1  # Custom checkout action
+      - name: Set up Unity
+        uses: RutgersGRID/custom-unity-installer-action@v1  # Custom Unity installer action
+      - name: Run Tests
+        uses: RutgersGRID/custom-unity-test-runner-action@v1  # Custom Unity test runner action
         with:
-          lfs: true
-
-      # Cache
-      - uses: actions/cache@v3
+          targetPlatform: Android
+      - name: Build Android
+        uses: RutgersGRID/custom-unity-builder-action@v1  # Custom Unity builder action
         with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-
-      # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          targetPlatform: Android
+          buildName: android
+      - name: Upload Artifact
+        uses: RutgersGRID/custom-upload-artifact-action@v1  # Custom artifact upload action
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          name: Android
+          path: build/android
 
-      # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+  build-ios:
+    name: Build and Test iOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: RutgersGRID/custom-checkout-action@v1  # Custom checkout action
+      - name: Set up Unity
+        uses: RutgersGRID/custom-unity-installer-action@v1  # Custom Unity installer action
+      - name: Run Tests
+        uses: RutgersGRID/custom-unity-test-runner-action@v1  # Custom Unity test runner action
+        with:
+          targetPlatform: iOS
+      - name: Build iOS
+        uses: RutgersGRID/custom-unity-builder-action@v1  # Custom Unity builder action
+        with:
+          targetPlatform: iOS
+          buildName: ios
+      - name: Upload Artifact
+        uses: RutgersGRID/custom-upload-artifact-action@v1  # Custom artifact upload action
+        with:
+          name: iOS
+          path: build/ios
+
+  build-windows:
+    name: Build and Test Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: RutgersGRID/custom-checkout-action@v1  # Custom checkout action
+      - name: Set up Unity
+        uses: RutgersGRID/custom-unity-installer-action@v1  # Custom Unity installer action
+      - name: Run Tests
+        uses: RutgersGRID/custom-unity-test-runner-action@v1  # Custom Unity test runner action
+        with:
+          targetPlatform: StandaloneWindows64
+      - name: Build Windows
+        uses: RutgersGRID/custom-unity-builder-action@v1  # Custom Unity builder action
+        with:
+          targetPlatform: StandaloneWindows64
+          buildName: windows
+      - name: Upload Artifact
+        uses: RutgersGRID/custom-upload-artifact-action@v1  # Custom artifact upload action
+        with:
+          name: Windows
+          path: build/windows
+
+  build-webgl:
+    name: Build and Test WebGL
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: RutgersGRID/custom-checkout-action@v1  # Custom checkout action
+      - name: Set up Unity
+        uses: RutgersGRID/custom-unity-installer-action@v1  # Custom Unity installer action
+      - name: Run Tests
+        uses: RutgersGRID/custom-unity-test-runner-action@v1  # Custom Unity test runner action
         with:
           targetPlatform: WebGL
-
-      # Output
-      - uses: actions/upload-artifact@v3
+      - name: Build WebGL
+        uses: RutgersGRID/custom-unity-builder-action@v1  # Custom Unity builder action
         with:
-          name: Build
-          path: build
+          targetPlatform: WebGL
+          buildName: webgl
+      - name: Upload Artifact
+        uses: RutgersGRID/custom-upload-artifact-action@v1  # Custom artifact upload action
+        with:
+          name: WebGL
+          path: build/webgl
