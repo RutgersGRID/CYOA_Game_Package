@@ -10,110 +10,46 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
-  build-android:
-    name: Build and Test Android
+  build:
+    name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
+      # Checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Unity
-        uses: game-ci/unity-installer@v3
-
-      - name: Run Tests
-        uses: game-ci/unity-test-runner@v2
+        uses: actions/checkout@v4
         with:
-          targetPlatform: Android
+          lfs: true
 
-      - name: Build Android
-        uses: game-ci/unity-builder@v2
+      # Cache
+      - uses: actions/cache@v3
         with:
-          targetPlatform: Android
-          buildName: android
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          name: Android
-          path: build/android
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-  build-ios:
-    name: Build and Test iOS
-    runs-on: macos-latest
-    steps:
-      - name: Checkout repository
-        uses: RutgersGRID/custom-checkout-action@v3
-
-      - name: Set up Unity
-        uses: game-ci/unity-installer@v3
-
-      - name: Run Tests
-        uses: game-ci/unity-test-runner@v2
-        with:
-          targetPlatform: iOS
-
-      - name: Build iOS
-        uses: game-ci/unity-builder@v2
-        with:
-          targetPlatform: iOS
-          buildName: ios
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: iOS
-          path: build/ios
-
-  build-windows:
-    name: Build and Test Windows
-    runs-on: windows-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Unity
-        uses: game-ci/unity-installer@v3
-
-      - name: Run Tests
-        uses: game-ci/unity-test-runner@v2
-        with:
-          targetPlatform: StandaloneWindows64
-
-      - name: Build Windows
-        uses: game-ci/unity-builder@v2
-        with:
-          targetPlatform: StandaloneWindows64
-          buildName: windows
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Windows
-          path: build/windows
-
-  build-webgl:
-    name: Build and Test WebGL
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Unity
-        uses: game-ci/unity-installer@v3
-
-      - name: Run Tests
-        uses: game-ci/unity-test-runner@v2
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
 
-      - name: Build WebGL
-        uses: game-ci/unity-builder@v2
+      # Output
+      - uses: actions/upload-artifact@v3
         with:
-          targetPlatform: WebGL
-          buildName: webgl
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: WebGL
-          path: build/webgl
+          name: Build
+          path: build
