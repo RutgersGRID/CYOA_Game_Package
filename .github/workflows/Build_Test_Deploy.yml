@@ -17,42 +17,30 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
-          - StandaloneWindows # Build a Windows standalone.
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - StandaloneLinux64 # Build a Linux 64-bit standalone.
-          - iOS # Build an iOS player.
-          - Android # Build an Android .apk standalone app.
-          - WebGL # WebGL.
+          - StandaloneOSX
+          - StandaloneWindows
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - iOS
+          - Android
+          - WebGL
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: true
+        uses: RutgersGRID/custom-checkout-action@v1
 
       - name: Set up Unity
-        uses: RutgersGRID/custom-unity-installer-action@v1  # Custom Unity installer action
+        uses: RutgersGRID/custom-unity-builder-action@v1
 
       - name: Run Tests
-        uses: RutgersGRID/custom-unity-test-runner-action@v1  # Custom Unity test runner action
-        with:
-          targetPlatform: ${{ matrix.targetPlatform }}
-
-      - name: Build ${{ matrix.targetPlatform }}
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        uses: RutgersGRID/custom-unity-test-runner-action@v1
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
 
       - if: matrix.targetPlatform == 'Android'
-        uses: jlumbroso/free-disk-space@v1.3.1
+        uses: RutgersGRID/custom-free-disk-space-action@v1
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: RutgersGRID/custom-upload-artifact-action@v1
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
