@@ -28,19 +28,28 @@ jobs:
       - name: Checkout repository
         uses: RutgersGRID/custom-checkout-action@v1
 
+      - name: Create directory for outputs
+        run: mkdir -p outputs/${{ matrix.targetPlatform }}
+
       - name: Set up Unity
         uses: RutgersGRID/custom-unity-builder-action@v1
+        with:
+          outputPath: outputs/${{ matrix.targetPlatform }}
 
       - name: Run Tests
         uses: RutgersGRID/custom-unity-test-runner-action@v1
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
+          outputPath: outputs/${{ matrix.targetPlatform }}
 
       - if: matrix.targetPlatform == 'Android'
+        name: Free disk space for Android
         uses: RutgersGRID/custom-free-disk-space-action@v1
+        with:
+          outputPath: outputs/${{ matrix.targetPlatform }}
 
       - name: Upload Artifact
         uses: RutgersGRID/custom-upload-artifact-action@v1
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          path: outputs/${{ matrix.targetPlatform }}
