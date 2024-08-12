@@ -132,10 +132,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 708983098}
-  - component: {fileID: 708983109}
   - component: {fileID: 708983110}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,19 +155,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &708983109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708983096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b805019df3823d47844d98ebd399977, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogues: []
 --- !u!114 &708983110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: b02445e60e43a3c48afb586e95c97de5, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 75b7952b3fc07ef49aee048c12bb08e8, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: d99e5759b25ab3c4f8f2b3f2b6557cae, type: 3}
   m_SortingOrder: 0
 --- !u!1 &1897269520
 GameObject:

@@ -1,4 +1,3 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="TestSprite" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
-    <ui:Button text="Next" display-tooltip-when-elided="true" name="NextPic" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; background-color: rgb(128, 100, 162); width: 100px; height: 100px; opacity: 1; background-image: none; position: absolute; top: 245px; left: 423px;" />
 </ui:UXML>
