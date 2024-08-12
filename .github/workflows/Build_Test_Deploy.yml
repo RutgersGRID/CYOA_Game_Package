@@ -25,31 +25,25 @@ jobs:
           - Android
           - WebGL
     steps:
+      - name: Unity - Activate
+        uses: game-ci/unity-activate@v2.0.0
+        
       - name: Checkout repository
-        uses: RutgersGRID/CYOA_Game_Package@v4
-
-      - name: Create directory for outputs
-        run: mkdir -p outputs/${{ matrix.targetPlatform }}
+        uses: actions/checkout@v4
 
       - name: Set up Unity
-        uses: RutgersGRID/CYOA_Game_Package@v4
-        with:
-          outputPath: outputs/${{ matrix.targetPlatform }}
+        uses: RutgersGRID/custom-unity-builder-action@v1
 
       - name: Run Tests
-        uses: RutgersGRID/CYOA_Game_Package@v4
+        uses: RutgersGRID/custom-unity-test-runner-action@v1
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          outputPath: outputs/${{ matrix.targetPlatform }}
 
       - if: matrix.targetPlatform == 'Android'
-        name: Free disk space for Android
-        uses: RutgersGRID/CYOA_Game_Package@v4
-        with:
-          outputPath: outputs/${{ matrix.targetPlatform }}
+        uses: RutgersGRID/custom-free-disk-space-action@v1
 
       - name: Upload Artifact
-        uses: RutgersGRID/CYOA_Game_Package@v4
+        uses: RutgersGRID/custom-upload-artifact-action@v1
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: outputs/${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
