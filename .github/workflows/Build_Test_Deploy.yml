@@ -42,7 +42,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: RutgersGRID/custom-checkout-action@v3
 
       - name: Set up Unity
         uses: game-ci/unity-installer@v3
