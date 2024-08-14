@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "CYOA_Game_Package-Data_Collection.sln"
+    "dotnet.defaultSolution": "CYOA_Game_Package-Data_Collection.sln",
+    "dotnet.preferCSharpExtension": true
 }
