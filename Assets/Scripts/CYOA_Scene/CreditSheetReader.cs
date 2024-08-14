@@ -26,7 +26,7 @@ public class CreditSheetReader : MonoBehaviour
         // sheetId = PlayerPrefs.GetString("SheetId", "0");
         // if (sheetId == "0")
         // {
-        //     sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/IntroFrames" + sheetKey;
+        //     sheetUrl = sheetBaseUrl + "<gsheetIDhere>/values/IntroFrames" + sheetKey;
         // }
         // else
         // {

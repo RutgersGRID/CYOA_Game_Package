@@ -19,7 +19,6 @@ public class JournalSheetReaderTwo : MonoBehaviour
 
     public List<JournalSO> journals = new List<JournalSO>();
     private string ResourcesLoadP = "Props/";
-    //private const string JOURNAL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/JournalSheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     private string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
     private string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     private string sheetId;
@@ -31,7 +30,7 @@ public class JournalSheetReaderTwo : MonoBehaviour
         // sheetId = PlayerPrefs.GetString("SheetId", "0");
         // if (sheetId == "0")
         // {
-        //     sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/JournalSheet" + sheetKey;
+        //     sheetUrl = sheetBaseUrl + "<gsheetIDhere>/values/JournalSheet" + sheetKey;
         // }
         // else
         // {
