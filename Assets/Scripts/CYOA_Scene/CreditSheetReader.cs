@@ -23,15 +23,7 @@ public class CreditSheetReader : MonoBehaviour
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // sheetId = PlayerPrefs.GetString("SheetId", "0");
-        // if (sheetId == "0")
-        // {
-        //     sheetUrl = sheetBaseUrl + "<gsheetIDhere>/values/IntroFrames" + sheetKey;
-        // }
-        // else
-        // {
-        //     sheetUrl = sheetBaseUrl + sheetId + "/values/IntroFrames" + sheetKey;
-        // }
+
         sheetId = PlayerPrefs.GetString("SheetId");
         sheetUrl = sheetBaseUrl + sheetId + "/values/CreditSheet" + sheetKey;
         StartCoroutine(ObtainSheetData());

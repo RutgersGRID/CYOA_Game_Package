@@ -27,15 +27,6 @@ public class JournalSheetReaderTwo : MonoBehaviour
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // sheetId = PlayerPrefs.GetString("SheetId", "0");
-        // if (sheetId == "0")
-        // {
-        //     sheetUrl = sheetBaseUrl + "<gsheetIDhere>/values/JournalSheet" + sheetKey;
-        // }
-        // else
-        // {
-        //     sheetUrl = sheetBaseUrl + sheetId + "/values/JournalSheet" + sheetKey;
-        // }
         sheetId = PlayerPrefs.GetString("SheetId");
         sheetUrl = sheetBaseUrl + sheetId + "/values/JournalSheet" + sheetKey;
         StartCoroutine(ObtainSheetData());

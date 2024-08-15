@@ -76,15 +76,6 @@ public class StorySheetReaderTester : MonoBehaviour
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // sheetId = PlayerPrefs.GetString("SheetId", "0");
-        // if (sheetId == "0")
-        // {
-        //     sheetUrl = sheetBaseUrl + "<gsheetIDhere>/values/StorySheet" + sheetKey;
-        // }
-        // else
-        // {
-        //     sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
-        // }
         sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
         StartCoroutine(ObtainSheetData());
     }
