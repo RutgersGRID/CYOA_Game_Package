@@ -68,7 +68,6 @@ public class StorySheetReaderTwo : MonoBehaviour
     private string ResourcesLoadP = "Props/";
     private string ResourcesLoadBG = "Backgrounds/";
     private string ResourcesLoadSEFX = "Sounds/";
-    // private const string SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     private string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
     private string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     private string sheetId;
@@ -77,15 +76,6 @@ public class StorySheetReaderTwo : MonoBehaviour
     public event OnDataLoaded onDataLoaded;
     void Start()
     {
-        // sheetId = PlayerPrefs.GetString("SheetId", "0");
-        // if (sheetId == "0")
-        // {
-        //     sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/StorySheet" + sheetKey;
-        // }
-        // else
-        // {
-        //     sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
-        // }
         sheetId = PlayerPrefs.GetString("SheetId");
         sheetUrl = sheetBaseUrl + sheetId + "/values/StorySheet" + sheetKey;
         StartCoroutine(ObtainSheetData());
