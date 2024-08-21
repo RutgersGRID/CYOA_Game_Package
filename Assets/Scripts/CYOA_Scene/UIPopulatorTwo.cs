@@ -198,46 +198,46 @@ public class UIPopulatorTwo : MonoBehaviour
         devToolSkipYesButton = root.Q<Button>("DevToolSkipYesButton");
         devToolSkipNoButton = root.Q<Button>("DevToolSkipNoButton");
 
-        SSR.onDataLoaded += dataLoadedCallback;
+        SSR.onDataLoaded += DataLoadedCallback;
         SSR.StartCoroutine(SSR.ObtainSheetData());
 
-        JSR.onDataLoaded += dataLoadedCallback;
+        JSR.onDataLoaded += DataLoadedCallback;
         JSR.StartCoroutine(JSR.ObtainSheetData());
 
-        CSR.onDataLoaded += dataLoadedCallback;
+        CSR.onDataLoaded += DataLoadedCallback;
         CSR.StartCoroutine(CSR.ObtainSheetData());
 
-        nextDialogueButton.RegisterCallback<ClickEvent>(nextDialogue);
-        twoOptionAnswerA.RegisterCallback<ClickEvent>(nextDialogueA);
-        twoOptionAnswerB.RegisterCallback<ClickEvent>(nextDialogueB);
-        threeOptionAnswerA.RegisterCallback<ClickEvent>(nextDialogueA);
-        threeOptionAnswerB.RegisterCallback<ClickEvent>(nextDialogueB);
-        threeOptionAnswerB.RegisterCallback<ClickEvent>(nextDialogueC);
+        nextDialogueButton.RegisterCallback<ClickEvent>(NextDialogue);
+        twoOptionAnswerA.RegisterCallback<ClickEvent>(NextDialogueA);
+        twoOptionAnswerB.RegisterCallback<ClickEvent>(NextDialogueB);
+        threeOptionAnswerA.RegisterCallback<ClickEvent>(NextDialogueA);
+        threeOptionAnswerB.RegisterCallback<ClickEvent>(NextDialogueB);
+        threeOptionAnswerB.RegisterCallback<ClickEvent>(NextDialogueC);
 
-        rewindButton.RegisterCallback<ClickEvent>(showRewind);
-        rewindButtonYes.RegisterCallback<ClickEvent>(rewindYes);
-        rewindButtonNo.RegisterCallback<ClickEvent>(rewindNo);
+        rewindButton.RegisterCallback<ClickEvent>(ShowRewind);
+        rewindButtonYes.RegisterCallback<ClickEvent>(RewindYes);
+        rewindButtonNo.RegisterCallback<ClickEvent>(RewindNo);
 
-        journalButton.RegisterCallback<ClickEvent>(showJournal);
-        journalUICloseButton.RegisterCallback<ClickEvent>(exitJournal);
-        nextPageButton.RegisterCallback<ClickEvent>(nextPageB);
-        previousPageButton.RegisterCallback<ClickEvent>(preivousPageB);
+        journalButton.RegisterCallback<ClickEvent>(ShowJournal);
+        journalUICloseButton.RegisterCallback<ClickEvent>(ExitJournal);
+        nextPageButton.RegisterCallback<ClickEvent>(NextPageButton);
+        previousPageButton.RegisterCallback<ClickEvent>(PreivousPageButton);
         reflectionPage.RegisterCallback<ClickEvent>(showReflection);
         aboutPage.RegisterCallback<ClickEvent>(showAbout);
         howToPlayPage.RegisterCallback<ClickEvent>(showHowToPlay);
         aboutThisToolPage.RegisterCallback<ClickEvent>(showAboutThisTool);
         aboutGRIDPage.RegisterCallback<ClickEvent>(showAboutGRID);
         
-        bookmarkOne.RegisterCallback<ClickEvent>(bMarkOne);
-        bookmarkTwo.RegisterCallback<ClickEvent>(bMarkTwo);
-        bookmarkThree.RegisterCallback<ClickEvent>(bMarkThree);
-        bookmarkFour.RegisterCallback<ClickEvent>(bMarkFour);
-        bookmarkFive.RegisterCallback<ClickEvent>(bMarkFive);
+        bookmarkOne.RegisterCallback<ClickEvent>(BookmarkOne);
+        bookmarkTwo.RegisterCallback<ClickEvent>(BookmarkTwo);
+        bookmarkThree.RegisterCallback<ClickEvent>(BookmarkThree);
+        bookmarkFour.RegisterCallback<ClickEvent>(BookmarkFour);
+        bookmarkFive.RegisterCallback<ClickEvent>(BookmarkFive);
 
-        journalEntryPopUpButton.RegisterCallback<ClickEvent>(journalEntryButton);
+        journalEntryPopUpButton.RegisterCallback<ClickEvent>(JournalEntryButton);
 
-        devToolSkipYesButton.RegisterCallback<ClickEvent>(skipScene);
-        devToolSkipNoButton.RegisterCallback<ClickEvent>(closeDevTool);
+        devToolSkipYesButton.RegisterCallback<ClickEvent>(SkipScene);
+        devToolSkipNoButton.RegisterCallback<ClickEvent>(CloseDevTool);
 
         rewindUI.style.display = DisplayStyle.None;
         twoOptionContainer.style.display = DisplayStyle.None;
@@ -256,11 +256,11 @@ public class UIPopulatorTwo : MonoBehaviour
 
         Debug.Log("Size of CSR.credits: " + CSR.credits.Count);
 
-        addDataToSave("gameStartTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        AddDataToSave("gameStartTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         Debug.Log("Data saved successfully for: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-        addDataToSave("AccessCode", PlayerPrefs.GetString("AccessCode"));
+        AddDataToSave("AccessCode", PlayerPrefs.GetString("AccessCode"));
         Debug.Log("Data saved successfully for: " + PlayerPrefs.GetString("AccessCode"));
-        addDataToSave("WorkshopId", PlayerPrefs.GetString("WorkshopId"));
+        AddDataToSave("WorkshopId", PlayerPrefs.GetString("WorkshopId"));
         Debug.Log("Data saved successfully for: " + PlayerPrefs.GetString("WorkshopId"));
         
         foreach (var dialogue in SSR.dialogues)
@@ -271,7 +271,7 @@ public class UIPopulatorTwo : MonoBehaviour
         //populateUI();
     }
 
-    void dataLoadedCallback()
+    void DataLoadedCallback()
     {
         Debug.Log("Data loaded and list populated.");
         Debug.Log("Size of SSR.dialogues: " + SSR.dialogues.Count);
@@ -283,18 +283,18 @@ public class UIPopulatorTwo : MonoBehaviour
        // printJSRData();
         //PrintCSRData();
         
-        preloadTheList();
+        PreloadTheList();
         if (CSR.credits.Count > 0)
         {
-            updateAboutAndHtpTexts();
+            UpdateAboutAndHtpTexts();
         }
         if (SSR.dialogues.Count > 0) 
         {
-            populateUI();
+            PopulateUI();
         }
     }
 
-    private void printSSRData()
+    private void PrintSSRData()
     {
         Debug.Log("Printing SSR data:");
         foreach (var dialogue in SSR.dialogues)
@@ -303,7 +303,7 @@ public class UIPopulatorTwo : MonoBehaviour
         }
     }
 
-    private void printJSRData()
+    private void PrintJSRData()
     {
         Debug.Log("Printing JSR data:");
         foreach (var journal in JSR.journals)
@@ -312,7 +312,7 @@ public class UIPopulatorTwo : MonoBehaviour
         }
     }
 
-    private void printCSRData()
+    private void PrintCSRData()
     {
         Debug.Log("Printing CSR data:");
         foreach (var credit in CSR.credits)
@@ -321,7 +321,7 @@ public class UIPopulatorTwo : MonoBehaviour
         }
     }
 
-    private void preloadTheList()
+    private void PreloadTheList()
     {
         foreach (var dialogue in SSR.dialogues)
         {
@@ -334,7 +334,7 @@ public class UIPopulatorTwo : MonoBehaviour
         }
     }
 
-    private void updateAboutAndHtpTexts()
+    private void UpdateAboutAndHtpTexts()
     {
         var creditSO = CSR.credits[0]; // Assuming you want to display the first CreditSO
         Debug.Log(creditSO.creditTexts);
@@ -344,7 +344,7 @@ public class UIPopulatorTwo : MonoBehaviour
         creditGRIDText.text = creditSO.creditGRIDTexts;
     }
 
-    public async void saveData(Dictionary<string, object> data)
+    public async void SaveData(Dictionary<string, object> data)
     {
         try
         {
@@ -369,19 +369,19 @@ public class UIPopulatorTwo : MonoBehaviour
 
     private Dictionary<string, object> gameData = new Dictionary<string, object>();
 
-    public void addDataAndSave(string key, object value)
+    public void AddDataAndSave(string key, object value)
     {
         gameData[key] = value;
-        saveData(gameData);
+        SaveData(gameData);
     }
 
     // Simplify the AddDataToSave method
-    public void addDataToSave(string key, string value)
+    public void AddDataToSave(string key, string value)
     {
-        addDataAndSave(key, value);
+        AddDataAndSave(key, value);
         Debug.Log($"Data type {key} saved with value: {value}");
     }
-    private void populateUI()
+    private void PopulateUI()
     {
         if (currentIndex >= 0 && currentIndex < SSR.dialogues.Count) 
         {
@@ -405,19 +405,19 @@ public class UIPopulatorTwo : MonoBehaviour
             // Check if characterImageLeft has changed and trigger StartFadeIn if it has
             if (currentRightImage != characterImageRight.style.backgroundImage)
             {
-                StartCoroutine(fadeInCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
+                StartCoroutine(FadeInCoroutine(characterImageRight, currentRightImage, dialogueSO.RightSideSpeakers));
             }
             if (currentLeftImage != characterImageLeft.style.backgroundImage)
             {
-                StartCoroutine(fadeInCoroutine(characterImageLeft, currentLeftImage, dialogueSO.LeftSideSpeakers));
+                StartCoroutine(FadeInCoroutine(characterImageLeft, currentLeftImage, dialogueSO.LeftSideSpeakers));
             }
             if (currentPropImage != propImage.style.backgroundImage)
             {
-                StartCoroutine(fadeInCoroutine(propImage, currentPropImage, dialogueSO.Props));
+                StartCoroutine(FadeInCoroutine(propImage, currentPropImage, dialogueSO.Props));
             }
             if (currentsceneBackgroundImage != sceneBackground.style.backgroundImage)
             {
-                StartCoroutine(fadeInCoroutine(sceneBackground, currentsceneBackgroundImage, dialogueSO.Backgrounds));
+                StartCoroutine(FadeInCoroutine(sceneBackground, currentsceneBackgroundImage, dialogueSO.Backgrounds));
             }
             ////
             sceneBackground.style.backgroundImage = new StyleBackground(dialogueSO.Backgrounds);
@@ -475,7 +475,7 @@ public class UIPopulatorTwo : MonoBehaviour
                     journalEntryPopUp.style.display = DisplayStyle.Flex;
                 }
             }
-            journalUpdate();
+            JournalUpdate();
         }
         else 
         {
@@ -484,7 +484,7 @@ public class UIPopulatorTwo : MonoBehaviour
         
     }
    
-    private IEnumerator fadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
+    private IEnumerator FadeInCoroutine(VisualElement background, StyleBackground currentBackground, Sprite nextSprite)
     {
         // Check if nextSprite is null and do nothing if true
         if (nextSprite == null)
@@ -622,7 +622,7 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log("Coroutine ended");
     }
 
-    private void nextDialogue(ClickEvent evt)
+    private void NextDialogue(ClickEvent evt)
 {
     Debug.Log($"CurrentIndex before change: {currentIndex}");
     if (currentIndex < 0 || currentIndex >= SSR.dialogues.Count)
@@ -644,16 +644,16 @@ public class UIPopulatorTwo : MonoBehaviour
         return; // Exit function early
     }
 
-    populateUI();
+    PopulateUI();
 }
-    private void nextDialogueA(ClickEvent evt)
+    private void NextDialogueA(ClickEvent evt)
 {
     var dialogueSO = SSR.dialogues[currentIndex];
 
     string Qnum = "Question_"+ QAnum.ToString();
     string Anum = "Answer_"+ QAnum.ToString();
-    addDataAndSave(Qnum, dialogueSO.Lines);
-    addDataAndSave(Anum, dialogueSO.A1Answers);
+    AddDataAndSave(Qnum, dialogueSO.Lines);
+    AddDataAndSave(Anum, dialogueSO.A1Answers);
     Debug.Log(dialogueSO.Lines + dialogueSO.A1Answers);
     QAnum++;
 
@@ -685,17 +685,17 @@ public class UIPopulatorTwo : MonoBehaviour
         return;
     }
 
-    populateUI();
+    PopulateUI();
 }
 
-    private void nextDialogueB(ClickEvent evt)
+    private void NextDialogueB(ClickEvent evt)
 {
     var dialogueSO = SSR.dialogues[currentIndex];
 
     string Qnum = "Question_"+ QAnum.ToString();
     string Anum = "Answer_"+ QAnum.ToString();
-    addDataAndSave(Qnum, dialogueSO.Lines);
-    addDataAndSave(Anum, dialogueSO.A2Answers);
+    AddDataAndSave(Qnum, dialogueSO.Lines);
+    AddDataAndSave(Anum, dialogueSO.A2Answers);
     Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
     QAnum++;
 
@@ -727,17 +727,17 @@ public class UIPopulatorTwo : MonoBehaviour
         return;
     }
 
-    populateUI();
+    PopulateUI();
 }
 
-    private void nextDialogueC(ClickEvent evt)
+    private void NextDialogueC(ClickEvent evt)
 {
     var dialogueSO = SSR.dialogues[currentIndex];
 
     string Qnum = "Question_"+ QAnum.ToString();
     string Anum = "Answer_"+ QAnum.ToString();
-    addDataAndSave(Qnum, dialogueSO.Lines);
-    addDataAndSave(Anum, dialogueSO.A3Answers);
+    AddDataAndSave(Qnum, dialogueSO.Lines);
+    AddDataAndSave(Anum, dialogueSO.A3Answers);
     Debug.Log(dialogueSO.Lines + dialogueSO.A3Answers);
     QAnum++;
 
@@ -769,15 +769,15 @@ public class UIPopulatorTwo : MonoBehaviour
         return;
     }
 
-    populateUI();
+    PopulateUI();
 }
 
-    private void showRewind(ClickEvent evt)
+    private void ShowRewind(ClickEvent evt)
     {
         rewindUI.style.display = DisplayStyle.Flex;
     }
 
-    private void rewindYes(ClickEvent evt)
+    private void RewindYes(ClickEvent evt)
 {
     var dialogueSO = SSR.dialogues[currentIndex];
     string checkpointID = dialogueSO.Checkpoints;
@@ -793,68 +793,68 @@ public class UIPopulatorTwo : MonoBehaviour
     }
 
     rewindUI.style.display = DisplayStyle.None;
-    populateUI();
+    PopulateUI();
 }
-    private void rewindNo(ClickEvent evt)
+    private void RewindNo(ClickEvent evt)
     {
         rewindUI.style.display = DisplayStyle.None;
     }
-    private void showJournal(ClickEvent evt)
+    private void ShowJournal(ClickEvent evt)
     {
         journalUIContainer.style.display = DisplayStyle.Flex;
         
     }
-    private void exitJournal(ClickEvent evt)
+    private void ExitJournal(ClickEvent evt)
     {
         journalUIContainer.style.display = DisplayStyle.None;
     }
-    private void nextPageB(ClickEvent evt)
+    private void NextPageButton(ClickEvent evt)
     {
         pageNumber++;
         Audio.PlayOneShot(pageflipClip, 0.7F);
         Debug.Log("Clicked Next");
-        journalUpdate();
+        JournalUpdate();
     }
-    private void preivousPageB(ClickEvent evt)
+    private void PreivousPageButton(ClickEvent evt)
     {
         pageNumber--;
         Audio.PlayOneShot(pageflipClip, 0.7F);
         Debug.Log("Clicked Previous");
-        journalUpdate();
+        JournalUpdate();
 
     }
-    private void bMarkOne(ClickEvent evt)
+    private void BookmarkOne(ClickEvent evt)
     {
         pageNumber = 0;
         Audio.PlayOneShot(pageflipClip, 0.7F);
-        journalUpdate();
+        JournalUpdate();
     }
-    private void bMarkTwo(ClickEvent evt)
+    private void BookmarkTwo(ClickEvent evt)
     {
         pageNumber = 1;
         Audio.PlayOneShot(pageflipClip, 0.7F);
-        journalUpdate();
+        JournalUpdate();
     }
-    private void bMarkThree(ClickEvent evt)
+    private void BookmarkThree(ClickEvent evt)
     {
         pageNumber = 2;
         Audio.PlayOneShot(pageflipClip, 0.7F);
-        journalUpdate();
+        JournalUpdate();
     }
-    private void bMarkFour(ClickEvent evt)
+    private void BookmarkFour(ClickEvent evt)
     {
         pageNumber = 3;
         Audio.PlayOneShot(pageflipClip, 0.7F);
-        journalUpdate();
+        JournalUpdate();
     }
-    private void bMarkFive(ClickEvent evt)
+    private void BookmarkFive(ClickEvent evt)
     {
         pageNumber = 4;
         Audio.PlayOneShot(pageflipClip, 0.7F);
-        journalUpdate();
+        JournalUpdate();
     }
 
-    public void journalUpdate()
+    public void JournalUpdate()
 {
     if (jPages.Count <= 0)
     {
@@ -902,7 +902,7 @@ public class UIPopulatorTwo : MonoBehaviour
     }
 }
 
-    private void journalEntryButton(ClickEvent evt)
+    private void JournalEntryButton(ClickEvent evt)
         {
             //var dialogueSO = csvToSOTwo.dialogues[currentIndex];
             var dialogueSO = SSR.dialogues[currentIndex];
@@ -982,10 +982,10 @@ public class UIPopulatorTwo : MonoBehaviour
             {
                 bookmarkOne.style.display = DisplayStyle.Flex;
             }
-            journalUpdate();
+            JournalUpdate();
             journalEntryPopUp.style.display = DisplayStyle.None;
         }
-    private void skipScene(ClickEvent evt)
+    private void SkipScene(ClickEvent evt)
     {
         string sceneID = devToolSkipSceneID.value;
     
@@ -1000,10 +1000,10 @@ public class UIPopulatorTwo : MonoBehaviour
         }
 
     // Populate the UI with the new current index
-        populateUI();
+        PopulateUI();
         devToolSkipContainer.style.display = DisplayStyle.None;
     }
-    private void closeDevTool(ClickEvent evt)
+    private void CloseDevTool(ClickEvent evt)
     {
         devToolSkipContainer.style.display = DisplayStyle.None;
     }
