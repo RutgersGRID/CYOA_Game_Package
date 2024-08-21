@@ -8,10 +8,10 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 
-public class UIPopulatorTwo : MonoBehaviour
+public class UIPopulator : MonoBehaviour
 {
-    public StorySheetReaderTwo SSR;
-    public JournalSheetReaderTwo JSR;
+    public StorySheetReader SSR;
+    public JournalSheetReader JSR;
     public CreditSheetReader CSR;
     int currentIndex = 0;
     private VisualElement sceneElements;
