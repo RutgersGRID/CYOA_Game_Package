@@ -222,11 +222,11 @@ public class UIPopulatorTwo : MonoBehaviour
         journalUICloseButton.RegisterCallback<ClickEvent>(ExitJournal);
         nextPageButton.RegisterCallback<ClickEvent>(NextPageButton);
         previousPageButton.RegisterCallback<ClickEvent>(PreivousPageButton);
-        reflectionPage.RegisterCallback<ClickEvent>(showReflection);
-        aboutPage.RegisterCallback<ClickEvent>(showAbout);
-        howToPlayPage.RegisterCallback<ClickEvent>(showHowToPlay);
-        aboutThisToolPage.RegisterCallback<ClickEvent>(showAboutThisTool);
-        aboutGRIDPage.RegisterCallback<ClickEvent>(showAboutGRID);
+        reflectionPage.RegisterCallback<ClickEvent>(ShowReflection);
+        aboutPage.RegisterCallback<ClickEvent>(ShowAbout);
+        howToPlayPage.RegisterCallback<ClickEvent>(ShowHowToPlay);
+        aboutThisToolPage.RegisterCallback<ClickEvent>(ShowAboutThisTool);
+        aboutGRIDPage.RegisterCallback<ClickEvent>(ShowAboutGRID);
         
         bookmarkOne.RegisterCallback<ClickEvent>(BookmarkOne);
         bookmarkTwo.RegisterCallback<ClickEvent>(BookmarkTwo);
@@ -517,7 +517,7 @@ public class UIPopulatorTwo : MonoBehaviour
         Debug.Log($"Fade-in complete for: {background.name}, Sprite Name: {nextSprite.name}, Duration: {elapsedTime} seconds");
     }
 
-    private void showReflection(ClickEvent evt)
+    private void ShowReflection(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.Flex;
         howToPlayPageContainer.style.display = DisplayStyle.None;
@@ -525,7 +525,7 @@ public class UIPopulatorTwo : MonoBehaviour
         aboutThisToolContainer.style.display = DisplayStyle.None;
         aboutGRIDContainer.style.display = DisplayStyle.None;
     }
-    private void showAbout(ClickEvent evt)
+    private void ShowAbout(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
         howToPlayPageContainer.style.display = DisplayStyle.None;
@@ -533,7 +533,7 @@ public class UIPopulatorTwo : MonoBehaviour
         aboutThisToolContainer.style.display = DisplayStyle.None;
         aboutGRIDContainer.style.display = DisplayStyle.None;
     }
-    private void showHowToPlay(ClickEvent evt)
+    private void ShowHowToPlay(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
         howToPlayPageContainer.style.display = DisplayStyle.Flex;
@@ -541,7 +541,7 @@ public class UIPopulatorTwo : MonoBehaviour
         aboutThisToolContainer.style.display = DisplayStyle.None;
         aboutGRIDContainer.style.display = DisplayStyle.None;
     }
-    private void showAboutThisTool(ClickEvent evt)
+    private void ShowAboutThisTool(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
         howToPlayPageContainer.style.display = DisplayStyle.None;
@@ -549,7 +549,7 @@ public class UIPopulatorTwo : MonoBehaviour
         aboutThisToolContainer.style.display = DisplayStyle.Flex;
         aboutGRIDContainer.style.display = DisplayStyle.None;
     }
-    private void showAboutGRID(ClickEvent evt)
+    private void ShowAboutGRID(ClickEvent evt)
     {
         reflectionPageContainer.style.display = DisplayStyle.None;
         howToPlayPageContainer.style.display = DisplayStyle.None;
