@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}  # Ensure the correct license file content is here
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
   test_and_build:
@@ -31,13 +31,13 @@ jobs:
     - name: Set up Unity Builder
       uses: game-ci/unity-builder@v2
       with:
-        unityVersion: 2022.3.0f1  # Correct Unity version specified here
+        unityVersion: 2022.3.0f1  # Ensure this is the correct Unity version
         targetPlatform: WebGL
 
       env:
         UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}  # Ensure this line is included
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
     - name: Run Play Mode Tests
       uses: game-ci/unity-test-runner@v2
