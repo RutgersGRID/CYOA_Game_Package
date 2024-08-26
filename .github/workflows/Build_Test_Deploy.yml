@@ -23,11 +23,6 @@ jobs:
         ref: main  # Ensures the workflow checks out the 'main' branch
         fetch-depth: 0  # Fetch all history to ensure a complete clone
 
-    - name: Clean workspace
-      run: |
-        git reset --hard origin/main
-        git clean -fdx  # Remove all untracked files and directories
-
     - name: Set up Unity Test Runner
       uses: game-ci/unity-test-runner@v4
       env:
