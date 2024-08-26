@@ -1,8 +1,0 @@
-ID,eventTitle,eventText,journalEntry
-0,First Page,this is the first event,The first page of your journal
-1,Testpage,test page,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-2,Q1 A1,You clicked the first answer,Yay A
-3,Q1 A2,You clicked the second answer,Yay B
-4,Q2 A1,You clicked the first answer for Q2,Yay A adadadada
-5,Q2 A2,You clicked the second answer for Q2,Yay B adadadada
-6,Q3 A3,You clicked the third answer for Q2,Yay C adadadada

@@ -398,3 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logins: []
+  sheetBaseUrl: https://sheets.googleapis.com/v4/spreadsheets/
+  sheetKey: ?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg
+  sheetId: 
+  sheetUrl: 

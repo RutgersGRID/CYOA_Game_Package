@@ -10,12 +10,12 @@ public class DevTool : MonoBehaviour
     private TextField DevToolSheetID;
     private Button DevToolYes;
     private Button DevToolNo;
-    private AccessControlPopulatorTwo scriptToReload;
+    private AccessControlPopulator scriptToReload;
 
     void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
-        DevToolUI = root.Q<VisualElement>("DevTool");
+        DevToolUI = root.Q<VisualElement>("DevToolContainer");
         DevToolSheetID = root.Q<TextField>("SheetID");
         DevToolYes = root.Q<Button>("DevToolYes");
         DevToolNo = root.Q<Button>("DevToolNo");
@@ -25,10 +25,10 @@ public class DevTool : MonoBehaviour
 
         DevToolUI.style.display = DisplayStyle.None;
 
-        scriptToReload = FindObjectOfType<AccessControlPopulatorTwo>();
+        scriptToReload = FindObjectOfType<AccessControlPopulator>();
         if (scriptToReload == null)
         {
-            Debug.LogError("AccessControlPopulatorTwo script not found in the scene!");
+            Debug.LogError("AccessControlPopulator script not found in the scene!");
         }
     }
 

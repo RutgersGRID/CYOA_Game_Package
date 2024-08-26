@@ -136,8 +136,8 @@ GameObject:
   - component: {fileID: 708983107}
   - component: {fileID: 708983108}
   - component: {fileID: 708983110}
-  - component: {fileID: 708983109}
   - component: {fileID: 708983111}
+  - component: {fileID: 708983112}
   m_Layer: 0
   m_Name: GameUIManager
   m_TagString: Untagged
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe17e9a576c65164bbf849c139cc7294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SSR: {fileID: 0}
+  SSR: {fileID: 708983112}
   JSR: {fileID: 708983110}
   CSR: {fileID: 708983111}
   newLogClip: {fileID: 8300000, guid: 9c8a33041313b214e97e2dfbd0217a0a, type: 3}
@@ -296,27 +296,6 @@ MonoBehaviour:
   typingSpeed: 0.02
   fadeDuration: 0.5
   sceneids: []
---- !u!114 &708983109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708983096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b805019df3823d47844d98ebd399977, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogues: []
-  ResourcesLoadC: Characters/
-  ResourcesLoadP: Props/
-  ResourcesLoadBG: Backgrounds/
-  ResourcesLoadSEFX: Sounds/
-  sheetBaseUrl: https://sheets.googleapis.com/v4/spreadsheets/
-  sheetKey: ?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg
-  sheetId: 
-  sheetUrl: 
 --- !u!114 &708983110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +322,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   credits: []
+--- !u!114 &708983112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708983096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a860fc385064e8742b92ba9e444795c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogues: []
 --- !u!1 &1707338012
 GameObject:
   m_ObjectHideFlags: 0
