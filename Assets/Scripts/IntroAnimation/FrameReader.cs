@@ -27,10 +27,9 @@ public class FrameReader : MonoBehaviour
     {
         if (!dataLoaded)
         {
-            dataLoaded = true;
             sheetId = PlayerPrefs.GetString("SheetId");
-            sheetUrl = sheetBaseUrl + "1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g" + "/values/IntroFrames" + sheetKey;
-            StartCoroutine(ObtainSheetData());
+        sheetUrl = sheetBaseUrl + sheetId + "/values/IntroFrames" + sheetKey;
+        StartCoroutine(ObtainSheetData());
         }
     }
 
