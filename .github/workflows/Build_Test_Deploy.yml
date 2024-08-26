@@ -31,19 +31,19 @@ jobs:
     - name: Set up Unity Builder
       uses: game-ci/unity-builder@v2
       with:
-        unityVersion: 2022.3.40f1
+        unityVersion: 2022.3.0f1  # Correct Unity version specified here
         targetPlatform: WebGL
 
       env:
         UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}  # Make sure this is correctly set
 
     - name: Run Play Mode Tests
       uses: game-ci/unity-test-runner@v2
       with:
         testMode: playmode
-        unityVersion: 2022.3.40f1
+        unityVersion: 2022.3.0f1  # Ensure the Unity version matches here
         targetPlatform: WebGL
 
     - name: Upload Build Artifact
