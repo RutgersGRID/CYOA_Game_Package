@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using SimpleJSON;
 
-public class GoogleSheetReaderTwo : MonoBehaviour
+public class GoogleSheetReader : MonoBehaviour
 {
     [System.Serializable]
     public class LoginSO : ScriptableObject

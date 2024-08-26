@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class AccessControlPopulatorTwo : MonoBehaviour
+public class AccessControlPopulator : MonoBehaviour
 {
     private TextField Accesscode;
     private TextField Workshopid;
     private Button proceed;
     public string sceneToLoad;
-    public GoogleSheetReaderTwo gsrt;
+    public GoogleSheetReader gsrt;
 
 
     void Start()
