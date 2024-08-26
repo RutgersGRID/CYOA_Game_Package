@@ -1,4 +1,4 @@
-name: Build, Test, and Deploy Unity Project
+name: Unity WebGL Build and Test
 
 on:
   push:
@@ -7,43 +7,54 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch: # Allows manual triggering of the workflow
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  buildForAllSupportedPlatforms:
-    name: Build for ${{ matrix.targetPlatform }}
+  test_and_build:
+    name: Test and Build Unity Project for WebGL
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - StandaloneOSX
-          - StandaloneWindows
-          - StandaloneWindows64
-          - StandaloneLinux64
-          - iOS
-          - Android
-          - WebGL
+
     steps:
-      - name: Unity - Activate
-        uses: RutgersGRID//unity-activate@v2.0.0
-        
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Unity
-        uses: RutgersGRID/custom-unity-builder-action@v1
+    - name: Cache Unity
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/unity
+        key: ${{ runner.os }}-unity-${{ hashFiles('**/Packages/manifest.json') }}
+        restore-keys: |
+          ${{ runner.os }}-unity-
 
-      - name: Run Tests
-        uses: RutgersGRID/custom-unity-test-runner-action@v1
-        with:
-          targetPlatform: ${{ matrix.targetPlatform }}
+    - name: Set up Unity Builder
+      uses: game-ci/unity-builder@v2
+      with:
+        unityVersion: 2022.3.40f1
+        targetPlatform: WebGL
 
-      - if: matrix.targetPlatform == 'Android'
-        uses: RutgersGRID/custom-free-disk-space-action@v1
+      env:
+        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
-      - name: Upload Artifact
-        uses: RutgersGRID/custom-upload-artifact-action@v1
-        with:
-          name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+    - name: Run Play Mode Tests
+      uses: game-ci/unity-test-runner@v2
+      with:
+        testMode: playmode
+        unityVersion: 2022.3.40f1
+        targetPlatform: WebGL
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: WebGLBuild
+        path: build/WebGL
+
+    - name: Deploy to GitHub Pages
+      if: success() && github.ref == 'refs/heads/main'
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages
+        folder: build/WebGL
