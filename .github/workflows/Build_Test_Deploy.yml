@@ -22,10 +22,10 @@ jobs:
       with:
         ref: main  # Ensures the workflow checks out the 'main' branch
         fetch-depth: 0  # Fetch all history to ensure a complete clone
-        
+
     - name: Clean workspace
       run: |
-        git reset --hard origin/main
+        git reset --hard origin/main  # Reset to the latest commit of the 'main' branch
         git clean -fdx  # Remove all untracked files and directories
 
     - name: Set up Unity Test Runner
