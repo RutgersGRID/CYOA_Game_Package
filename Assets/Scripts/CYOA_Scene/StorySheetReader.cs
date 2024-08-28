@@ -129,6 +129,17 @@ public class StorySheetReader : MonoBehaviour
         }
     }
 
+    private string SafeStringParseToDefault(string str, string defaultValue = "a")
+{
+    if (string.IsNullOrEmpty(str))
+    {
+        Debug.LogWarning($"String is null or empty. Using default value: \"{defaultValue}\".");
+        return defaultValue;
+    }
+    
+    return str;
+}
+
     private string SafeStringParse(string str)
     {
         if (string.IsNullOrEmpty(str))
@@ -168,7 +179,7 @@ public class StorySheetReader : MonoBehaviour
                 var Background = Resources.Load<Sprite>(ResourcesLoadBG + item[8].Value);
                 var Checkpoint = item[9].Value;
                 //var Checkpoint = SafeIntParse(item[9].Value);
-                var Type = item[10].Value;
+                var Type = SafeStringParseToDefault(item[10].Value);
                 var GoToID = item[11].Value;
                 //var GoToID = SafeIntParse(item[11].Value);
                 var JournalTrigger = SafeIntParse(item[12].Value);
