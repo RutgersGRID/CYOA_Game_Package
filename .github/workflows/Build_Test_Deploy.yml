@@ -1,5 +1,4 @@
 name: Unity WebGL Build and Test
-
 on:
   push:
     branches:
@@ -7,172 +6,71 @@ on:
   pull_request:
     branches:
       - main
-
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-
 jobs:
-  buildAndTestForLinuxBasedPlatforms:
-    name: Build and Test for ${{ matrix.targetPlatform }}
+  free-disk-space:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
-          - test-project
-        unityVersion:
-          - 2022.3.0f1
-        targetPlatform:
-          - StandaloneLinux64
-          - iOS
-          - Android
-          - WebGL
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          lfs: true
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
+      with:
+        # this might remove tools that are actually needed,
+        # if set to "true" but frees about 6 GB
+        tool-cache: false 
 
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: true
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
+        # all of these default to true, but feel free to set to
+        # "false" if necessary for your workflow
+        android: true 
+        dotnet: true 
+        haskell: true 
+        large-packages: true 
+        docker-images: true 
+        swap-storage: true 
 
-      - uses: actions/cache@v3
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{ hashFiles(matrix.projectPath) }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-
-            Library-${{ matrix.projectPath }}-
-            Library-
+  test_and_build:
+    name: Test and Build Unity Project for WebGL
+    runs-on: ubuntu-latest
 
-      - uses: game-ci/unity-test-runner@v4
-        id: testRunner
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          testMode: playmode
-          buildTarget: ${{ matrix.targetPlatform }}
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: Test results (all modes)
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
-
-      - uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
-
-  buildForWindowsBasedPlatforms:
-    name: Build for ${{ matrix.targetPlatform }}
-    runs-on: windows-2022
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
-          - test-project
-        unityVersion:
-          - 2022.3.0f1
-        targetPlatform:
-          - StandaloneWindows
-          - StandaloneWindows64
-          - tvOS
-          - WSAPlayer
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          lfs: true
-
-      - uses: actions/cache@v3
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{ hashFiles(matrix.projectPath) }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-
-            Library-${{ matrix.projectPath }}-
-            Library-
-
-      - uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
-
-  buildForMacOSBasedPlatforms:
-    name: Build for ${{ matrix.targetPlatform }}
-    runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
-          - test-project
-        unityVersion:
-          - 2022.3.0f1
-        targetPlatform:
-          - StandaloneOSX
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          lfs: true
-
-      - uses: actions/cache@v3
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{ hashFiles(matrix.projectPath) }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-
-            Library-${{ matrix.projectPath }}-
-            Library-
-
-      - uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        ref: main
+        fetch-depth: 0
+    - name: Clean Docker environment
+      run: |
+        docker system prune -f --all
+        docker volume prune -f
+    - name: Set up Unity Test Runner
+      uses: game-ci/unity-test-runner@v4
+      env:
+        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+      with:
+        projectPath: .
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        testMode: playmode
+        buildTarget: WebGL
+    - name: Build WebGL
+      uses: game-ci/unity-builder@v4
+      with:
+        unityVersion: 2022.3.0f1
+        targetPlatform: WebGL
+        allowDirtyBuild: true
+      env:
+        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: WebGLBuild
+        path: build/WebGL
+    - name: Deploy to GitHub Pages
+      if: success() && github.ref == 'refs/heads/main'
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages
+        folder: build/WebGL
