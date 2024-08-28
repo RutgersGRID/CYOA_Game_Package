@@ -141,8 +141,8 @@ public class UIPopulator : MonoBehaviour
         dialogueText = root.Q<TextElement>("DialogueText");
 
         rewindButton = root.Q<Button>("RewindButton");
-        rewindButtonYes = root.Q<Button>("RewindButtonYes");
-        rewindButtonNo = root.Q<Button>("RewindButtonNo");
+        rewindButtonYes = root.Q<Button>("RewindYesButton");
+        rewindButtonNo = root.Q<Button>("RewindNoButton");
         nextDialogueButton = root.Q<Button>("NextDialogueButton");
 
         twoOptionContainer = root.Q<VisualElement>("TwoOptionContainer");
