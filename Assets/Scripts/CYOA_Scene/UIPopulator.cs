@@ -590,37 +590,89 @@ public class UIPopulator : MonoBehaviour
     }
 
     
-    private IEnumerator TypeText(string sentence, string keywordstring)
+    // private IEnumerator TypeText(string sentence, string keywordstring)
+    // {
+    //     instantCompleteRequested = false;  // Reset the flag at the start of each new line
+    //     Debug.Log("TypeText coroutine started with new line");
+    //     dialogueText.text = "";
+    //     int characterCounter = 0;
+
+    //     for (int i = 0; i < sentence.Length; i++)
+    //     {
+    //         if (instantCompleteRequested)
+    //         {
+    //             Debug.Log("Instant completion requested");
+    //             dialogueText.text = sentence;
+    //             break; // Exit the loop immediately
+    //         }
+
+    //         char c = sentence[i];
+    //         dialogueText.text += c;
+    //         characterCounter++;
+
+    //         if (characterCounter % 4 == 0)
+    //         {
+    //             Audio.PlayOneShot(dialogueBeepClip, 0.7F);
+    //         }
+
+    //         yield return new WaitForSeconds(typingSpeed);
+    //     }
+
+    //     nextDialogueButton.SetEnabled(true);
+    //     Debug.Log("Coroutine ended");
+    // }
+private IEnumerator TypeText(string sentence, string keywordstring)
+{
+    instantCompleteRequested = false;  // Reset the flag at the start of each new line
+    Debug.Log("TypeText coroutine started with new line");
+    dialogueText.text = "";
+    int characterCounter = 0;
+
+    string[] keywords = keywordstring.Split(','); // Assuming keywords are comma-separated
+
+    for (int i = 0; i < sentence.Length; i++)
     {
-        instantCompleteRequested = false;  // Reset the flag at the start of each new line
-        Debug.Log("TypeText coroutine started with new line");
-        dialogueText.text = "";
-        int characterCounter = 0;
-
-        for (int i = 0; i < sentence.Length; i++)
+        if (instantCompleteRequested)
         {
-            if (instantCompleteRequested)
-            {
-                Debug.Log("Instant completion requested");
-                dialogueText.text = sentence;
-                break; // Exit the loop immediately
-            }
-
-            char c = sentence[i];
-            dialogueText.text += c;
-            characterCounter++;
-
-            if (characterCounter % 4 == 0)
-            {
-                Audio.PlayOneShot(dialogueBeepClip, 0.7F);
-            }
-
-            yield return new WaitForSeconds(typingSpeed);
+            Debug.Log("Instant completion requested");
+            dialogueText.text = sentence;
+            break; // Exit the loop immediately
         }
 
-        nextDialogueButton.SetEnabled(true);
-        Debug.Log("Coroutine ended");
+        char c = sentence[i];
+        dialogueText.text += c;
+        characterCounter++;
+
+        foreach (var keyword in keywords)
+        {
+            if (sentence.Substring(i).StartsWith(keyword))
+            {
+                dialogueText.text += keyword.Substring(1); 
+
+                // Play the sound effect associated with the keyword
+                Audio.PlayOneShot(keywordSFX);
+
+                // Move the index forward to skip the rest of the keyword
+                i += keyword.Length - 1; 
+                break;
+            }
+        }
+
+        // Play the dialogue beep sound at every 4th character as before
+        if (characterCounter % 4 == 0)
+        {
+            Audio.PlayOneShot(dialogueBeepClip, 0.7F);
+        }
+
+        yield return new WaitForSeconds(typingSpeed);
     }
+
+    nextDialogueButton.SetEnabled(true);
+    Debug.Log("Coroutine ended");
+}
+
+
+
 
     private void NextDialogue(ClickEvent evt)
 {
