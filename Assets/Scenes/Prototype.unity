@@ -155,9 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0db5b158e1dad148848a552a31becc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dcsvToSO: {fileID: 252221945}
-  jcsvToSO: {fileID: 252221944}
-  typingSpeed: 0.05
 --- !u!114 &252221944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,6 +271,7 @@ MonoBehaviour:
   m_Dithering: 0
   m_ClearDepth: 1
   m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
   m_UseScreenCoordOverride: 0
   m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
