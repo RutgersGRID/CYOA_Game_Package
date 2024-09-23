@@ -35,10 +35,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        lfs: true 
+        lfs: true   # Enables Git LFS when checking out the repository
         ref: main
         fetch-depth: 0
-        
+
+    - name: Set up Git identity
+      run: |
+        git config --global user.email "ecy14@scarletmail.rutgers.edu"
+        git config --global user.name "ecy14"
+
     - name: Set up Git LFS
       run: |
         git lfs install
