@@ -35,8 +35,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
+        lfs: true 
         ref: main
         fetch-depth: 0
+        
+    - name: Set up Git LFS
+      run: |
+        git lfs install
+        git lfs track "*.data"  # Adjust the file pattern as needed
+        git add .gitattributes
+        git commit -m "Add Git LFS tracking for large files"
 
     - name: Clean Docker environment
       run: |
