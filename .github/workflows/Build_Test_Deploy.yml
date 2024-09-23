@@ -15,16 +15,16 @@ jobs:
   free-disk-space:
     runs-on: ubuntu-latest
     steps:
-    - name: Free Disk Space (Ubuntu)
-      uses: jlumbroso/free-disk-space@main
-      with:
-        tool-cache: false 
-        android: true 
-        dotnet: true 
-        haskell: true 
-        large-packages: true 
-        docker-images: true 
-        swap-storage: true 
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false 
+          android: true 
+          dotnet: true 
+          haskell: true 
+          large-packages: true 
+          docker-images: true 
+          swap-storage: true 
 
   test_and_build:
     name: Test and Build Unity Project for WebGL
@@ -32,41 +32,27 @@ jobs:
     needs: free-disk-space
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        lfs: true   # Enables Git LFS when checking out the repository
-        ref: main
-        fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
-    - name: Set up Git identity
-      run: |
-        git config --global user.email "ecy14@scarletmail.rutgers.edu"
-        git config --global user.name "ecy14"
+      - name: Clean Docker environment
+        run: |
+          docker system prune -f --all
+          docker volume prune -f
 
-    - name: Set up Git LFS
-      run: |
-        git lfs install
-        git lfs track "*.data"  # Adjust the file pattern as needed
-        git add .gitattributes
-        git commit -m "Add Git LFS tracking for large files"
+      - name: Build WebGL
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
 
-    - name: Clean Docker environment
-      run: |
-        docker system prune -f --all
-        docker volume prune -f
-
-    - name: Build WebGL
-      uses: game-ci/unity-builder@v4
-      env:
-        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-      with:
-        targetPlatform: WebGL
-
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      with:
-        BRANCH: gh-pages
-        FOLDER: build/WebGL
-
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          BRANCH: gh-pages
+          FOLDER: build/WebGL
