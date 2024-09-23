@@ -36,6 +36,13 @@ jobs:
       uses: actions/checkout@v4
       with:
         lfs: true   # Enables Git LFS when checking out the repository
+        ref: main
+        fetch-depth: 0
+
+    - name: Set up Git identity
+      run: |
+        git config --global user.email "ecy14@scarletmail.rutgers.edu"
+        git config --global user.name "ecy14"
 
     - name: Set up Git LFS
       run: |
@@ -43,6 +50,11 @@ jobs:
         git lfs track "*.data"  # Adjust the file pattern as needed
         git add .gitattributes
         git commit -m "Add Git LFS tracking for large files"
+
+    - name: Clean Docker environment
+      run: |
+        docker system prune -f --all
+        docker volume prune -f
 
     - name: Build WebGL
       uses: game-ci/unity-builder@v4
