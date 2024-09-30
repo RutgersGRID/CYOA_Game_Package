@@ -38,6 +38,13 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Set up Git LFS
+        run: |
+          git lfs install
+          git lfs track "*.data"  # Adjust this pattern as needed
+          git add .gitattributes
+          git commit -m "Add Git LFS tracking for large files" || echo "No new .gitattributes"
+
       - name: Clean Docker environment
         run: |
           docker system prune -f --all
