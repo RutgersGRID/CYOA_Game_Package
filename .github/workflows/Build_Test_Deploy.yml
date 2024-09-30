@@ -38,10 +38,44 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Clean Docker environment
+      # Set up Git user identity
+      - name: Set up Git identity
         run: |
-          docker system prune -f --all
-          docker volume prune -f
+          git config --global user.email "ecy14@scarletmail.rutgers.edu"
+          git config --global user.name "ecy14"
+
+      # Create Git LFS file list
+      - name: Create LFS file list        
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id      
+
+      # Restore Git LFS cache
+      - name: Restore LFS cache        
+        uses: actions/cache@v3        
+        id: lfs-cache        
+        with:          
+          path: .git/lfs          
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}   
+
+      # Git LFS Pull
+      - name: Git LFS Pull        
+        run: |          
+          git lfs pull          
+          git add .          
+          git reset --hard      
+
+      # Cache Unity Library
+      - uses: actions/cache@v3        
+        with:          
+          path: Library          
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}          
+          restore-keys: |            
+            Library-      
+
+      # Clean Docker environment      
+      - name: Clean Docker environment        
+        run: |          
+          docker system prune -f --all          
+          docker volume prune -f 
 
       - name: Build WebGL
         uses: game-ci/unity-builder@v4
