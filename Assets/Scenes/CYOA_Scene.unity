@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 708983110}
   - component: {fileID: 708983111}
   - component: {fileID: 708983112}
+  - component: {fileID: 708983113}
   m_Layer: 0
   m_Name: GameUIManager
   m_TagString: Untagged
@@ -285,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SSR: {fileID: 708983112}
-  JSR: {fileID: 708983110}
+  JSR: {fileID: 708983113}
   CSR: {fileID: 708983111}
   newLogClip: {fileID: 8300000, guid: 9c8a33041313b214e97e2dfbd0217a0a, type: 3}
   checkpointClip: {fileID: 0}
@@ -335,6 +336,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogues: []
+--- !u!114 &708983113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708983096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c1d74da4ec37c4ea13461f01757e20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  journals: []
 --- !u!1 &1707338012
 GameObject:
   m_ObjectHideFlags: 0
