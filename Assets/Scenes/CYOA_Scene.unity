@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 708983100}
   - component: {fileID: 708983107}
   - component: {fileID: 708983108}
-  - component: {fileID: 708983110}
   - component: {fileID: 708983111}
   - component: {fileID: 708983112}
   - component: {fileID: 708983113}
@@ -297,19 +296,6 @@ MonoBehaviour:
   typingSpeed: 0.02
   fadeDuration: 0.5
   sceneids: []
---- !u!114 &708983110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708983096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e81e34197600ef45a4f905869daf783, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  journals: []
 --- !u!114 &708983111
 MonoBehaviour:
   m_ObjectHideFlags: 0
