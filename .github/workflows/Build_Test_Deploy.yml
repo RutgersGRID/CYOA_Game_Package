@@ -12,6 +12,8 @@ env:
   UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
   UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
   UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+  UNITY_VERSION: 2022.3.16f1
+  UNITY_PROJECT_ID: ${{ secrets.UNITY_PROJECT_ID }}
 
 jobs:
   free-disk-space:
@@ -37,58 +39,64 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          lfs: true
           fetch-depth: 0
 
-      # Set up Git user identity
-      - name: Set up Git identity
-        run: |
-          git config --global user.email "ecy14@scarletmail.rutgers.edu"
-          git config --global user.name "ecy14"
-
-      # Create Git LFS file list
-      - name: Create LFS file list        
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id      
-
-      # Restore Git LFS cache
-      - name: Restore LFS cache        
-        uses: actions/cache@v3        
-        id: lfs-cache        
-        with:          
-          path: .git/lfs          
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}   
-
-      # Git LFS Pull
-      - name: Git LFS Pull        
-        run: |          
-          git lfs pull          
-          git add .          
-          git reset --hard      
-
       # Cache Unity Library
-      - uses: actions/cache@v3        
-        with:          
-          path: Library          
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}          
-          restore-keys: |            
-            Library-      
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-WebGL-
+            Library-
 
-      # Clean Docker environment      
-      - name: Clean Docker environment        
-        run: |          
-          docker system prune -f --all          
-          docker volume prune -f 
+      # Configure Unity Project ID
+      - name: Configure Unity Project
+        run: |
+          echo "Configuring Unity project with ID: $UNITY_PROJECT_ID"
+          # Unity CLI command to link project ID (if available in your Unity version)
+          # unity-editor -batchmode -projectPath . -executeMethod UnityEditor.CloudProjectSettings.SetProjectId -projectId $UNITY_PROJECT_ID -quit
 
+      # Test Unity project
+      - name: Unity - Test runner
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          testMode: all
+          artifactsPath: TestResults
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          customParameters: "-projectId ${{ env.UNITY_PROJECT_ID }}"
+
+      # Build WebGL
       - name: Build WebGL
         uses: game-ci/unity-builder@v4
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
+          unityVersion: ${{ env.UNITY_VERSION }}
           targetPlatform: WebGL
+          allowDirtyBuild: false
+          customParameters: "-projectId ${{ env.UNITY_PROJECT_ID }}"
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      # Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          BRANCH: gh-pages
-          FOLDER: build/WebGL
+          name: Build
+          path: build/WebGL
+          retention-days: 14
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        with:
+          branch: gh-pages
+          folder: build/WebGL
+          clean: true
+          token: ${{ secrets.GITHUB_TOKEN }}
