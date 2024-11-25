@@ -24,6 +24,8 @@ public class UIPopulator : MonoBehaviour
     private Button rewindButtonYes;
     private Button rewindButtonNo;
     private Button journalButton;
+    private TextElement newCheckpoint;
+    private string previousCheckpointId = "";
     ///
     private VisualElement dialogueContainer;
     private TextElement dialogueName;
@@ -135,6 +137,8 @@ public class UIPopulator : MonoBehaviour
         characterImageRight = root.Q<VisualElement>("CharacterRight");
         propImage = root.Q<VisualElement>("Props");
         rewindUI = root.Q<VisualElement>("RewindUIContainer");
+        newCheckpoint = root.Q<TextElement>("NewCheckpointText");
+        //private string previousCheckpointId = "";
 
         dialogueContainer = root.Q<VisualElement>("DialogueContainer");
         dialogueName = root.Q<TextElement>("DialogueName");
@@ -212,7 +216,7 @@ public class UIPopulator : MonoBehaviour
         twoOptionAnswerB.RegisterCallback<ClickEvent>(NextDialogueB);
         threeOptionAnswerA.RegisterCallback<ClickEvent>(NextDialogueA);
         threeOptionAnswerB.RegisterCallback<ClickEvent>(NextDialogueB);
-        threeOptionAnswerB.RegisterCallback<ClickEvent>(NextDialogueC);
+        threeOptionAnswerC.RegisterCallback<ClickEvent>(NextDialogueC);
 
         rewindButton.RegisterCallback<ClickEvent>(ShowRewind);
         rewindButtonYes.RegisterCallback<ClickEvent>(RewindYes);
@@ -670,10 +674,6 @@ private IEnumerator TypeText(string sentence, string keywordstring)
     nextDialogueButton.SetEnabled(true);
     Debug.Log("Coroutine ended");
 }
-
-
-
-
     private void NextDialogue(ClickEvent evt)
 {
     Debug.Log($"CurrentIndex before change: {currentIndex}");
@@ -683,13 +683,26 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         return;
     }
 
+    // var dialogueSO = SSR.dialogues[currentIndex];
+    // string nextID = dialogueSO.GoToIDs;
+
+    // // Find the index of the next dialogue using the string ID
+    // currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
+
+    // // Check if the index was found
     var dialogueSO = SSR.dialogues[currentIndex];
+    string checkpointID = dialogueSO.Checkpoints;
+    
+    // Show notification if checkpoint changed
+    if (checkpointID != previousCheckpointId && !string.IsNullOrEmpty(checkpointID)) {
+        newCheckpoint.style.display = DisplayStyle.Flex;
+        Audio.PlayOneShot(checkpointClip, 0.7F);
+        StartCoroutine(HideCheckpointNotification());
+        previousCheckpointId = checkpointID;
+    }
+
     string nextID = dialogueSO.GoToIDs;
-
-    // Find the index of the next dialogue using the string ID
     currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
-
-    // Check if the index was found
     if (currentIndex == -1)
     {
         Debug.LogError($"GoToID {nextID} not found!");
@@ -830,23 +843,28 @@ private IEnumerator TypeText(string sentence, string keywordstring)
     }
 
     private void RewindYes(ClickEvent evt)
-{
-    var dialogueSO = SSR.dialogues[currentIndex];
-    string checkpointID = dialogueSO.Checkpoints;
-
-    // Find the index of the checkpoint dialogue using the string ID
-    currentIndex = SSR.dialogues.FindIndex(d => d.IDs == checkpointID);
-
-    // Check if the index was found
-    if (currentIndex == -1)
     {
-        Debug.LogError($"Checkpoint ID {checkpointID} not found!");
-        return; // Exit function early
-    }
+        var dialogueSO = SSR.dialogues[currentIndex];
+        string checkpointID = dialogueSO.Checkpoints;
 
-    rewindUI.style.display = DisplayStyle.None;
-    PopulateUI();
-}
+        // Find the index of the checkpoint dialogue using the string ID
+        currentIndex = SSR.dialogues.FindIndex(d => d.IDs == checkpointID);
+
+        // Check if the index was found
+        if (currentIndex == -1)
+        {
+            Debug.LogError($"Checkpoint ID {checkpointID} not found!");
+            return; // Exit function early
+        }
+
+        rewindUI.style.display = DisplayStyle.None;
+        PopulateUI();
+    }
+    private IEnumerator HideCheckpointNotification()
+    {
+        yield return new WaitForSeconds(3f); // Adjust time as needed
+        newCheckpoint.style.display = DisplayStyle.None;
+    }
     private void RewindNo(ClickEvent evt)
     {
         rewindUI.style.display = DisplayStyle.None;
