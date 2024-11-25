@@ -1,14 +1,9 @@
-Updated Unity WebGL Build and Deploy Workflow
-
 name: Unity WebGL Build and Test
-
-on:
+on: 
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 env:
   UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
