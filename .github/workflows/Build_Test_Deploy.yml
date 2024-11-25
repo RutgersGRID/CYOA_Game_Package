@@ -25,10 +25,9 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: Library
-          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-WebGL-${{ github.sha }}
           restore-keys: |
             Library-WebGL-
-            Library-
 
       - uses: game-ci/unity-builder@v4
         env:
@@ -39,7 +38,6 @@ jobs:
           targetPlatform: WebGL
           allowDirtyBuild: true
           buildName: Build
-          customParameters: -quit -batchmode -nographics -webglheap 512 -webglTemplate DEFAULT
 
       - uses: actions/upload-artifact@v4
         with:
