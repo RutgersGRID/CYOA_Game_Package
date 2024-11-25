@@ -10,7 +10,7 @@ env:
   UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
   UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
   UNITY_VERSION: 2022.3.16f1
-  UNITY_PROJECT_ID: ${{ secrets.UNITY_PROJECT_ID }}
+  UNITY_PROJECT_ID: 778edcf9-b12b-4380-b417-96807ab68403
 
 jobs:
   buildWebGL:
@@ -38,6 +38,7 @@ jobs:
           targetPlatform: WebGL
           allowDirtyBuild: true
           buildName: Build
+          projectPath: .
 
       - uses: actions/upload-artifact@v4
         with:
