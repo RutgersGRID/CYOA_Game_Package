@@ -36,11 +36,12 @@ jobs:
 
       - name: Prepare WebGL Build
         run: |
+          sudo chmod -R 755 build/WebGL
           cd build/WebGL
           touch .nojekyll
           if [ -f "CYOA_Game/index.html" ]; then
-            cp -r CYOA_Game/* .
-            rm -rf CYOA_Game
+            sudo cp -r CYOA_Game/* .
+            sudo rm -rf CYOA_Game
           fi
 
       - name: Deploy to GitHub Pages
