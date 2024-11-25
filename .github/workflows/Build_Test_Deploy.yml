@@ -16,15 +16,12 @@ jobs:
   build:
     name: Build Unity Project
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           lfs: true
 
-      - name: Build WebGL
-        uses: game-ci/unity-builder@v4
+      - uses: game-ci/unity-builder@v4
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -36,16 +33,15 @@ jobs:
 
       - name: Prepare WebGL Build
         run: |
-          sudo chmod -R 755 build/WebGL
-          cd build/WebGL
-          touch .nojekyll
-          if [ -f "CYOA_Game/index.html" ]; then
-            sudo cp -r CYOA_Game/* .
-            sudo rm -rf CYOA_Game
+          sudo mkdir -p build/WebGL
+          sudo chmod -R 777 build/WebGL
+          sudo touch build/WebGL/.nojekyll
+          if [ -d "build/WebGL/CYOA_Game" ]; then
+            sudo cp -r build/WebGL/CYOA_Game/* build/WebGL/
+            sudo rm -rf build/WebGL/CYOA_Game
           fi
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+      - uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           branch: gh-pages
           folder: build/WebGL
