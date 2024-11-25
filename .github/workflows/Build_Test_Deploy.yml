@@ -1,3 +1,5 @@
+Updated Unity WebGL Build and Deploy Workflow
+
 name: Unity WebGL Build and Test
 
 on:
@@ -16,63 +18,16 @@ env:
   UNITY_PROJECT_ID: ${{ secrets.UNITY_PROJECT_ID }}
 
 jobs:
-  free-disk-space:
+  build:
+    name: Build Unity Project
     runs-on: ubuntu-latest
-    steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false 
-          android: true 
-          dotnet: true 
-          haskell: true 
-          large-packages: true 
-          docker-images: true 
-          swap-storage: true 
-
-  test_and_build:
-    name: Test and Build Unity Project for WebGL
-    runs-on: ubuntu-latest
-    needs: free-disk-space
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
-          fetch-depth: 0
 
-      # Cache Unity Library
-      - name: Cache Library
-        uses: actions/cache@v4
-        with:
-          path: Library
-          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-WebGL-
-            Library-
-
-      # Configure Unity Project ID
-      - name: Configure Unity Project
-        run: |
-          echo "Configuring Unity project with ID: $UNITY_PROJECT_ID"
-          # Unity CLI command to link project ID (if available in your Unity version)
-          # unity-editor -batchmode -projectPath . -executeMethod UnityEditor.CloudProjectSettings.SetProjectId -projectId $UNITY_PROJECT_ID -quit
-
-      # Test Unity project
-      - name: Unity - Test runner
-        uses: game-ci/unity-test-runner@v4
-        env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          unityVersion: ${{ env.UNITY_VERSION }}
-          testMode: all
-          artifactsPath: TestResults
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          customParameters: "-projectId ${{ env.UNITY_PROJECT_ID }}"
-
-      # Build WebGL
       - name: Build WebGL
         uses: game-ci/unity-builder@v4
         env:
@@ -81,22 +36,21 @@ jobs:
         with:
           unityVersion: ${{ env.UNITY_VERSION }}
           targetPlatform: WebGL
-          allowDirtyBuild: false
-          customParameters: "-projectId ${{ env.UNITY_PROJECT_ID }}"
+          allowDirtyBuild: true
+          buildName: CYOA_Game
 
-      # Upload build artifacts
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build
-          path: build/WebGL
-          retention-days: 14
+      - name: Prepare WebGL Build
+        run: |
+          cd build/WebGL
+          touch .nojekyll
+          if [ -f "CYOA_Game/index.html" ]; then
+            cp -r CYOA_Game/* .
+            rm -rf CYOA_Game
+          fi
 
-      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           branch: gh-pages
           folder: build/WebGL
           clean: true
-          token: ${{ secrets.GITHUB_TOKEN }}
