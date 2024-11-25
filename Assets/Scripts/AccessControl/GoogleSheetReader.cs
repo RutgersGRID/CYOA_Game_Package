@@ -15,7 +15,6 @@ public class GoogleSheetReader : MonoBehaviour
     }
 
     public List<LoginSO> logins = new List<LoginSO>();
-    //private const string CONTROL_SHEET_URL = "https://sheets.googleapis.com/v4/spreadsheets/1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g/values/Access?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
     public string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
     public string sheetId;
@@ -25,10 +24,14 @@ public class GoogleSheetReader : MonoBehaviour
 
     private void Start()
     {
-
         sheetId = PlayerPrefs.GetString("SheetId");
+        if (string.IsNullOrEmpty(sheetId))
+        {
+            Debug.LogError("SheetID is invalid: Sheet ID is empty");
+            return;
+        }
         sheetUrl = sheetBaseUrl + sheetId + "/values/Access" + sheetKey;
-        Debug.Log("Using SheetID: " + sheetId); // Added for debugging
+        Debug.Log("Using SheetID: " + sheetId);
         StartCoroutine(ObtainSheetData());
     }
 
@@ -37,43 +40,58 @@ public class GoogleSheetReader : MonoBehaviour
         LoginSO login = ScriptableObject.CreateInstance<LoginSO>();
         login.AccessCodes = accessCode;
         login.WorkshopIDCodes = workshopIdCode;
-
-
         return login;
     }
 
     public IEnumerator ObtainSheetData()
     {
+        if (string.IsNullOrEmpty(sheetId))
+        {
+            Debug.LogError("SheetID is invalid: Sheet ID is empty");
+            yield break;
+        }
+
         UnityWebRequest www = UnityWebRequest.Get(sheetUrl);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("Error: " + www.error);
+            Debug.LogError("SheetID is invalid: " + www.error);
+            logins.Clear();
         }
         else
         {
             var parsedJson = JSON.Parse(www.downloadHandler.text);
-            var valuesArray = parsedJson["values"].AsArray;
-            logins.Clear(); // Clear the existing list before adding new data
+            var valuesArray = parsedJson["values"]?.AsArray;
+            
+            if (valuesArray == null || valuesArray.Count <= 1)
+            {
+                Debug.LogError("SheetID is invalid: No data found in sheet or incorrect sheet format");
+                logins.Clear();
+                yield break;
+            }
+
+            logins.Clear();
             for (int i = 1; i < valuesArray.Count; i++)
             {
                 var item = valuesArray[i];
-                var accessCode = item[0].Value;
-                var workshopIdCode = item[1].Value;
-                logins.Add(CreateLoginSO(accessCode, workshopIdCode));
+                if (item.Count >= 2)
+                {
+                    var accessCode = item[0].Value;
+                    var workshopIdCode = item[1].Value;
+                    logins.Add(CreateLoginSO(accessCode, workshopIdCode));
+                }
             }
 
             if (logins.Count == 0)
             {
-                Debug.LogWarning("The logins list was not populated. Please check the source or the structure of the Google Sheet.");
+                Debug.LogError("SheetID is invalid: No valid data rows found in sheet");
             }
             else
             {
                 Debug.Log($"Successfully populated logins list with {logins.Count} entries.");
+                onDataLoaded?.Invoke();
             }
-
-            onDataLoaded?.Invoke();
         }
     }
 }
