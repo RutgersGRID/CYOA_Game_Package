@@ -17,6 +17,7 @@ public class GoogleSheetReader : MonoBehaviour
     public List<LoginSO> logins = new List<LoginSO>();
     public string sheetBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
     public string sheetKey = "?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg";
+
     public string sheetId;
     public string sheetUrl;
     public delegate void OnDataLoaded();
