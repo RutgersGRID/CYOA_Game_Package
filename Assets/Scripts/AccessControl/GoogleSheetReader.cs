@@ -23,7 +23,7 @@ public class GoogleSheetReader : MonoBehaviour
     public delegate void OnDataLoaded();
     public event OnDataLoaded onDataLoaded;
 
-    private void Start()
+    public void Initialize()
     {
         sheetId = PlayerPrefs.GetString("SheetId");
         if (string.IsNullOrEmpty(sheetId))
@@ -43,6 +43,7 @@ public class GoogleSheetReader : MonoBehaviour
         login.WorkshopIDCodes = workshopIdCode;
         return login;
     }
+    
 
     public IEnumerator ObtainSheetData()
     {
