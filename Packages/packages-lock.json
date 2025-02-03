@@ -109,7 +109,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.18",
+      "version": "1.8.19",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -276,9 +276,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.cloudsave": {
-
       "version": "3.2.2",
-
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -345,7 +343,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.8.7",
+      "version": "1.8.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {
