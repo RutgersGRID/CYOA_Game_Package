@@ -1,5 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+
 --- !u!114 &-8285966739719070842
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -449,6 +450,7 @@ MonoBehaviour:
   saturation:
     m_OverrideState: 1
     m_Value: 0
+
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,6 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
   m_Name: DefaultVolumeProfile
   m_EditorClassIdentifier: 
+
   components:
   - {fileID: 6773773349169944167}
   - {fileID: 2388697480012104649}
