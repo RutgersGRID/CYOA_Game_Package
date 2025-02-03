@@ -20,7 +20,12 @@ public class AccessControlPopulator : MonoBehaviour
         // Mark - 1O88FIl3Z6QkR6Tlteuzb3qDcig6ci1hqNIoUYqqUCx8
         // Alex - 1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g
         PlayerPrefs.Save();
-        Debug.Log("SheetID:"  + PlayerPrefs.GetString("SheetId"));
+        Debug.Log("SheetID:" + PlayerPrefs.GetString("SheetId"));
+        
+        // Initialize GoogleSheetReader first
+        gsrt.Initialize();
+        
+        // Then initialize the rest
         Initialize();
     }
 
@@ -38,34 +43,32 @@ public class AccessControlPopulator : MonoBehaviour
     }
 
     public void Reload()
-{
-    Debug.Log("Reloading AccessControlPopulatorTwo...");
-    proceed.UnregisterCallback<ClickEvent>(nextScene);
-    gsrt.onDataLoaded -= DataLoadedCallback;
-
-    // Fetch new data
-    gsrt.sheetId = PlayerPrefs.GetString("SheetId");
-    gsrt.sheetUrl = gsrt.sheetBaseUrl + gsrt.sheetId + "/values/Access" + gsrt.sheetKey;
-    gsrt.StartCoroutine(gsrt.ObtainSheetData());
-
-    Initialize();
-}
-
-    void DataLoadedCallback()
-{
-    Debug.Log("Data loaded and list populated.");
-    Debug.Log("Size of gsrt.logins: " + gsrt.logins.Count);
-    PrintLoginsList();
-    preloadTheList();
-}
-
-void PrintLoginsList()
-{
-    foreach (var login in gsrt.logins)
     {
-        Debug.Log("Access Code: " + login.AccessCodes + ", Workshop ID: " + login.WorkshopIDCodes);
+        Debug.Log("Reloading AccessControlPopulatorTwo...");
+        proceed.UnregisterCallback<ClickEvent>(nextScene);
+        gsrt.onDataLoaded -= DataLoadedCallback;
+
+        // Initialize GoogleSheetReader with new Sheet ID
+        gsrt.Initialize();
+
+        Initialize();
     }
-}
+
+        void DataLoadedCallback()
+    {
+        Debug.Log("Data loaded and list populated.");
+        Debug.Log("Size of gsrt.logins: " + gsrt.logins.Count);
+        PrintLoginsList();
+        preloadTheList();
+    }
+
+    void PrintLoginsList()
+    {
+        foreach (var login in gsrt.logins)
+        {
+            Debug.Log("Access Code: " + login.AccessCodes + ", Workshop ID: " + login.WorkshopIDCodes);
+        }
+    }
     private void preloadTheList()
     {
         foreach (var login in gsrt.logins)

@@ -43,27 +43,27 @@ public class DevTool : MonoBehaviour
     }
 
     private void TestSheet(ClickEvent evt)
-{
-    string testsheetIdValue = DevToolSheetID.value;
-    PlayerPrefs.SetString("SheetId", testsheetIdValue);
-    PlayerPrefs.Save(); // Ensure PlayerPrefs are saved immediately
-    DevToolUI.style.display = DisplayStyle.None;
-    Debug.Log("New SheetID is " + PlayerPrefs.GetString("SheetId"));
-    ReloadScript();
-}
+    {
+        string testsheetIdValue = DevToolSheetID.value;
+        PlayerPrefs.SetString("SheetId", testsheetIdValue);
+        PlayerPrefs.Save(); // Ensure PlayerPrefs are saved immediately
+        DevToolUI.style.display = DisplayStyle.None;
+        Debug.Log("New SheetID is " + PlayerPrefs.GetString("SheetId"));
+        ReloadScript();
+    }
 
-void ReloadScript()
-{
-    if (scriptToReload != null)
+    void ReloadScript()
     {
-        scriptToReload.Reload();
-        Debug.Log("Reloaded!");
+        if (scriptToReload != null)
+        {
+            scriptToReload.Reload();
+            Debug.Log("Reloaded!");
+        }
+        else
+        {
+            Debug.LogError("AccessControlPopulatorTwo script reference is null!");
+        }
     }
-    else
-    {
-        Debug.LogError("AccessControlPopulatorTwo script reference is null!");
-    }
-}
 
         private void DisableDevTool(ClickEvent evt)
     {

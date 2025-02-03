@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Networking;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
-
 public class UIPopulator : MonoBehaviour
 {
     public StorySheetReader SSR;
@@ -627,12 +627,18 @@ public class UIPopulator : MonoBehaviour
     // }
 private IEnumerator TypeText(string sentence, string keywordstring)
 {
-    instantCompleteRequested = false;  // Reset the flag at the start of each new line
+    instantCompleteRequested = false;
     Debug.Log("TypeText coroutine started with new line");
     dialogueText.text = "";
     int characterCounter = 0;
 
-    string[] keywords = keywordstring.Split(','); // Assuming keywords are comma-separated
+    // Check if keywordstring is null or empty
+    string[] keywords = !string.IsNullOrEmpty(keywordstring) 
+        ? keywordstring.Split(',') 
+        : new string[0];
+
+    // Filter out empty keywords
+    keywords = keywords.Where(k => !string.IsNullOrWhiteSpace(k)).ToArray();
 
     for (int i = 0; i < sentence.Length; i++)
     {
@@ -640,30 +646,32 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         {
             Debug.Log("Instant completion requested");
             dialogueText.text = sentence;
-            break; // Exit the loop immediately
+            break;
         }
 
         char c = sentence[i];
         dialogueText.text += c;
         characterCounter++;
 
-        foreach (var keyword in keywords)
+        if (keywords.Length > 0)  // Only check keywords if there are any
         {
-            if (sentence.Substring(i).StartsWith(keyword))
+            foreach (var keyword in keywords)
             {
-                dialogueText.text += keyword.Substring(1); 
-
-                // Play the sound effect associated with the keyword
-                Audio.PlayOneShot(keywordSFX);
-
-                // Move the index forward to skip the rest of the keyword
-                i += keyword.Length - 1; 
-                break;
+                if (i + keyword.Length <= sentence.Length &&  // Make sure we don't go past the end
+                    sentence.Substring(i).StartsWith(keyword))
+                {
+                    dialogueText.text += keyword.Substring(1);
+                    if (keywordSFX != null)  // Check if sound effect exists
+                    {
+                        Audio.PlayOneShot(keywordSFX);
+                    }
+                    i += keyword.Length - 1;
+                    break;
+                }
             }
         }
 
-        // Play the dialogue beep sound at every 4th character as before
-        if (characterCounter % 4 == 0)
+        if (characterCounter % 4 == 0 && dialogueBeepClip != null)
         {
             Audio.PlayOneShot(dialogueBeepClip, 0.7F);
         }

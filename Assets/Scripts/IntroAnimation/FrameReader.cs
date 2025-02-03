@@ -75,7 +75,7 @@ public class FrameReader : MonoBehaviour
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("Error: " + www.error);
+            Debug.LogError("Error: " + www.error);
         }
         else
         {
@@ -85,9 +85,17 @@ public class FrameReader : MonoBehaviour
             {
                 var item = valuesArray[i];
                 var id = int.Parse(item[0].Value);
-                var frameStill = Resources.Load<Sprite>(ResourcesLoadAI + item[1].Value);
+                var imagePath = ResourcesLoadAI + item[1].Value;
+                var frameStill = Resources.Load<Sprite>(imagePath);
+                
+                if (frameStill == null)
+                {
+                    Debug.LogError($"Failed to load sprite at path: {imagePath}");
+                    continue;
+                }
                 
                 frames.Add(CreateFrameSO(id, frameStill));
+                Debug.Log($"Successfully loaded frame {id} from {imagePath}");
             }
         }
 
