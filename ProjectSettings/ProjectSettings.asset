@@ -919,11 +919,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: b6b44a7d-98a0-4012-8d27-37466d9e8c90
+  cloudProjectId: a85199a0-62b3-4454-bbb3-b3bcee08c7a9
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Visual Novel Engine
-  organizationId: rutgers-university-grid
+  projectName: Visual Novel Engine (Current)
+  organizationId: ecy14
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
