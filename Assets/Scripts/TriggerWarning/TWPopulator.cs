@@ -11,7 +11,7 @@ public class TWPopulator : MonoBehaviour
     void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
-        nextButton = root.Q<Button>("TWButton");
+        nextButton = root.Q<Button>("Content_Warning_Button");
         nextButton.RegisterCallback<ClickEvent>(nextScene);
     }
     private void nextScene(ClickEvent evt)
