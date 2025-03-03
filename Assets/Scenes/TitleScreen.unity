@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,13 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -67,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -208,13 +204,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1509152847}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1509152851
 MonoBehaviour:
@@ -254,12 +250,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &1531899968
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,8 +266,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1531899969}
   - component: {fileID: 1531899970}
-  - component: {fileID: 1531899975}
-  - component: {fileID: 1531899974}
+  - component: {fileID: 1531899971}
+  - component: {fileID: 1531899972}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -286,13 +282,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531899968}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1531899970
 MonoBehaviour:
@@ -308,9 +304,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: b02445e60e43a3c48afb586e95c97de5, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: c173d6c72e52b454c9429f9ad113c304, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 128009d3c02e99b489572e1afd8d84bb, type: 3}
   m_SortingOrder: 0
---- !u!114 &1531899974
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+--- !u!114 &1531899971
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,12 +318,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1531899968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f60bfcd4a4889a846b80c7c12343dc3c, type: 3}
+  m_Script: {fileID: 11500000, guid: a3b2f05cb9205d842b7e0ab995d4a68a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: TriggerWarning
-  gsrt: {fileID: 1531899975}
---- !u!114 &1531899975
+  TSR: {fileID: 1531899972}
+  sceneToLoad: Tutorial
+--- !u!114 &1531899972
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -333,7 +332,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1531899968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f0913c1e6a29964f8132720182224d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ac11f91761b111459c2bca4abf60f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logins: []
+  titlescreens: []
+  defaultSheetId: 1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 1509152850}
+  - {fileID: 1531899969}
