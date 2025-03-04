@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Rutgers GRID
+  companyName: Rutgers University GRID
   productName: Visual Novel Engine
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -540,7 +540,10 @@ PlayerSettings:
   m_BuildTargetGroupLightmapSettings: []
   m_BuildTargetGroupLoadStoreDebugModeSettings: []
   m_BuildTargetNormalMapEncoding: []
-  m_BuildTargetDefaultTextureCompressionFormat: []
+  m_BuildTargetDefaultTextureCompressionFormat:
+  - serializedVersion: 3
+    m_BuildTarget: WebGL
+    m_Formats: 05000000
   playModeTestRunnerEnabled: 0
   runPlayModeTestAsEditModeTest: 0
   actionOnDotNetUnhandledException: 1
@@ -919,11 +922,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: a85199a0-62b3-4454-bbb3-b3bcee08c7a9
+  cloudProjectId: b6b44a7d-98a0-4012-8d27-37466d9e8c90
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Visual Novel Engine (Current)
-  organizationId: ecy14
+  projectName: Visual Novel Engine
+  organizationId: rutgers-university-grid
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
