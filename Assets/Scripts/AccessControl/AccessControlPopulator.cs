@@ -16,9 +16,7 @@ public class AccessControlPopulator : MonoBehaviour
     void Start()
     {
         Debug.Log("Start");
-        PlayerPrefs.SetString("SheetId", "1Q793Lo8hsyxlNvFJT8V1bGSYP9yWYY8PU8TeGaGU-w8");
-        // Mark - 1O88FIl3Z6QkR6Tlteuzb3qDcig6ci1hqNIoUYqqUCx8
-        // Alex - 1SLm9j993IbtSKpzmVoshhebh7FxJcZOp2a4BU5aId8g
+        PlayerPrefs.SetString("SheetId", "1SgYjI9zV2c22x3EGEeSDvvWy7uS2QMvWP8qnpyryZPs");
         PlayerPrefs.Save();
         Debug.Log("SheetID:" + PlayerPrefs.GetString("SheetId"));
         
