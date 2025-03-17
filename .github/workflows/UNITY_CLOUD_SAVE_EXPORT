@@ -1,0 +1,54 @@
+name: Extract Unity Cloud Save Data
+
+on:
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  extract-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js (required for Unity CLI)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Unity CLI
+        run: npm install -g @unity/cli
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Login to Unity CLI
+        run: |
+          unity services login --access-token ${{ secrets.UNITY_ACCESS_TOKEN }}
+
+      - name: List Player IDs and Fetch Data
+        run: |
+          PROJECT_ID="${{ secrets.PROJECT_ID_TEST }}"
+          ENV_ID="${{ secrets.PROJECT_ENV_ID }}"
+
+          echo "Fetching player IDs..."
+          PLAYER_IDS=$(unity services cloud-save player-ids list \
+            --project-id $PROJECT_ID \
+            --environment-id $ENV_ID | jq -r '.results[].id')
+
+          mkdir player_data
+
+          for PLAYER_ID in $PLAYER_IDS; do
+            echo "Fetching data for player: $PLAYER_ID"
+            unity services cloud-save player-data get \
+              --project-id $PROJECT_ID \
+              --environment-id $ENV_ID \
+              --player-id $PLAYER_ID \
+              --keys '*' > "player_data/${PLAYER_ID}_data.json"
+          done
+
+      - name: Upload Player Data as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: player-data
+          path: player_data/
