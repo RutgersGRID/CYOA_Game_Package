@@ -114,8 +114,11 @@ public class AssetDownloader : MonoBehaviour
 
     private IEnumerator DownloadAsset(DownloadSheetReader.DownloadSO assetInfo)
     {
+        // Extract file ID from Google Drive share link or use ID directly
+        string fileId = ExtractGoogleDriveFileId(assetInfo.assetIDs);
+        
         // Format direct download URL for Google Drive
-        string downloadUrl = $"https://drive.google.com/uc?export=download&id={assetInfo.assetIDs}";
+        string downloadUrl = $"https://drive.google.com/uc?export=download&id={fileId}";
         Debug.Log($"Downloading {assetInfo.assetNames} ({assetInfo.assetTypes}) from URL: {downloadUrl}");
         
         SetStatus($"Downloading {assetInfo.assetNames}...");
@@ -160,6 +163,75 @@ public class AssetDownloader : MonoBehaviour
             SaveToPersistentDataPath(assetInfo, downloadedContent);
 #endif
         }
+    }
+
+    // Helper method to extract file ID from Google Drive share links
+    private string ExtractGoogleDriveFileId(string input)
+    {
+        // If the input is already just a file ID (no slashes or special characters)
+        if (!input.Contains("/") && !input.Contains("?") && !input.Contains("&"))
+        {
+            return input;
+        }
+
+        // Handle various Google Drive link formats
+        
+        // Format: https://drive.google.com/file/d/{fileId}/view...
+        if (input.Contains("/file/d/"))
+        {
+            int startIndex = input.IndexOf("/file/d/") + 8;
+            int endIndex = input.IndexOf("/", startIndex);
+            if (endIndex != -1)
+            {
+                return input.Substring(startIndex, endIndex - startIndex);
+            }
+        }
+        
+        // Format: https://drive.google.com/open?id={fileId}
+        if (input.Contains("open?id="))
+        {
+            int startIndex = input.IndexOf("open?id=") + 8;
+            int endIndex = input.IndexOf("&", startIndex);
+            if (endIndex != -1)
+            {
+                return input.Substring(startIndex, endIndex - startIndex);
+            }
+            return input.Substring(startIndex);
+        }
+        
+        // Format: https://docs.google.com/document/d/{fileId}/edit...
+        // Also works for spreadsheets, presentations, etc.
+        if (input.Contains("/d/"))
+        {
+            int startIndex = input.IndexOf("/d/") + 3;
+            int endIndex = input.IndexOf("/", startIndex);
+            if (endIndex != -1)
+            {
+                return input.Substring(startIndex, endIndex - startIndex);
+            }
+            endIndex = input.IndexOf("?", startIndex);
+            if (endIndex != -1)
+            {
+                return input.Substring(startIndex, endIndex - startIndex);
+            }
+            return input.Substring(startIndex);
+        }
+        
+        // Format: https://drive.google.com/uc?export=download&id={fileId}
+        if (input.Contains("id="))
+        {
+            int startIndex = input.IndexOf("id=") + 3;
+            int endIndex = input.IndexOf("&", startIndex);
+            if (endIndex != -1)
+            {
+                return input.Substring(startIndex, endIndex - startIndex);
+            }
+            return input.Substring(startIndex);
+        }
+        
+        // If we can't parse the URL format, return the original input
+        // This allows for backward compatibility with direct IDs
+        return input;
     }
 
 #if UNITY_EDITOR
