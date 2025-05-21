@@ -8,8 +8,11 @@ using UnityEngine.Networking;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
+
 public class UIPopulator : MonoBehaviour
 {
+    [SerializeField] private CYOAChoiceRecorder choiceRecorder;
+
     public StorySheetReader SSR;
     public JournalSheetReader JSR;
     public CreditSheetReader CSR;
@@ -210,6 +213,19 @@ public class UIPopulator : MonoBehaviour
 
         CSR.onDataLoaded += DataLoadedCallback;
         CSR.StartCoroutine(CSR.ObtainSheetData());
+
+        if (choiceRecorder == null)
+        {
+            choiceRecorder = FindObjectOfType<CYOAChoiceRecorder>();
+        }
+        
+        if (string.IsNullOrEmpty(PlayerPrefs.GetString("SessionID")))
+        {
+            string newSessionID = System.Guid.NewGuid().ToString();
+            PlayerPrefs.SetString("SessionID", newSessionID);
+            PlayerPrefs.Save();
+            Debug.Log("Created new session ID: " + newSessionID);
+        }
 
         nextDialogueButton.RegisterCallback<ClickEvent>(NextDialogue);
         twoOptionAnswerA.RegisterCallback<ClickEvent>(NextDialogueA);
@@ -730,6 +746,11 @@ private IEnumerator TypeText(string sentence, string keywordstring)
     Debug.Log(dialogueSO.Lines + dialogueSO.A1Answers);
     QAnum++;
 
+    if (choiceRecorder != null)
+    {
+        choiceRecorder.RecordPlayerChoice(dialogueSO, 0);
+    }
+
     if (dialogueSO.JournalTriggerA1s >= 0 )
     {
         var journalSO = JSR.journals[dialogueSO.JournalTriggerA1s];
@@ -772,6 +793,11 @@ private IEnumerator TypeText(string sentence, string keywordstring)
     Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
     QAnum++;
 
+    if (choiceRecorder != null)
+    {
+        choiceRecorder.RecordPlayerChoice(dialogueSO, 1);
+    }
+
     if (dialogueSO.JournalTriggerA2s >= 0 && dialogueSO.JournalTriggerA2s < JSR.journals.Count)
     {
         var journalSO = JSR.journals[dialogueSO.JournalTriggerA2s];
@@ -813,6 +839,11 @@ private IEnumerator TypeText(string sentence, string keywordstring)
     AddDataAndSave(Anum, dialogueSO.A3Answers);
     Debug.Log(dialogueSO.Lines + dialogueSO.A3Answers);
     QAnum++;
+
+    if (choiceRecorder != null)
+    {
+        choiceRecorder.RecordPlayerChoice(dialogueSO, 2);
+    }
 
     if (dialogueSO.JournalTriggerA3s >= 0 )
     {
