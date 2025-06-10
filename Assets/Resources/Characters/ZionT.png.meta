@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ZionT_0: -1146887625961719998
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

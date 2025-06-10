@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      alex_BG_punched_wall_0: -3945026064807183453
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
