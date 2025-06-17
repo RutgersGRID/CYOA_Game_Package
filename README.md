@@ -152,3 +152,4 @@ Include appropriate content warnings
 Update credits and about information
 
 Developed by GRID (Games Research and Immersive Design) for educational and research applications.
+Master Document: https://docs.google.com/document/d/1d1PVdXazAzQMl-V2prAexhxPvDem7Gm17LLrVfM6qJI/edit?usp=sharing 
