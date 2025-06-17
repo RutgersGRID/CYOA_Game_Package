@@ -12,6 +12,8 @@ using UnityEngine.SceneManagement;
 
 public class UIPopulator : MonoBehaviour
 {
+    [SerializeField] private CYOAChoiceRecorder choiceRecorder;
+
     public StorySheetReader SSR;
     public JournalSheetReader JSR;
     public CreditSheetReader CSR;
@@ -216,6 +218,19 @@ public class UIPopulator : MonoBehaviour
 
         CSR.onDataLoaded += DataLoadedCallback;
         CSR.StartCoroutine(CSR.ObtainSheetData());
+
+        if (choiceRecorder == null)
+        {
+            choiceRecorder = FindObjectOfType<CYOAChoiceRecorder>();
+        }
+        
+        if (string.IsNullOrEmpty(PlayerPrefs.GetString("SessionID")))
+        {
+            string newSessionID = System.Guid.NewGuid().ToString();
+            PlayerPrefs.SetString("SessionID", newSessionID);
+            PlayerPrefs.Save();
+            Debug.Log("Created new session ID: " + newSessionID);
+        }
 
         nextDialogueButton.RegisterCallback<ClickEvent>(NextDialogue);
         twoOptionAnswerA.RegisterCallback<ClickEvent>(NextDialogueA);
@@ -696,48 +711,6 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         PopulateUI();
     }
 
-    // private void NextDialogueA(ClickEvent evt)
-    // {
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-
-    //     string Qnum = "Question_"+ QAnum.ToString();
-    //     string Anum = "Answer_"+ QAnum.ToString();
-    //     AddDataAndSave(Qnum, dialogueSO.Lines);
-    //     AddDataAndSave(Anum, dialogueSO.A1Answers);
-    //     Debug.Log(dialogueSO.Lines + dialogueSO.A1Answers);
-    //     QAnum++;
-
-    //     if (dialogueSO.JournalTriggerA1s >= 0 )
-    //     {
-    //         var journalSO = JSR.journals[dialogueSO.JournalTriggerA1s];
-    //         jNumber = dialogueSO.JournalTriggerA1s;
-
-    //         journalEntryPopUpTitle.text = journalSO.journalTitles;
-    //         journalEntryPopUpSummaryText.text = journalSO.journalEntrys;
-    //         journalEntryPopUpReflectionQuestionText.text = journalSO.reflectionQuestions;
-    //         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-    //     }
-    //     else
-    //     {
-    //         journalEntryPopUpTitle.text = "";
-    //         journalEntryPopUpSummaryText.text = "";
-    //         journalEntryPopUpReflectionQuestionText.text = "";
-    //         doodle.style.backgroundImage = new StyleBackground();
-    //     }
-
-    //     // Find the index of the next dialogue using the string ID
-    //     // string nextID = dialogueSO.GoToIDA1s;
-    //     // currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
-        
-
-    //     if (currentIndex == -1)
-    //     {
-    //         Debug.LogError($"GoToIDA1 {nextID} not found!");
-    //         return;
-    //     }
-
-    //     PopulateUI();
-    // }
     private void NextDialogueA(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
@@ -748,6 +721,12 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         AddDataAndSave(Anum, dialogueSO.A1Answers);
         Debug.Log(dialogueSO.Lines + dialogueSO.A1Answers);
         QAnum++;
+
+        // Record player choice (added from conflict) - using choice index 0 for A1
+        if (choiceRecorder != null)
+        {
+            choiceRecorder.RecordPlayerChoice(dialogueSO, 0);
+        }
 
         if (dialogueSO.JournalTriggerA1s >= 0 )
         {
@@ -769,14 +748,14 @@ private IEnumerator TypeText(string sentence, string keywordstring)
 
         // Find the index of the next dialogue using the string ID
         string nextID = dialogueSO.GoToIDA1s;
-        
+
         // Check for end of story
         if (IsEndOfStory(nextID))
         {
             StartCoroutine(HandleEndOfStory());
             return;
         }
-        
+
         currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
 
         if (currentIndex == -1)
@@ -789,47 +768,6 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         PopulateUI();
     }
 
-    // private void NextDialogueB(ClickEvent evt)
-    // {
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-
-    //     string Qnum = "Question_"+ QAnum.ToString();
-    //     string Anum = "Answer_"+ QAnum.ToString();
-    //     AddDataAndSave(Qnum, dialogueSO.Lines);
-    //     AddDataAndSave(Anum, dialogueSO.A2Answers);
-    //     Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
-    //     QAnum++;
-
-    //     if (dialogueSO.JournalTriggerA2s >= 0 && dialogueSO.JournalTriggerA2s < JSR.journals.Count)
-    //     {
-    //         var journalSO = JSR.journals[dialogueSO.JournalTriggerA2s];
-    //         jNumber = dialogueSO.JournalTriggerA2s;
-
-    //         journalEntryPopUpTitle.text = journalSO.journalTitles;
-    //         journalEntryPopUpSummaryText.text = journalSO.journalEntrys;
-    //         journalEntryPopUpReflectionQuestionText.text = journalSO.reflectionQuestions;
-    //         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-    //     }
-    //     else
-    //     {
-    //         journalEntryPopUpTitle.text = "";
-    //         journalEntryPopUpSummaryText.text = "";
-    //         journalEntryPopUpReflectionQuestionText.text = "";
-    //         doodle.style.backgroundImage = new StyleBackground();
-    //     }
-
-    //     // Find the index of the next dialogue using the string ID
-    //     string nextID = dialogueSO.GoToIDA2s;
-    //     currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
-
-    //     if (currentIndex == -1)
-    //     {
-    //         Debug.LogError($"GoToIDA2 {nextID} not found!");
-    //         return;
-    //     }
-
-    //     PopulateUI();
-    // }
     private void NextDialogueB(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
@@ -840,6 +778,12 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         AddDataAndSave(Anum, dialogueSO.A2Answers);
         Debug.Log(dialogueSO.Lines + dialogueSO.A2Answers);
         QAnum++;
+
+        // Record player choice (choice index 1 for A2)
+        if (choiceRecorder != null)
+        {
+            choiceRecorder.RecordPlayerChoice(dialogueSO, 1);
+        }
 
         if (dialogueSO.JournalTriggerA2s >= 0 && dialogueSO.JournalTriggerA2s < JSR.journals.Count)
         {
@@ -861,14 +805,14 @@ private IEnumerator TypeText(string sentence, string keywordstring)
 
         // Find the index of the next dialogue using the string ID
         string nextID = dialogueSO.GoToIDA2s;
-        
+
         // Check for end of story
         if (IsEndOfStory(nextID))
         {
             StartCoroutine(HandleEndOfStory());
             return;
         }
-        
+
         currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
 
         if (currentIndex == -1)
@@ -881,47 +825,6 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         PopulateUI();
     }
 
-    // private void NextDialogueC(ClickEvent evt)
-    // {
-    //     var dialogueSO = SSR.dialogues[currentIndex];
-
-    //     string Qnum = "Question_"+ QAnum.ToString();
-    //     string Anum = "Answer_"+ QAnum.ToString();
-    //     AddDataAndSave(Qnum, dialogueSO.Lines);
-    //     AddDataAndSave(Anum, dialogueSO.A3Answers);
-    //     Debug.Log(dialogueSO.Lines + dialogueSO.A3Answers);
-    //     QAnum++;
-
-    //     if (dialogueSO.JournalTriggerA3s >= 0 )
-    //     {
-    //         var journalSO = JSR.journals[dialogueSO.JournalTriggerA3s];
-    //         jNumber = dialogueSO.JournalTriggerA3s;
-
-    //         journalEntryPopUpTitle.text = journalSO.journalTitles;
-    //         journalEntryPopUpSummaryText.text = journalSO.journalEntrys;
-    //         journalEntryPopUpReflectionQuestionText.text = journalSO.reflectionQuestions;
-    //         doodle.style.backgroundImage = new StyleBackground(journalSO.doodles);
-    //     }
-    //     else
-    //     {
-    //         journalEntryPopUpTitle.text = "";
-    //         journalEntryPopUpSummaryText.text = "";
-    //         journalEntryPopUpReflectionQuestionText.text = "";
-    //         doodle.style.backgroundImage = new StyleBackground();
-    //     }
-
-    //     // Find the index of the next dialogue using the string ID
-    //     string nextID = dialogueSO.GoToIDA3s;
-    //     currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
-
-    //     if (currentIndex == -1)
-    //     {
-    //         Debug.LogError($"GoToIDA3 {nextID} not found!");
-    //         return;
-    //     }
-
-    //     PopulateUI();
-    // }
     private void NextDialogueC(ClickEvent evt)
     {
         var dialogueSO = SSR.dialogues[currentIndex];
@@ -932,6 +835,12 @@ private IEnumerator TypeText(string sentence, string keywordstring)
         AddDataAndSave(Anum, dialogueSO.A3Answers);
         Debug.Log(dialogueSO.Lines + dialogueSO.A3Answers);
         QAnum++;
+
+        // Record player choice (choice index 2 for A3)
+        if (choiceRecorder != null)
+        {
+            choiceRecorder.RecordPlayerChoice(dialogueSO, 2);
+        }
 
         if (dialogueSO.JournalTriggerA3s >= 0 )
         {
@@ -953,14 +862,14 @@ private IEnumerator TypeText(string sentence, string keywordstring)
 
         // Find the index of the next dialogue using the string ID
         string nextID = dialogueSO.GoToIDA3s;
-        
+
         // Check for end of story
         if (IsEndOfStory(nextID))
         {
             StartCoroutine(HandleEndOfStory());
             return;
         }
-        
+
         currentIndex = SSR.dialogues.FindIndex(d => d.IDs == nextID);
 
         if (currentIndex == -1)
@@ -972,6 +881,7 @@ private IEnumerator TypeText(string sentence, string keywordstring)
 
         PopulateUI();
     }
+
     private void ShowRewind(ClickEvent evt)
     {
         rewindUI.style.display = DisplayStyle.Flex;
