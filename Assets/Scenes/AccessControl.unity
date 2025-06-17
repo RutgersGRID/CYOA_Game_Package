@@ -332,6 +332,8 @@ GameObject:
   - component: {fileID: 1531899970}
   - component: {fileID: 1531899975}
   - component: {fileID: 1531899974}
+  - component: {fileID: 1531899977}
+  - component: {fileID: 1531899976}
   m_Layer: 0
   m_Name: GameUIManager
   m_TagString: Untagged
@@ -404,6 +406,35 @@ MonoBehaviour:
   sheetKey: ?key=AIzaSyDxlgY5nx2_JX89Grs3KZ7cnxlpRO2Nedg
   sheetId: 
   sheetUrl: 
+--- !u!114 &1531899976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531899968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e116c3a9cf0fc4080010e8ca75c8b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  downloads: []
+--- !u!114 &1531899977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531899968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 996fd56769c7c3f42a0b04a487084849, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  downloadSheetReader: {fileID: 1531899976}
+  previewImage: {fileID: 0}
+  statusText: {fileID: 0}
+  progressSlider: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
