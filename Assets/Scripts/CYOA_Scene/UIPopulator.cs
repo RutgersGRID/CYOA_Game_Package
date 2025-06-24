@@ -5,9 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Networking;
-using Unity.Services.Core;
-using Unity.Services.Authentication;
-using Unity.Services.CloudSave;
+//using Unity.Services.Core;
+//using Unity.Services.Authentication;
+//using Unity.Services.CloudSave;
 using UnityEngine.SceneManagement;
 
 public class UIPopulator : MonoBehaviour
@@ -130,12 +130,12 @@ public class UIPopulator : MonoBehaviour
     
     async void Start()
     {
-        await UnityServices.InitializeAsync();
-        if (!AuthenticationService.Instance.IsSignedIn)
-        {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            Debug.Log("Signed in anonymously.");
-        }
+        // await UnityServices.InitializeAsync();
+        // if (!AuthenticationService.Instance.IsSignedIn)
+        // {
+        //     await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        //     Debug.Log("Signed in anonymously.");
+        // }
 
         Audio = GetComponent<AudioSource>();
         var root = GetComponent<UIDocument>().rootVisualElement;
@@ -369,35 +369,35 @@ public class UIPopulator : MonoBehaviour
         creditGRIDText.text = creditSO.creditGRIDTexts;
     }
 
-    public async void SaveData(Dictionary<string, object> data)
-    {
-        try
-        {
-            // Log the data being saved for debugging purposes
-            foreach (var entry in data)
-            {
-                Debug.Log($"Saving key: {entry.Key}, value: {entry.Value}");
-            }
+    // public async void SaveData(Dictionary<string, object> data)
+    // {
+    //     try
+    //     {
+    //         // Log the data being saved for debugging purposes
+    //         foreach (var entry in data)
+    //         {
+    //             Debug.Log($"Saving key: {entry.Key}, value: {entry.Value}");
+    //         }
 
-            await CloudSaveService.Instance.Data.Player.SaveAsync(data);
-            Debug.Log("Data saved successfully!");
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Error saving data: {e.Message}\nStack Trace: {e.StackTrace}");
-            if (e.InnerException != null)
-            {
-                Debug.LogError($"Inner Exception: {e.InnerException.Message}");
-            }
-        }
-    }
+    //         //await CloudSaveService.Instance.Data.Player.SaveAsync(data);
+    //         Debug.Log("Data saved successfully!");
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Debug.LogError($"Error saving data: {e.Message}\nStack Trace: {e.StackTrace}");
+    //         if (e.InnerException != null)
+    //         {
+    //             Debug.LogError($"Inner Exception: {e.InnerException.Message}");
+    //         }
+    //     }
+    // }
 
     private Dictionary<string, object> gameData = new Dictionary<string, object>();
 
     public void AddDataAndSave(string key, object value)
     {
         gameData[key] = value;
-        SaveData(gameData);
+        //SaveData(gameData);
     }
 
     // Simplify the AddDataToSave method
